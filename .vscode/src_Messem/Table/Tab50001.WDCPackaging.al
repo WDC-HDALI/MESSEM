@@ -33,6 +33,7 @@ table 50001 "WDC Packaging"
         field(7; Weight; Decimal)
         {
             CaptionML = ENU = 'Weight', FRA = 'Poids';
+            DecimalPlaces = 3;
         }
         field(8; "Group"; Code[20])
         {

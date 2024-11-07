@@ -77,7 +77,7 @@ report 50501 "WDC-QACreateSpecifiVersion"
             TargetSpecificationHeader."Version No." := NewVersionCode;
             TargetSpecificationHeader."Version Date" := WORKDATE;
             TargetSpecificationHeader."Revised By" := RevisedBy;
-            //TargetSpecificationHeader."Reason for Modification" := Reason;
+            TargetSpecificationHeader."Reason for Modification" := Reason;
             TargetSpecificationHeader.Status := TargetSpecificationHeader.Status::Open;
             TargetSpecificationHeader."Revised By" := RevisedBy;
             TargetSpecificationHeader.INSERT(TRUE);

@@ -107,7 +107,7 @@ report 50500 "WDC-QA Products Specifications"
                     Uniteoption := "Result UOM";
 
                     IF UnitOfMesure.GET(Uniteoption) THEN;
-                    IF "Specification Line"."Type of Result" = 1 THEN BEGIN
+                    IF ("Specification Line"."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(1)) THEN BEGIN
                         ResulLimit := "Specification Line"."Texte specification option";
 
                     END ELSE BEGIN
@@ -221,10 +221,6 @@ report 50500 "WDC-QA Products Specifications"
 
         trigger OnOpenPage()
         begin
-            //PhysicDecript:=Text001;
-            //ChimicalDescrp:=Text002;
-
-
             DescriptItem := '';
             Palletisation := 0;
             PackagingText := Text007;

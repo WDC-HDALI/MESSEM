@@ -123,7 +123,7 @@ table 50502 "WDC-QA Specification Header"
 
                 IF Specific <> xRec.Specific THEN BEGIN
                     "Source No." := '';
-                    //  Name := '';
+                    Name := '';
                 END;
 
                 CheckUniqueSpecification;
@@ -161,7 +161,7 @@ table 50502 "WDC-QA Specification Header"
             CaptionML = ENU = 'Name', FRA = 'Nom';
             Editable = false;
         }
-        field(15; "No. Series"; Code[10])
+        field(15; "No. Series"; Code[20])
         {
             CaptionML = ENU = 'No. Series', FRA = 'Souches de N°';
             TableRelation = "No. Series";
@@ -233,8 +233,7 @@ table 50502 "WDC-QA Specification Header"
 
         IF "No." = '' THEN BEGIN
             TestNoSeries;
-            NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."No. Series", 0D, "No.", "No. Series");
-            //NoSeriesMgt.GetNextNo(GetNoSeriesCode, 0D, true);
+            "No." := NoSeriesMgt.GetNextNo(GetNoSeriesCode, 0D, true);
         END;
 
         "Version Date" := WORKDATE;
@@ -258,10 +257,10 @@ table 50502 "WDC-QA Specification Header"
         SpecificationHeader := Rec;
         QualityControlSetup.GET;
         TestNoSeries;
-        IF NoSeriesMgt.SelectSeries(GetNoSeriesCode, OldSpecificationHeader."No. Series", "No. Series") THEN BEGIN
+        IF NoSeriesMgt.LookupRelatedNoSeries(GetNoSeriesCode, OldSpecificationHeader."No. Series", "No. Series") THEN BEGIN
             QualityControlSetup.GET;
             TestNoSeries;
-            NoSeriesMgt.SetSeries("No.");
+            NoSeriesMgt.GetNextNo("No.");
             Rec := SpecificationHeader;
             EXIT(TRUE);
         END;
@@ -368,12 +367,12 @@ table 50502 "WDC-QA Specification Header"
         //IF NOT "Basic Specification" THEN
         //EXIT;
 
-        IF ("Item No." <> '') //OR ("Item Category Code" <> '') OR ("Item Attribute 1" <> '') OR
-                              //("Item Attribute 2" <> '') OR ("Item Attribute 3" <> '') OR ("Item Attribute 4" <> '') OR
-                              //("Item Attribute 5" <> '') OR ("Item Attribute 6" <> '') OR ("Item Attribute 7" <> '') OR
-                              //("Item Attribute 8" <> '') OR ("Item Attribute 9" <> '') OR ("Item Attribute 10" <> '')
-        THEN
-            ERROR(Text007);
+        //IF ("Item No." <> '') //OR ("Item Category Code" <> '') OR ("Item Attribute 1" <> '') OR
+        //("Item Attribute 2" <> '') OR ("Item Attribute 3" <> '') OR ("Item Attribute 4" <> '') OR
+        //("Item Attribute 5" <> '') OR ("Item Attribute 6" <> '') OR ("Item Attribute 7" <> '') OR
+        //("Item Attribute 8" <> '') OR ("Item Attribute 9" <> '') OR ("Item Attribute 10" <> '')
+        //THEN
+        //ERROR(Text007);
     end;
 
     local procedure CheckOnbeforeChangeStatus()
@@ -399,14 +398,14 @@ table 50502 "WDC-QA Specification Header"
         Item: Record Item;
         Customer: Record Customer;
         Vendor: Record Vendor;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         //NO: Codeunit NoSeriesManagement;
         Text001: TextConst ENU = 'It is not possible to change the status to Certified,\', FRA = 'Il n''est pas possible de changer le statut en Certifié,\';
         Text002: TextConst ENU = 'because %3 Specification %1 has status Certified', FRA = 'parce que %3 spécification %1 a statut Certifié';
-        Text007: TextConst ENU = 'Do you want to close this %1 Specification?', FRA = 'Voulez-vous fermer cette %1 spécification?';
-        Text004: TextConst ENU = '%1 Specification %2 is not unique.\\', FRA = '%1 Spécification %2 n''est pas unique.\\';
-        Text005: TextConst ENU = '%1 Specification No. %3 has the same fieldvalues,\ %4 "%5", %6 "%7", %8 "%9".', FRA = '%1 N° Spécification %3 a les mêmes valeurs de champ,\ %4 "%5", %6 "%7", %8 "%9".';
-        Text006: TextConst ENU = 'Item filters are not allowed for Basic QC Specifications.', FRA = 'Les filtres article ne sont pas autorisés pour les spécifications de base.';
+        Text004: TextConst ENU = 'Do you want to close this %1 Specification?', FRA = 'Voulez-vous fermer cette %1 spécification?';
+        Text005: TextConst ENU = '%1 Specification %2 is not unique.\\', FRA = '%1 Spécification %2 n''est pas unique.\\';
+        Text006: TextConst ENU = '%1 Specification No. %3 has the same fieldvalues,\ %4 "%5", %6 "%7", %8 "%9".', FRA = '%1 N° Spécification %3 a les mêmes valeurs de champ,\ %4 "%5", %6 "%7", %8 "%9".';
+        Text007: TextConst ENU = 'Item filters are not allowed for Basic QC Specifications.', FRA = 'Les filtres article ne sont pas autorisés pour les spécifications de base.';
         Text008: TextConst ENU = 'No line exists. It is not possible to change the status to %1.', FRA = 'Aucune ligne n''existe. Il n''est pas possible de changer le statut à %1.';
-        CheckPointCodeNotPeriodicalErr: TextConst ENU = '', FRA = 'Check Point Code %1 is not setup as periodical in a production line.';
+        CheckPointCodeNotPeriodicalErr: TextConst ENU = 'Check Point Code %1 is not setup as periodical in a production line.', FRA = 'Le code de point de contrôle %1 n''est pas configuré comme périodique dans une ligne de production.';
 }

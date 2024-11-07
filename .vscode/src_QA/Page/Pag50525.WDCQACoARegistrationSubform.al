@@ -29,22 +29,9 @@ page 50525 "WDC-QA CoA RegistrationSubform"
                 {
                     ApplicationArea = all;
                 }
-                field("Parameter Description"; Rec."Parameter Description")
-                {
-                    Visible = false;
-                }
-                field("Parameter Group Code"; Rec."Parameter Group Code")
-                {
-                    Visible = false;
-                    Editable = true;
-                }
                 field("Method No."; Rec."Method No.")
                 {
                     ApplicationArea = all;
-                }
-                field("Method Description"; Rec."Method Description")
-                {
-                    Visible = false;
                 }
                 field("Specification Remark"; Rec."Specification Remark")
                 {

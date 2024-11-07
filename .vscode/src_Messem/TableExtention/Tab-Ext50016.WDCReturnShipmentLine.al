@@ -35,7 +35,11 @@ tableextension 50016 "WDCReturn Shipment Line" extends "Return Shipment Line"
             CaptionML = ENU = 'Quantity Shipment Containers', FRA = 'Qté de support logistique';
             DecimalPlaces = 0 : 0;
         }
-
+        field(50028; "Rebate Code"; Code[20])
+        {
+            CaptionML = ENU = 'Rebate Code', FRA = 'Code bonus';
+            TableRelation = "WDC Rebate Code";
+        }
 
     }
 }

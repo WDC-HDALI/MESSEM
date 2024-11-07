@@ -249,6 +249,18 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             CaptionML = ENU = 'Qty Shipm. Cont. (Calculated)', FRA = 'Qté support logistique à expédier (calculé)';
             Editable = false;
         }
+        field(50028; "Rebate Code"; Code[20])
+        {
+            CaptionML = ENU = 'Rebate Code', FRA = 'Code bonus';
+            TableRelation = "WDC Rebate Code";
+            DataClassification = ToBeClassified;
+        }
+        field(50029; "Accrual Amount (LCY)"; Decimal)
+        {
+            CaptionML = ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
+            DataClassification = ToBeClassified;
+        }
+
 
     }
     procedure MaxShipUnitsToInvoice(): Decimal

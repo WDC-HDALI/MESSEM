@@ -24,6 +24,20 @@ pageextension 50009 "WDC Purch Invoice Subform" extends "Purch. Invoice Subform"
                 ApplicationArea = all;
 
             }
+
+
+
+        }
+        addlast(content)
+        {
+            field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
+            {
+                ApplicationArea = all;
+            }
+            field("Rebate Code"; Rec."Rebate Code")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }

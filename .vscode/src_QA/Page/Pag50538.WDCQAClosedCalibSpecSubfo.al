@@ -17,19 +17,7 @@ page 50538 "WDC-QA Closed Calib Spec Subfo"
                 {
                     ApplicationArea = all;
                 }
-                field("Parameter Description"; Rec."Parameter Description")
-                {
-                    ApplicationArea = all;
-                }
-                field("Parameter Group Code"; Rec."Parameter Group Code")
-                {
-                    ApplicationArea = all;
-                }
                 field("Method No."; Rec."Method No.")
-                {
-                    ApplicationArea = all;
-                }
-                field("Method Description"; Rec."Method Description")
                 {
                     ApplicationArea = all;
                 }
@@ -88,4 +76,39 @@ page 50538 "WDC-QA Closed Calib Spec Subfo"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action("Specification Steps")
+            {
+                ApplicationArea = ALL;
+                CaptionML = ENU = 'Specification Steps', FRA = 'Etapes de spécification';
+                trigger OnAction()
+                begin
+                    ShowSpecificationSteps;
+                end;
+            }
+        }
+    }
+    trigger OnAfterGetRecord()
+    begin
+        IF SpecificationHeader.GET(Rec."Document Type", Rec."Document No.", Rec."Version No.") THEN
+            CurrPage.EDITABLE(SpecificationHeader.Status <> SpecificationHeader.Status::Closed)
+        ELSE
+            CurrPage.EDITABLE(FALSE);
+    end;
+
+    procedure ShowSpecificationSteps()
+    begin
+        SpecificationStep.SETRANGE("Document Type", Rec."Document Type");
+        SpecificationStep.SETFILTER("Document No.", Rec."Document No.");
+        SpecificationStep.SETFILTER("Version No.", Rec."Version No.");
+        SpecificationStep.SETRANGE("Line No.", Rec."Line No.");
+        PAGE.RUNMODAL(0, SpecificationStep);
+    end;
+
+    var
+        SpecificationHeader: Record "WDC-QA Specification Header";
+        SpecificationStep: Record "WDC-QA Specification Step";
 }

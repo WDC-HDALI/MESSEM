@@ -17,6 +17,7 @@ page 50510 "WDC-QA Lot No InformationList2"
                 CaptionML = ENU = 'General', FRA = 'Général';
                 field(ItemCategoryFilter; ItemCategoryFilter)
                 {
+                    ApplicationArea = all;
                     CaptionML = ENU = 'Item Category Filter', FRA = 'Filtre catégorie article';
                     TableRelation = "Item Category";
                     trigger OnValidate()
@@ -169,19 +170,25 @@ page 50510 "WDC-QA Lot No InformationList2"
                     ApplicationArea = all;
                 }
                 field("Qty Shipm.Units per Shipm.Cont"; Rec."Qty Shipm.Units per Shipm.Cont")
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = all;
                 }
                 field(GetParentLotNo; Rec.GetParentLotNo)
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field("Inspection Status"; Rec."Inspection Status")
                 {
                     ApplicationArea = all;
                 }
                 field("Vendor Lot No."; Rec."Vendor Lot No.")
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field("Certificate Number"; Rec."Certificate Number")
                 {
                     ApplicationArea = all;
@@ -207,7 +214,9 @@ page 50510 "WDC-QA Lot No InformationList2"
                     ApplicationArea = all;
                 }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field(QC; Rec.QC)
                 {
                     ApplicationArea = all;
@@ -223,6 +232,40 @@ page 50510 "WDC-QA Lot No InformationList2"
             systempart(Notes; Notes)
             {
                 Visible = true;
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            group("Funtion&s")
+            {
+                action("Create Sub Lot")
+                {
+                    CaptionML = ENU = 'Create Sub Lot', FRA = 'Créer sous-lot';
+                    Image = CreateSerialNo;
+                    trigger OnAction()
+                    begin
+                        CreateSubLot;
+                    end;
+                }
+            }
+            action("&Print")
+            {
+                CaptionML = ENU = '&Print', FRA = '&Imprimer';
+                Image = Print;
+                Promoted = true;
+                PromotedCategory = Report;
+                Ellipsis = true;
+                trigger OnAction()
+                var
+                    LotInformationReport: Report "WDC-QA Lot Information";
+                begin
+                    LotNoInformation.COPYFILTERS(Rec);
+                    LotInformationReport.SETTABLEVIEW(LotNoInformation);
+                    LotInformationReport.RUNMODAL;
+                end;
             }
         }
     }
@@ -371,78 +414,6 @@ page 50510 "WDC-QA Lot No InformationList2"
         ItemCategoryFilter := Rec.GETFILTER("Item Category Code");
         ItemFilter := Rec.GETFILTER("Item No.");
         LotNoFilter := Rec.GETFILTER("Lot No.");
-    end;
-
-    procedure CreateNonConformance()
-    var
-    //NonConformance:Record "Non Conformance";
-    begin
-        Selection := STRMENU(Text001);
-
-        CASE Selection OF
-            0:
-                EXIT;
-            1:
-                NCType := NCType::Customer;
-            2:
-                NCType := NCType::Vendor;
-            3:
-                NCType := NCType::Internal;
-        END;
-
-        // NonConformance.SETCURRENTKEY("Item No.", NonConformance."Lot No.");
-        // NonConformance.SETRANGE("Item No.", "Item No.");
-        // NonConformance.SETRANGE("Lot No.", "Lot No.");
-        // NonConformance.SETRANGE(Type, NCType);
-        // NonConformance.SETFILTER(Status, '<>%1', NonConformance.Status::Closed);
-        // IF NonConformance.FINDFIRST THEN
-        //     IF CONFIRM(Text002 + ' ' + NonConformance."No." + ' ' + Text003) THEN BEGIN
-        //         CASE Selection OF
-        //             1:
-        //                 PAGE.RUN(PAGE::"Customer Non Conformance", NonConformance);
-        //             2:
-        //                 PAGE.RUN(PAGE::"Vendor Non Conformance", NonConformance);
-        //             3:
-        //                 PAGE.RUN(PAGE::"Internal Non Conformance", NonConformance);
-        //         END;
-        //         EXIT;
-        //     END;
-
-        // NonConformance.INIT;
-        // NonConformance.Type := NCType;
-        // NonConformance."No." := '';
-        // NonConformance.INSERT(TRUE);
-
-        // NonConformance.VALIDATE("Item No.", "Item No.");
-        // NonConformance.VALIDATE("Lot No.", "Lot No.");
-        // NonConformance."Expiration Date" := "Expiration Date";
-        // NonConformance."Receipt Date" := WORKDATE;
-        // IF Selection = 2 THEN BEGIN
-        //     NonConformance.VALIDATE("Vendor No.", SearchInsertVendor);
-        //     NonConformance."Vendor Lot No." := "Vendor Lot No.";
-        //     // FW-47136-B0C0
-        //     NonConformance."Reference Purch. Document Type" := NonConformance."Reference Purch. Document Type"::Receipt;
-        //     //
-        // END;
-        // // FW-47136-B0C0
-        // IF Selection = 1 THEN
-        //     NonConformance."Reference Sales Document Type" := NonConformance."Reference Sales Document Type"::Shipment;
-        // //
-        // NonConformance.MODIFY;
-
-        // CASE Selection OF
-        //     // FW-47136-B0C0
-        //     //1: PAGE.RUN(PAGE::"Customer Non Conformance",NonConformance);
-        //     //2: PAGE.RUN(PAGE::"Vendor Non Conformance",NonConformance);
-        //     //3: PAGE.RUN(PAGE::"Internal Non Conformance",NonConformance);
-        //     1:
-        //         PAGE.RUN(PAGE::"Customer Non Conformance 2", NonConformance);
-        //     2:
-        //         PAGE.RUN(PAGE::"Vendor Non Conformance 2", NonConformance);
-        //     3:
-        //         PAGE.RUN(PAGE::"Internal Non Conformance 2", NonConformance);
-        // //
-        // END;
     end;
 
     procedure CreateQCRegistration()
@@ -598,30 +569,12 @@ page 50510 "WDC-QA Lot No InformationList2"
         CurrPage.UPDATE(FALSE);
     end;
 
-
-    procedure ShowNonConformances()
-    var
-    //NonConformance:Record "Non conformance";
-    //TempNonConformance:Record ;
-    //NCLine:record NC Line;
+    procedure CreateSubLot()
     begin
-        //TempNonConformance.RESET;
-        // TempNonConformance.DELETEALL;
-
-        // NCLine.RESET;
-        // NCLine.SETCURRENTKEY("Lot No.");
-        // NCLine.SETFILTER("Lot No.", "Lot No.");
-        // NCLine.SETFILTER("Item No.", "Item No.");
-        // IF NCLine.FINDSET THEN
-        //     REPEAT
-        //         NonConformance.SETRANGE("No.", NCLine."No.");
-        //         IF NonConformance.FINDFIRST THEN
-        //             TempNonConformance.INIT;
-        //         TempNonConformance := NonConformance;
-        //         IF TempNonConformance.INSERT THEN;
-        //     UNTIL NCLine.NEXT = 0;
-
-        // PAGE.RUN(PAGE::"Non Conformance List", TempNonConformance);
+        Rec.TESTFIELD("Item No.");
+        LotNoInformation.GET(Rec."Item No.", Rec."Variant Code", Rec."Lot No.");
+        LotNoInformation.SETRECFILTER;
+        //IF PAGE.RUNMODAL(PAGE::"Create Sub Lot", LotNoInformation) = ACTION::LookupOK THEN;
     end;
 
     var

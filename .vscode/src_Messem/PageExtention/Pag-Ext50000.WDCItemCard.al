@@ -47,6 +47,14 @@ pageextension 50000 "WDC ItemCard " extends "Item Card"
 
 
         }
+        addafter("Purch. Unit of Measure")
+        {
+            field(" Purchases Item Rebate Group"; Rec." Purchases Item Rebate Group")
+            {
+                ApplicationArea = all;
+
+            }
+        }
     }
 
 }

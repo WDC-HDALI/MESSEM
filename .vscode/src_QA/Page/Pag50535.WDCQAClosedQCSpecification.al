@@ -71,6 +71,10 @@ page 50535 "WDC-QA Closed QC Specification"
                 {
                     ApplicationArea = all;
                 }
+                field("Reason for Modification"; Rec."Reason for Modification")
+                {
+                    ApplicationArea = All;
+                }
             }
             part(CalibrationLines; "WDC-QA Closed QC Specif Subfor")
             {

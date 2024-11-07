@@ -2,8 +2,8 @@ table 50520 "WDC-QA RegistrationCommentLine"
 {
     CaptionML = ENU = 'Registration Comment Line', FRA = 'Ligne commentaire enregistrement';
     DataClassification = ToBeClassified;
-    //LookupPageId=Registration Comment List;
-    //DrillDownPageId=Registration Comment List;
+    LookupPageId = "WDC-QA RegistrationCommentList";
+    DrillDownPageId = "WDC-QA RegistrationCommentList";
 
     fields
     {

@@ -1,36 +1,37 @@
 table 50005 "WDC Transport Tariff Code"
 {
-    Caption = 'Transport Tariff Code';
+    CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
+    ;
     LookupPageID = "WDC Transport Tariff Codes";
 
     fields
     {
-        field(1; "Code"; Code[10])
+        field(1; "Code"; Code[20])
         {
-            Caption = 'Code';
+            CaptionML = ENU = 'Code', FRA = 'Code';
             NotBlank = true;
         }
         field(2; Description; Text[30])
         {
-            Caption = 'Description';
+            CaptionML = ENU = 'Description', FRA = 'Description';
         }
         field(3; "Transport Rate per"; Enum "WDC Transport Rate per Code")
         {
-            Caption = 'Transport Rate per';
+            CaptionML = ENU = 'Transport Rate per', FRA = 'Tarif transport par';
         }
         field(4; "Sales Cost Transport Rate 1"; Decimal)
         {
-            Caption = 'Sales Cost Transport Rate 1';
+            CaptionML = ENU = 'Sales Cost Transport Rate 1', FRA = 'Coût de ventes Tarif transport 1';
             DecimalPlaces = 0 : 5;
         }
         field(5; "Sales Cost Transport Rate 2"; Decimal)
         {
-            Caption = 'Sales Cost Transport Rate 2';
+            CaptionML = ENU = 'Sales Cost Transport Rate 2', FRA = 'Coût de ventes Tarif transport 2';
             DecimalPlaces = 0 : 5;
         }
         field(6; "Sales Cost Transport Rate 3"; Decimal)
         {
-            Caption = 'Sales Cost Transport Rate 3';
+            CaptionML = ENU = 'Sales Cost Transport Rate 3', FRA = 'Coût de ventes Tarif transport 3';
             DecimalPlaces = 0 : 5;
         }
     }

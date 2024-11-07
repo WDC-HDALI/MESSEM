@@ -18,48 +18,35 @@ table 50529 "WDC-QA Inspection Status"
         {
             CaptionML = ENU = 'QC', FRA = 'CQ';
         }
-        field(4; "Planning Inventory"; Option)
+        field(4; "Planning Inventory"; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Calculate Plan', FRA = 'Calculer planning';
-            OptionMembers = " ","Not Available";
-            OptionCaptionML = ENU = ' ,Not Available', FRA = ' ,Indisponible';
+            ValuesAllowed = 0, 1;
         }
-        field(5; Consumption; Option)
+        field(5; Consumption; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Consumption', FRA = 'CONSOMMATION';
-            OptionMembers = " ","Not Available","Manually Available";
-            OptionCaptionML = ENU = ' ,Not Available,Manually Available', FRA = ' ,Indisponible,Dispo. manuel';
         }
-        field(6; Sales; Option)
+        field(6; Sales; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Sales', FRA = 'Vente';
-            OptionMembers = " ","Not Available","Manually Available";
-            ;
-            OptionCaptionML = ENU = ' ,Not Available,Manually Available', FRA = ' ,Indisponible,Dispo. manuel';
         }
-        field(7; Pick; Option)
+        field(7; Pick; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Pick', FRA = 'Prélèvement';
-            OptionMembers = " ","Not Available","Manually Available";
-            OptionCaptionML = ENU = ' ,Not Available,Manually Available', FRA = ' ,Indisponible,Dispo. manuel';
         }
-        field(8; "Purchase Invoice"; Option)
+        field(8; "Purchase Invoice"; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Purchase Invoice', FRA = 'Facture achat';
-            OptionMembers = " ","Not Available";
-            OptionCaptionML = ENU = ' ,Not Available', FRA = ' ,Indisponible';
+            ValuesAllowed = 0, 1;
         }
-        field(9; "Transfer From"; Option)
+        field(9; "Transfer From"; Enum "WDC-QA Available")
         {
             CaptionML = ENU = 'Transfer From', FRA = 'Prov. transfert';
-            OptionMembers = " ","Not Available","Manually Available";
-            OptionCaptionML = ENU = ' ,Not Available,Manually Available', FRA = ' ,Indisponible,Dispo. manuel';
         }
-        field(10; "Result Sample"; Option)
+        field(10; "Result Sample"; Enum "WDC-QA Result Sample")
         {
             CaptionML = ENU = 'Result Sample', FRA = 'Résultat échantillon';
-            OptionMembers = " ","Take Sample",Approved,Rejected;
-            OptionCaptionML = ENU = ' ,Take Sample,Approved,Rejected', FRA = ' ,Echantillonnage,Approuvé,Rejeté';
         }
     }
     keys

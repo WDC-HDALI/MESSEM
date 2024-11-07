@@ -1,4 +1,4 @@
-page 50526 "WDC-QA Calib Registration Subf"
+page 50526 "WDC-QA QC Registration Subform"
 {
     ApplicationArea = All;
     CaptionML = ENU = 'Lines', FRA = 'Lignes';
@@ -17,18 +17,12 @@ page 50526 "WDC-QA Calib Registration Subf"
                 {
                     ApplicationArea = all;
                     Editable = false;
-                    CaptionML = ENU = 'Steps Filled In';
-                }
-                field("Measure No."; Rec."Measure No.")
-                {
-                    ApplicationArea = all;
-                    Visible = false;
+                    CaptionML = ENU = 'Steps Filled In', FRA = 'Étapes remplies';
                 }
                 field("Parameter Code"; Rec."Parameter Code")
                 {
                     ApplicationArea = all;
                 }
-
 
                 field("Method No."; Rec."Method No.")
                 {
@@ -189,7 +183,7 @@ page 50526 "WDC-QA Calib Registration Subf"
                         RecLLineCQ.RESET;
                         RecLLineCQ.SETRANGE("Document No.", Rec."Document No.");
                         IF RecLLineCQ.FINDSET THEN BEGIN
-                            XMLPORT.RUN(50004, TRUE, FALSE, RecLLineCQ);
+                            XMLPORT.RUN(50501, TRUE, FALSE, RecLLineCQ);
                         END;
                     end;
                 }

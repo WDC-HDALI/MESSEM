@@ -57,6 +57,22 @@ tableextension 50000 "WDC Item" extends Item
                 END;
             end;
         }
+        field(50004; "Shipm.Units per Shipm.Containr"; Decimal)
+        {
+            CaptionML = ENU = 'Shipment Units per Shipment Container', FRA = 'Qté unité expédition par support logistique';
+            DecimalPlaces = 0 : 0;
+            InitValue = 1;
+
+            trigger OnValidate()
+            begin
+                IF "Shipm.Units per Shipm.Containr" <= 0 THEN
+                    FIELDERROR("Shipm.Units per Shipm.Containr", TextSI000);
+                IF "Shipm.Units per Shipm.Containr" <> 1 THEN
+                    TESTFIELD("Shipment Container");
+
+                "Qty. per Shipment Container" := "Qty. per Shipment Unit" * "Shipm.Units per Shipm.Containr"
+            end;
+        }
         field(50005; "Qty. per Shipment Container"; Decimal)
         {
             CaptionML = ENU = 'Qty. per Shipment Container', FRA = 'Qté par support logistique';
@@ -70,23 +86,7 @@ tableextension 50000 "WDC Item" extends Item
 
             end;
         }
-        field(50004; "Shipm.Units per Shipm.Containr"; Decimal)
-        {
-            CaptionML = ENU = 'Shipment Units per Shipment Container', FRA = 'Qté unité expédition par support logistique';
-            DecimalPlaces = 0 : 0;
-            InitValue = 1;
 
-            trigger OnValidate()
-            begin
-                IF "Shipm.Units per Shipm.Containr" <= 0 THEN
-                    FIELDERROR("Shipm.Units per Shipm.Containr", TextSI000);
-
-                IF "Shipm.Units per Shipm.Containr" <> 1 THEN
-                    TESTFIELD("Shipment Container");
-
-                "Qty. per Shipment Container" := "Qty. per Shipment Unit" * "Shipm.Units per Shipm.Containr"
-            end;
-        }
         field(50006; "Qty. per Layer"; Integer)
         {
             Captionml = ENU = 'Quantity per Layer', FRA = 'Qté unité expédition par couche';
@@ -97,6 +97,13 @@ tableextension 50000 "WDC Item" extends Item
             CaptionML = ENU = 'No. of Layers', FRA = 'Nombre de couches';
             DecimalPlaces = 0 : 0;
         }
+        field(50008; " Purchases Item Rebate Group"; Code[20])
+        {
+            CaptionML = ENU = 'Purchases Item Rebate Group', FRA = 'Groupe bonus article achat';
+            TableRelation = "WDC Item Rebate Group";
+        }
+
+
     }
     procedure IsPackagingItem(): Boolean
     var

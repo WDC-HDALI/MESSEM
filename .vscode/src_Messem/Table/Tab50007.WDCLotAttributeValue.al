@@ -18,7 +18,7 @@ table 50007 "WDC Lot Attribute Value"
         }
         field(3; Description; Text[100])
         {
-            CaptionML = ENU = 'Description', FRA = 'Code';
+            CaptionML = ENU = 'Description', FRA = 'Description';
         }
     }
 

@@ -1,11 +1,12 @@
-report 50086 "Délai des paiments"
+report 50086 "WDC  Délai des paiments"
 {
     // WDC001  06.09.2023  WDC.IM  Create Report
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/Délaidespaiments.rdlc';
 
     CaptionML = ENU = 'Payments Deadline', FRA = 'Délai des paiments';
-
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = all;
     dataset
     {
         dataitem(DataItem1000000000; 17)
@@ -316,7 +317,7 @@ report 50086 "Délai des paiments"
         rec25: Record 25;
         NewDueDate: Date;
         DateFilter: Text[20];
-        TermeConv: Code[10];
+        TermeConv: Code[20];
         PaiemTerm: Record 3;
         Paye: Boolean;
         NombreJ: Integer;

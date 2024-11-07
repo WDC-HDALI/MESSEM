@@ -62,15 +62,15 @@ page 50527 "WDC-QAClosedQCSpecifiList"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            Rec."Document Type"::Calibration:
-                                PAGE.RUN(PAGE::"WDC-QA Closed Calibration Spec", Rec);
+                            // Rec."Document Type"::Calibration:
+                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Spec", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Specification", Rec);
                         END
                     ELSE
                         CASE Rec."Document Type" OF
-                            Rec."Document Type"::Calibration:
-                                PAGE.RUN(PAGE::"WDC-QA Calibration Specif", Rec);
+                            // Rec."Document Type"::Calibration:
+                            //     PAGE.RUN(PAGE::"WDC-QA Calibration Specif", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA QC Specification", Rec);
                         END;

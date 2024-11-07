@@ -31,7 +31,7 @@ table 50519 "WDC-QA Registration Step"
         {
             CaptionML = ENU = 'Method Line No.', FRA = 'N° ligne méthode';
         }
-        field(7; "Column No."; Code[10])
+        field(7; "Column No."; Code[20])
         {
             CaptionML = ENU = 'Column No.', FRA = 'N° colonne';
             Editable = false;
@@ -53,7 +53,7 @@ table 50519 "WDC-QA Registration Step"
             Editable = false;
             ValuesAllowed = 1, 2;
         }
-        field(12; "Value UOM"; Code[10])
+        field(12; "Value UOM"; Code[20])
         {
             CaptionML = ENU = 'Value UOM', FRA = 'Unité valeur';
             TableRelation = "Unit of Measure";
@@ -90,7 +90,7 @@ table 50519 "WDC-QA Registration Step"
             CaptionML = ENU = 'Result Option', FRA = 'Option résultat';
             Editable = false;
         }
-        field(18; "Measurement Code"; Code[10])
+        field(18; "Measurement Code"; Code[20])
         {
             CaptionML = ENU = 'Measurement Code', FRA = 'Code mesure';
             TableRelation = "WDC-QA Measurement";

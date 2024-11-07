@@ -69,8 +69,14 @@ page 50502 "WDC-QA QC Specification"
                 {
                     ApplicationArea = all;
                 }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
                 field("Reason for Modification"; Rec."Reason for Modification")
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field("Process Description"; Rec."Process Description")
                 {
                     ApplicationArea = all;
@@ -78,6 +84,10 @@ page 50502 "WDC-QA QC Specification"
                 field("Chemical Standard"; Rec."Chemical Standard")
                 {
                     ApplicationArea = all;
+                }
+                field("Pallet Control Frequency 1/"; Rec."Pallet Control Frequency 1/")
+                {
+                    ApplicationArea = All;
                 }
                 field("Sampling Frequency PSF"; Rec."Sampling Frequency PSF")
                 {
@@ -110,44 +120,48 @@ page 50502 "WDC-QA QC Specification"
     {
         area(Navigation)
         {
-            action("Create New Version")
+            group(Function)
             {
-                ApplicationArea = all;
-                CaptionML = ENU = 'Create New Version', FRA = 'Créer nouvelle version';
-                Image = Versions;
-                Ellipsis = true;
-                RunPageOnRec = true;
-                trigger OnAction()
-                var
-                    QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
-                begin
-                    QualityControlMgt.CopySpecification(Rec);
-                end;
-            }
-            action("Production Specification")
-            {
-                Image = Item;
-                trigger OnAction()
-                var
-                    SpecificationHeader: Record "WDC-QA Specification Header";
-                    ProductSpecification: Report "WDC-QA Products Specifications";
-                begin
-                    CLEAR(ProductSpecification);
-                    SpecificationHeader.SETRANGE("No.", Rec."No.");
-                    SpecificationHeader.SETRANGE("Version No.", Rec."Version No.");
-                    ProductSpecification.SETTABLEVIEW(SpecificationHeader);
-                    ProductSpecification.SetValues(Rec."Process Description", Rec."Chemical Standard");
-                    ProductSpecification.RUNMODAL
-                end;
-            }
-            action("Formulaire Specification CQ")
-            {
-                Image = Print;
-                trigger OnAction()
-                begin
-                    CurrPage.SETSELECTIONFILTER(Rec);
-                    REPORT.RUN(50502, TRUE, TRUE, Rec);
-                end;
+                CaptionML = ENU = 'Function', FRA = 'Fonctions';
+                action("Create New Version")
+                {
+                    ApplicationArea = all;
+                    CaptionML = ENU = 'Create New Version', FRA = 'Créer nouvelle version';
+                    Image = Versions;
+                    Ellipsis = true;
+                    RunPageOnRec = true;
+                    trigger OnAction()
+                    var
+                        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
+                    begin
+                        QualityControlMgt.CopySpecification(Rec);
+                    end;
+                }
+                action("Production Specification")
+                {
+                    Image = Item;
+                    trigger OnAction()
+                    var
+                        SpecificationHeader: Record "WDC-QA Specification Header";
+                        ProductSpecification: Report "WDC-QA Products Specifications";
+                    begin
+                        CLEAR(ProductSpecification);
+                        SpecificationHeader.SETRANGE("No.", Rec."No.");
+                        SpecificationHeader.SETRANGE("Version No.", Rec."Version No.");
+                        ProductSpecification.SETTABLEVIEW(SpecificationHeader);
+                        ProductSpecification.SetValues(Rec."Process Description", Rec."Chemical Standard");
+                        ProductSpecification.RUNMODAL
+                    end;
+                }
+                action("Formulaire Specification CQ")
+                {
+                    Image = Print;
+                    trigger OnAction()
+                    begin
+                        CurrPage.SETSELECTIONFILTER(Rec);
+                        REPORT.RUN(50502, TRUE, TRUE, Rec);
+                    end;
+                }
             }
         }
     }

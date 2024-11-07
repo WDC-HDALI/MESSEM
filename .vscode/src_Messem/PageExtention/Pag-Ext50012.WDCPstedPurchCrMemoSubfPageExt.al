@@ -1,4 +1,4 @@
-pageextension 50012 WDCPstedPurchCrMemoSubfPageExt extends "Posted Purch. Cr. Memo Subform"
+pageextension 50012 WDCPstedPurchCrMemoSubf extends "Posted Purch. Cr. Memo Subform"
 {
     layout
     {
@@ -23,6 +23,17 @@ pageextension 50012 WDCPstedPurchCrMemoSubfPageExt extends "Posted Purch. Cr. Me
             {
                 ApplicationArea = all;
 
+            }
+        }
+        addlast(content)
+        {
+            field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
+            {
+                ApplicationArea = all;
+            }
+            field("Rebate Code"; Rec."Rebate Code")
+            {
+                ApplicationArea = all;
             }
         }
     }

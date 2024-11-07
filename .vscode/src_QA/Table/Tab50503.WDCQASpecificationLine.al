@@ -26,7 +26,7 @@ table 50503 "WDC-QA Specification Line"
         {
             CaptionML = ENU = 'Line No.', FRA = 'N° ligne';
         }
-        field(5; "Parameter Description"; Text[30])
+        field(5; "Parameter Description"; Text[100])
         {
             CaptionML = ENU = 'Parameter Description', FRA = 'Déscription paramètre';
         }
@@ -57,7 +57,7 @@ table 50503 "WDC-QA Specification Line"
                 InsertSpecificationStaps;
             end;
         }
-        field(8; "Method Description"; Text[30])
+        field(8; "Method Description"; Text[100])
         {
             CaptionML = ENU = 'Method Description', FRA = 'Déscription méthode';
             Editable = false;
@@ -95,7 +95,7 @@ table 50503 "WDC-QA Specification Line"
                 TestStatusOpen;
             end;
         }
-        field(12; "Sample UOM"; Code[10])
+        field(12; "Sample UOM"; Code[20])
         {
             CaptionML = ENU = 'Sample UOM', FRA = 'Unité échantillon';
             Editable = false;
@@ -169,7 +169,7 @@ table 50503 "WDC-QA Specification Line"
                 TESTFIELD("Type of Result", "Type of Result"::Option);
             end;
         }
-        field(20; "Result UOM"; Code[10])
+        field(20; "Result UOM"; Code[20])
         {
             CaptionML = ENU = 'Result UOM', FRA = 'Unité résultat';
             Editable = false;

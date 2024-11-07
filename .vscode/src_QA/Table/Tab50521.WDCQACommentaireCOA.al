@@ -2,7 +2,7 @@ table 50521 "WDC-QA Commentaire COA"
 {
     Caption = 'WDC-QA Commentaire COA';
     DataClassification = ToBeClassified;
-    //LookupPageId="Commentaire COA";
+    LookupPageId = "WDc-QA Commentaire COA";
 
     fields
     {

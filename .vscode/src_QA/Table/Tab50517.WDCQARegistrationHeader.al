@@ -262,12 +262,12 @@ table 50517 "WDC-QA Registration Header"
             FieldClass = FlowField;
             CalcFormula = Exist("WDC-QA RegistrationCommentLine" WHERE("Document Type" = FIELD("Document Type"), "No." = FIELD("No.")));
         }
-        field(24; "Variant Code"; Code[10])
+        field(24; "Variant Code"; Code[20])
         {
             CaptionML = ENU = 'Variant Code', FRA = 'Code variante';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
         }
-        field(25; "Production Order No."; Code[10])
+        field(25; "Production Order No."; Code[20])
         {
             CaptionML = ENU = 'Production Order No.', FRA = 'N° O.F.';
             TableRelation = "Production Order"."No." WHERE("Source Type" = CONST(Item), "Source No." = FIELD("Item No."), Status = CONST(Released));
@@ -294,7 +294,7 @@ table 50517 "WDC-QA Registration Header"
         {
             CaptionML = ENU = 'Vendor Lot No.', FRA = 'N° lot fournisseur';
         }
-        field(30; "No. Series"; Code[10])
+        field(30; "No. Series"; Code[20])
         {
             CaptionML = ENU = 'No. Series', FRA = 'Souche de N°';
             TableRelation = "No. Series";
@@ -396,8 +396,8 @@ table 50517 "WDC-QA Registration Header"
 
         IF "No." = '' THEN BEGIN
             TestNoSeries;
-            NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."No. Series", 0D, "No.", "No. Series");
-            //NoSeriesMgt.GetNextNo(GetNoSeriesCode, 0D, true);
+            //NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."No. Series", 0D, "No.", "No. Series");
+            "No." := NoSeriesMgt.GetNextNo(GetNoSeriesCode, 0D, true);
         END;
 
         "QC Date" := TODAY;
@@ -433,25 +433,25 @@ table 50517 "WDC-QA Registration Header"
         CASE "Return Order Type" OF
             "Return Order Type"::Sales:
                 BEGIN
-                    // SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    // SalesHeader.SETRANGE("Registration Header Type", "Document Type");
-                    // SalesHeader.SETRANGE("Registration Header No.", "No.");
-                    // IF SalesHeader.FINDFIRST THEN BEGIN
-                    //     SalesHeader."Registration Header Type" := 0;
-                    //     SalesHeader."Registration Header No." := '';
-                    //     SalesHeader.MODIFY;
-                    // END;
+                    SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+                    SalesHeader.SETRANGE("Registration Header Type", "Document Type");
+                    SalesHeader.SETRANGE("Registration Header No.", "No.");
+                    IF SalesHeader.FINDFIRST THEN BEGIN
+                        SalesHeader."Registration Header Type" := Enum::"WDC-QA Document Type".FromInteger(0);
+                        SalesHeader."Registration Header No." := '';
+                        SalesHeader.MODIFY;
+                    END;
                 END;
             "Return Order Type"::Purchase:
                 BEGIN
-                    // PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    // PurchaseHeader.SETRANGE("Registration Header Type", "Document Type");
-                    // PurchaseHeader.SETRANGE("Registration Header No.", "No.");
-                    // IF PurchaseHeader.FINDFIRST THEN BEGIN
-                    //     PurchaseHeader."Registration Header Type" := 0;
-                    //     PurchaseHeader."Registration Header No." := '';
-                    //     PurchaseHeader.MODIFY;
-                    // END;
+                    PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+                    PurchaseHeader.SETRANGE("Registration Header Type", "Document Type");
+                    PurchaseHeader.SETRANGE("Registration Header No.", "No.");
+                    IF PurchaseHeader.FINDFIRST THEN BEGIN
+                        PurchaseHeader."Registration Header Type" := Enum::"WDC-QA Document Type".FromInteger(0);
+                        PurchaseHeader."Registration Header No." := '';
+                        PurchaseHeader.MODIFY;
+                    END;
                 END;
         END;
 
@@ -468,10 +468,10 @@ table 50517 "WDC-QA Registration Header"
         RegistrationHeader := Rec;
         QualityControlSetup.GET;
         TestNoSeries;
-        IF NoSeriesMgt.SelectSeries(GetNoSeriesCode, OldRegistrationHeader."No. Series", "No. Series") THEN BEGIN
+        IF NoSeriesMgt.LookupRelatedNoSeries(GetNoSeriesCode, OldRegistrationHeader."No. Series", "No. Series") THEN BEGIN
             QualityControlSetup.GET;
             TestNoSeries;
-            NoSeriesMgt.SetSeries("No.");
+            NoSeriesMgt.GetNextNo("No.");
             Rec := RegistrationHeader;
             EXIT(TRUE);
         END;
@@ -489,7 +489,7 @@ table 50517 "WDC-QA Registration Header"
         END;
     end;
 
-    local procedure GetNoSeriesCode(): Code[10]
+    local procedure GetNoSeriesCode(): Code[20]
     begin
         CASE "Document Type" OF
             "Document Type"::Calibration:
@@ -522,84 +522,6 @@ table 50517 "WDC-QA Registration Header"
             //         Equipment.MODIFY(TRUE);
             //     END;
         END;
-    end;
-
-    procedure CreateNonConformance()
-    var
-        //CustomerNonConformance:Page Customer Non Conformance;
-        //VendorNonConformance:Page Vendor Non Conformance;
-        //InternalNonConformance:Page Internal Non Conformance;
-        //NonConformance: Record NonConformance;
-        NCType: Option "Customer","Vendor","Internal";
-        Selection: Integer;
-        QuestionNC: Text[300];
-    begin
-        Selection := STRMENU(Text005);
-        CASE Selection OF
-            0:
-                EXIT;
-            1:
-                NCType := NCType::Customer;
-            2:
-                NCType := NCType::Vendor;
-            3:
-                NCType := NCType::Internal;
-        END;
-        // NonConformance.SETCURRENTKEY("Item No.", "Lot No.");
-        // NonConformance.SETRANGE("Item No.", "Item No.");
-        // NonConformance.SETRANGE("Lot No.", "Lot No.");
-        // NonConformance.SETRANGE(Type, NCType);
-        // IF NonConformance.FINDFIRST THEN BEGIN
-        //     QuestionNC := Text003 + ' ' + NonConformance."No." + ' ' + Text004;
-        //     IF NOT CONFIRM(QuestionNC) THEN
-        //         EXIT;
-        // END ELSE BEGIN
-        //     NonConformance.VALIDATE("Item No.", "Item No.");
-        //     NonConformance.Type := NCType;
-        //     NonConformance."Lot No." := "Lot No.";
-        //     NonConformance."Expiration Date" := "Warranty Date";
-        //     NonConformance."Receipt Date" := WORKDATE;
-        //     NonConformance.INSERT(TRUE);
-        // END;
-
-        CASE Selection OF
-        //    1:
-        // BEGIN
-        //     IF Specific = Specific::Customer THEN BEGIN
-        //         NonConformance.VALIDATE("Customer No.", "Source No.");
-        //         NonConformance."Reference Sales Document Type" := NonConformance."Reference Sales Document Type"::Shipment;
-        //         NonConformance.MODIFY(TRUE);
-        //     END;
-        //     CLEAR(CustomerNonConformance2);
-        //     CustomerNonConformance2.SETRECORD(NonConformance);
-        //     CustomerNonConformance2.RUN;
-        //     //
-        // END;
-        //    2:
-        // BEGIN
-        //     IF Specific = Specific::Vendor THEN
-        //         NonConformance.VALIDATE("Vendor No.", "Source No.");
-        //     LotNoInformation.SETCURRENTKEY("Item No.", "Lot No.");
-        //     LotNoInformation.SETRANGE("Item No.", "Item No.");
-        //     LotNoInformation.SETRANGE("Lot No.", "Lot No.");
-        //     IF LotNoInformation.FINDFIRST THEN
-        //         NonConformance."Vendor Lot No." := LotNoInformation."Vendor Lot No.";
-        //     NonConformance.VALIDATE("Vendor No.", "Buy-from Vendor No.");
-        //     NonConformance."Reference Purch. Document Type" := NonConformance."Reference Purch. Document Type"::Receipt;
-        //     NonConformance.MODIFY(TRUE);
-        //     CLEAR(VendorNonConformance2);
-        //     VendorNonConformance2.SETRECORD(NonConformance);
-        //     VendorNonConformance2.RUN;
-        //     //
-        // END;
-        //    3:
-        // BEGIN
-        //     CLEAR(InternalNonConformance2);
-        //     InternalNonConformance2.SETRECORD(NonConformance);
-        //     InternalNonConformance2.RUN;
-        // END;
-        END;
-
     end;
 
     procedure ConfirmDeleteLines(ChangedFieldName: Text[100])
@@ -739,8 +661,8 @@ table 50517 "WDC-QA Registration Header"
 
         Item: Record Item;
         LotNoInformationList: Page "Lot No. Information List";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
-        //NoSeriesMgt: Codeunit "No. Series";
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
         Text001: TextConst ENU = 'Status can not be closed, because there are no %1 Registration Lines.', FRA = 'Statut ne peut pas être terminé,parce qu''il n''y a pas %1 lignes d''enregistrement.';
         Text002: TextConst ENU = 'Do you want to close this %1 Registration?', FRA = 'Voulez-vous clôturer cet enregistrement %1?';
@@ -750,5 +672,5 @@ table 50517 "WDC-QA Registration Header"
         Text006: TextConst ENU = 'If you change %1, the existing %2 lines will be deleted.\\', FRA = 'Si vous changez %1, les %2 lignes existantes seront supprimées.\\';
         Text007: TextConst ENU = 'Do you want to change %1?', FRA = 'Souhaitez-vous modifier la valeur du champ %1 ?';
         Text008: TextConst ENU = 'More than 1 record found. Please select by Lookup.', FRA = 'Plus qu''un enregistrement trouvé. Svp sélectionné en consultant la table.';
-        CannotReleaseErr: TextConst ENU = 'The document cannot be released, because not all results have been determined yet.', FRA = '';
+        CannotReleaseErr: TextConst ENU = 'The document cannot be released, because not all results have been determined yet.', FRA = 'Le document ne peut pas être lancé, car tous les résultats n''ont pas encore été déterminés.';
 }

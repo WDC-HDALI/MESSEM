@@ -25,14 +25,14 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             EXIT;
 
         WhseActivHeader.SETRANGE(Type, WhseActivHeader.Type::"Invt. Pick");
-        //WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
+        WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
         WhseActivHeader.SETRANGE("QC Status", WhseActivHeader."QC Status"::"QC Created");
         IF WhseActivHeader.FINDFIRST THEN BEGIN
             CASE Action OF
                 Action::Delete:
                     BEGIN
                         WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"QC Required";
-                        //WhseActivHeader."QC Registration No." := '';
+                        WhseActivHeader."QC Registration No." := '';
                     END;
                 Action::Release:
                     WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"Released For Posting";
@@ -52,7 +52,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             EXIT;
 
         WhseActLine.SETRANGE("Activity Type", WhseActLine."Activity Type"::"Invt. Pick");
-        //WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
+        WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
         WhseActLine.SETRANGE("QC Status", WhseActLine."QC Status"::"QC Created");
         IF WhseActLine.FINDSET(TRUE) THEN
             REPEAT
@@ -60,7 +60,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                     Action::Delete:
                         BEGIN
                             WhseActLine."QC Status" := WhseActLine."QC Status"::"QC Required";
-                            // WhseActLine."QC Registration No." := '';
+                            WhseActLine."QC Registration No." := '';
                         END;
                     Action::Release:
                         WhseActLine."QC Status" := WhseActLine."QC Status"::"Released For Posting";
@@ -142,14 +142,14 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             EXIT;
 
         WhseActivHeader.SETRANGE(Type, WhseActivHeader.Type::"Invt. Put-away");
-        //WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
+        WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
         WhseActivHeader.SETRANGE("QC Status", WhseActivHeader."QC Status"::"QC Created");
         IF WhseActivHeader.FINDFIRST THEN BEGIN
             CASE Action OF
                 Action::Delete:
                     BEGIN
                         WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"QC Required";
-                        //WhseActivHeader."QC Registration No." := '';
+                        WhseActivHeader."QC Registration No." := '';
                     END;
                 Action::Release:
                     WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"Released For Posting";
@@ -169,7 +169,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             EXIT;
 
         WhseActLine.SETRANGE("Activity Type", WhseActLine."Activity Type"::"Invt. Put-away");
-        //WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
+        WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
         WhseActLine.SETRANGE("QC Status", WhseActLine."QC Status"::"QC Created");
         IF WhseActLine.FINDSET(TRUE) THEN
             REPEAT
@@ -177,7 +177,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                     Action::Delete:
                         BEGIN
                             WhseActLine."QC Status" := WhseActLine."QC Status"::"QC Required";
-                            //WhseActLine."QC Registration No." := '';
+                            WhseActLine."QC Registration No." := '';
                         END;
                     Action::Release:
                         WhseActLine."QC Status" := WhseActLine."QC Status"::"Released For Posting";
@@ -426,7 +426,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
 
             RegistrationHeader."Document Type"::Calibration:
                 BEGIN
-                    //SpecificationHeader.SETCURRENTKEY("Equipment No.", Status);
+                    SpecificationHeader.SETCURRENTKEY(Status);
                     //SpecificationHeader.SETRANGE("Equipment No.", RegistrationHeader."Equipment No.");
                     SpecificationHeader.SETRANGE(Status, SpecificationHeader.Status::Certified);
                     SpecificationHeader.SETRANGE("Document Type", SpecificationHeader."Document Type"::Calibration);
@@ -434,9 +434,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
 
             RegistrationHeader."Document Type"::QC:
                 BEGIN
-                    // SpecificationHeader.SETCURRENTKEY("Check Point Code", "Source No.", Status, "Item Attribute 1", "Item Attribute 2",
-                    //                                   "Item Attribute 3", "Item Attribute 4", "Item Attribute 5",
-                    //                                   "Item Category Code", "Item No.");
+                    SpecificationHeader.SETCURRENTKEY("Check Point Code", "Source No.", Status, "Item Category Code", "Item No.");
                     SpecificationHeader.SETFILTER("Item Category Code", '%1|%2', '', RegistrationHeader."Item Category Code");
                     SpecificationHeader.SETFILTER("Item No.", '%1|%2', '', RegistrationHeader."Item No.");
                     SpecificationHeader.SETRANGE("Check Point Code", RegistrationHeader."Check Point Code");
@@ -444,12 +442,12 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                     SpecificationHeader.SETRANGE("Source No.", RegistrationHeader."Source No.");
                     SpecificationHeader.SETRANGE(Status, SpecificationHeader.Status::Certified);
                     SpecificationHeader.SETRANGE("Document Type", SpecificationHeader."Document Type"::QC);
-                    // IF NOT (RegistrationHeader."Source Document Type" IN
-                    //   [RegistrationHeader."Source Document Type"::Manual, RegistrationHeader."Source Document Type"::"Production Order"])
-                    // THEN
-                    //     SpecificationHeader.SETRANGE("Basic Specification", TRUE)
-                    // ELSE
-                    //     SpecificationHeader.SETRANGE("Basic Specification", FALSE);
+                    //  IF NOT (RegistrationHeader."Source Document Type" IN
+                    //    [RegistrationHeader."Source Document Type"::Manual, RegistrationHeader."Source Document Type"::"Production Order"])
+                    //  THEN
+                    //      SpecificationHeader.SETRANGE("Basic Specification", TRUE)
+                    //  ELSE
+                    //      SpecificationHeader.SETRANGE("Basic Specification", FALSE);
 
                 END;
         END;
@@ -529,21 +527,21 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
         CASE RegistrationHeader."Return Order Type" OF
             RegistrationHeader."Return Order Type"::Sales:
                 BEGIN
-                    //SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    //SalesHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-                    // SalesHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-                    // IF SalesHeader.FINDFIRST THEN
-                    //     ERROR(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                    //         SalesHeader."Document Type", SalesHeader."No.");
+                    SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+                    SalesHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
+                    SalesHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
+                    IF SalesHeader.FINDFIRST THEN
+                        ERROR(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
+                            SalesHeader."Document Type", SalesHeader."No.");
                 END;
             RegistrationHeader."Return Order Type"::Purchase:
                 BEGIN
-                    // PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    // PurchaseHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-                    // PurchaseHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-                    // IF PurchaseHeader.FINDFIRST THEN
-                    //     ERROR(LText0002, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                    //         PurchaseHeader."Document Type", PurchaseHeader."No.");
+                    PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+                    PurchaseHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
+                    PurchaseHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
+                    IF PurchaseHeader.FINDFIRST THEN
+                        ERROR(LText0002, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
+                            PurchaseHeader."Document Type", PurchaseHeader."No.");
                 END;
         END;
     end;
@@ -553,6 +551,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
         LotNoInformation: Record "Lot No. Information";
         SalesLine: Record "Sales Line";
         PurchLine: Record "Purchase Line";
+        CreateItemTrackingLines: Codeunit "WDC-QACreate ItemTrackingLines";
     begin
         RegistrationHeader.TESTFIELD("Lot No.");
         LotNoInformation.GET(RegistrationHeader."Item No.", RegistrationHeader."Variant Code", RegistrationHeader."Lot No.");
@@ -561,16 +560,16 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             Type::Customer:
                 BEGIN
                     SalesLine.GET(SourceSubtype, SourceNo, SourceLineNo);
-                    //CreateItemTrackingLines.InsertResEntrySalesLine(SalesLine, '', LotNoInformation."Lot No.",
-                    // SalesLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
-                    // LotNoInformation."Vendor Lot No.");
+                    CreateItemTrackingLines.InsertResEntrySalesLine(SalesLine, '', LotNoInformation."Lot No.",
+                     SalesLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
+                     LotNoInformation."Vendor Lot No.");
                 END;
             Type::Vendor:
                 BEGIN
                     PurchLine.GET(SourceSubtype, SourceNo, SourceLineNo);
-                    //CreateItemTrackingLines.InsertResEntryPurchLine(PurchLine, '', LotNoInformation."Lot No.",
-                    //PurchLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
-                    //LotNoInformation."Vendor Lot No.");
+                    CreateItemTrackingLines.InsertResEntryPurchLine(PurchLine, '', LotNoInformation."Lot No.",
+                    PurchLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
+                    LotNoInformation."Vendor Lot No.");
                 END;
         END;
     end;
@@ -638,7 +637,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
 
                     END;
 
-                    RegistrationLine."Conclusion Result" := Result;
+                    RegistrationLine."Conclusion Result" := Enum::"WDC-QA Conclusion Result".FromInteger(Result);
                     RegistrationLine.MODIFY;
 
                 END;
@@ -810,7 +809,8 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                 ELSE
                     RegistrationLine."Average Result Option" := ResultOption;
 
-                RegistrationLine."Conclusion Average Result" := Result;
+                RegistrationLine."Conclusion Average Result" := Enum::"WDC-QA Conclusion Result".FromInteger(Result);
+                ;
                 RegistrationLine.MODIFY;
 
             UNTIL RegistrationLine.NEXT <= 0;
@@ -961,6 +961,266 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             IF ItemLedgerEntry2.FINDFIRST THEN
                 SearchLotNo := ItemLedgerEntry2."Lot No.";
         END;
+    end;
+
+    procedure CreateSalesReturnOrder(VAR RegistrationHeader: Record "WDC-QA Registration Header"; CustNoIN: Code[20]; QtyIN: Decimal; UOMIN: Code[20]; ShowOutputIN: Boolean)
+    var
+        SalesHeader: Record "Sales Header";
+        SalesLine: Record "Sales Line";
+        SalesReturnOrder: Page "Sales Return Order";
+        OpenReturnHeader: Boolean;
+        ItemTrackingCode: Record "Item Tracking Code";
+        ItemTrackingManagement: Codeunit "Item tracking Management";
+        EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output;
+        Inbound: Boolean;
+        SNRequired: Boolean;
+        LotRequired: Boolean;
+        SNInfoRequired: Boolean;
+        LotInfoReguired: Boolean;
+        LText0001: TextConst ENU = '%1 %2 %3 is already linked to %4 %5.', FRA = '%1 %2 %3 est déjà lié à %4 %5.';
+    begin
+        OpenReturnHeader := FALSE;
+
+        SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+        SalesHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
+        SalesHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
+        IF SalesHeader.FINDFIRST THEN BEGIN
+            OpenReturnHeader := TRUE;
+            IF ShowOutputIN THEN
+                MESSAGE(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
+                  SalesHeader."Document Type", SalesHeader."No.");
+        END ELSE BEGIN
+            SalesHeader.INIT;
+            SalesHeader."Document Type" := SalesHeader."Document Type"::"Return Order";
+            SalesHeader."No." := '';
+
+            SalesHeader.INSERT(TRUE);
+            SalesHeader.VALIDATE("Sell-to Customer No.", CustNoIN);
+            SalesHeader."Registration Header Type" := RegistrationHeader."Document Type";
+            SalesHeader."Registration Header No." := RegistrationHeader."No.";
+            SalesHeader."Shipment Date" := WORKDATE;
+            SalesHeader.MODIFY(TRUE);
+
+            SalesLine.INIT;
+            SalesLine."Document Type" := SalesLine."Document Type"::"Return Order";
+            SalesLine."Document No." := SalesHeader."No.";
+            SalesLine."Line No." := 10000;
+            SalesLine.INSERT(TRUE);
+            SalesLine.VALIDATE(Type, SalesLine.Type::Item);
+            SalesLine.VALIDATE("No.", RegistrationHeader."Item No.");
+            IF UOMIN <> '' THEN
+                SalesLine.VALIDATE("Unit of Measure Code", UOMIN);
+            //SalesLine.SetOverruleCalcPackagingCheck(TRUE);
+            SalesLine.VALIDATE(Quantity, QtyIN);
+            IF SalesLine."Shipment Date" = 0D THEN
+                SalesLine."Shipment Date" := WORKDATE;
+            SalesLine.MODIFY(TRUE);
+
+            //TransportPlanningMgt.CheckTPSourceLineFromSales(SalesLine, SalesLine, 0);
+
+            Item.GET(SalesLine."No.");
+            IF Item."Item Tracking Code" <> '' THEN BEGIN
+                Inbound := TRUE;
+                ItemTrackingCode.Code := Item."Item Tracking Code";
+                //ItemTrackingManagement.GetItemTrackingSettings(ItemTrackingCode,
+                GetItemTrackingSettings(ItemTrackingCode, EntryType::Purchase, Inbound, SNRequired, LotRequired, SNInfoRequired, LotInfoReguired);
+                IF LotRequired THEN
+                    CreateItemTrkgLine(RegistrationHeader, 0, SalesLine."Document Type".AsInteger(),  // 0 = Customer 1 = Vendor
+                      SalesLine."Document No.", SalesLine."Line No.", SalesLine."Quantity (Base)", SalesLine."Location Code");
+            END;
+
+            OpenReturnHeader := TRUE;
+            RegistrationHeader."Return Order Type" := RegistrationHeader."Return Order Type"::Sales;
+            RegistrationHeader."Return Order No." := SalesHeader."No.";
+            RegistrationHeader.MODIFY;
+        END;
+
+        IF ShowOutputIN AND OpenReturnHeader THEN BEGIN
+            COMMIT;
+            SalesHeader.SETRECFILTER;
+            CLEAR(SalesReturnOrder);
+            SalesReturnOrder.SETTABLEVIEW(SalesHeader);
+            SalesReturnOrder.RUNMODAL;
+        END;
+    end;
+
+    procedure CreatePurchaseReturnOrder(VAR RegistrationHeader: Record "WDC-QA Registration Header"; VendNoIN: Code[20]; QtyIN: Decimal; UOMIN: Code[20]; ShowOutputIN: Boolean)
+    var
+        PurchaseHeader: Record "Purchase Header";
+        PurchaseLine: Record "Purchase Line";
+        PurchaseReturnOrder: Page "Purchase Return Order";
+        OpenReturnHeader: Boolean;
+        ItemTrackingCode: Record "Item Tracking Code";
+        ItemTrackingManagement: Codeunit "Item tracking Management";
+        EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output;
+        Inbound: Boolean;
+        SNRequired: Boolean;
+        LotRequired: Boolean;
+        SNInfoRequired: Boolean;
+        LotInfoReguired: Boolean;
+        LText0001: TextConst ENU = '%1 %2 %3 is already linked to %4 %5.', FRA = '%1 %2 %3 est déjà lié à %4 %5.';
+    begin
+        OpenReturnHeader := FALSE;
+        PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
+        PurchaseHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
+        PurchaseHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
+        IF PurchaseHeader.FINDFIRST THEN BEGIN
+            OpenReturnHeader := TRUE;
+            IF ShowOutputIN THEN
+                MESSAGE(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
+                  PurchaseHeader."Document Type", PurchaseHeader."No.");
+        END ELSE BEGIN
+            PurchaseHeader.INIT;
+            PurchaseHeader."Document Type" := PurchaseHeader."Document Type"::"Return Order";
+            PurchaseHeader."No." := '';
+            PurchaseHeader.INSERT(TRUE);
+            PurchaseHeader.VALIDATE("Buy-from Vendor No.", VendNoIN);
+            PurchaseHeader."Registration Header Type" := RegistrationHeader."Document Type";
+            PurchaseHeader."Registration Header No." := RegistrationHeader."No.";
+            PurchaseHeader.MODIFY(TRUE);
+
+            PurchaseLine.INIT;
+            PurchaseLine."Document Type" := PurchaseLine."Document Type"::"Return Order";
+            PurchaseLine."Document No." := PurchaseHeader."No.";
+            PurchaseLine."Line No." := 10000;
+            PurchaseLine.INSERT(TRUE);
+            PurchaseLine.VALIDATE(Type, PurchaseLine.Type::Item);
+            PurchaseLine.VALIDATE("No.", RegistrationHeader."Item No.");
+            IF UOMIN <> '' THEN
+                PurchaseLine.VALIDATE("Unit of Measure Code", UOMIN);
+            //PurchaseLine.SuspendCalcPackagingQuantity(TRUE);
+            PurchaseLine.VALIDATE(Quantity, QtyIN);
+            PurchaseLine.MODIFY(TRUE);
+
+            //TransportPlanningMgt.CheckTPSourceLineFromPurchase(PurchaseLine, PurchaseLine, 0);
+
+            Item.GET(PurchaseLine."No.");
+            IF Item."Item Tracking Code" <> '' THEN BEGIN
+                Inbound := FALSE;
+                ItemTrackingCode.Code := Item."Item Tracking Code";
+                //ItemTrackingManagement.GetItemTrackingSettings(ItemTrackingCode,
+                GetItemTrackingSettings(ItemTrackingCode, EntryType::Purchase, Inbound, SNRequired, LotRequired, SNInfoRequired, LotInfoReguired);
+                IF LotRequired THEN
+                    CreateItemTrkgLine(RegistrationHeader, 1, PurchaseLine."Document Type".AsInteger(),  // 0 = Customer 1 = Vendor
+                      PurchaseLine."Document No.", PurchaseLine."Line No.", PurchaseLine."Quantity (Base)", PurchaseLine."Location Code");
+            END;
+
+            OpenReturnHeader := TRUE;
+            RegistrationHeader."Return Order Type" := RegistrationHeader."Return Order Type"::Purchase;
+            RegistrationHeader."Return Order No." := PurchaseHeader."No.";
+            RegistrationHeader.MODIFY;
+        END;
+
+        IF ShowOutputIN AND OpenReturnHeader THEN BEGIN
+            COMMIT;
+            PurchaseHeader.SETRECFILTER;
+            CLEAR(PurchaseReturnOrder);
+            PurchaseReturnOrder.SETTABLEVIEW(PurchaseHeader);
+            PurchaseReturnOrder.RUNMODAL;
+        END;
+    end;
+
+    procedure GetItemTrackingSettings(VAR ItemTrackingCode: Record "Item Tracking Code"; EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output,,"Assembly Consumption","Assembly Output"; Inbound: Boolean; VAR SNRequired: Boolean; VAR LotRequired: Boolean; var SNInfoRequired: Boolean; var LotInfoRequired: Boolean)
+    var
+
+    begin
+        SNRequired := FALSE;
+        LotRequired := FALSE;
+        SNInfoRequired := FALSE;
+        LotInfoRequired := FALSE;
+
+        IF ItemTrackingCode.Code = '' THEN BEGIN
+            CLEAR(ItemTrackingCode);
+            EXIT;
+        END;
+        ItemTrackingCode.GET(ItemTrackingCode.Code);
+
+        IF EntryType = EntryType::Transfer THEN BEGIN
+            LotInfoRequired := ItemTrackingCode."Lot Info. Outbound Must Exist" OR ItemTrackingCode."Lot Info. Inbound Must Exist";
+            SNInfoRequired := ItemTrackingCode."SN Info. Outbound Must Exist" OR ItemTrackingCode."SN Info. Inbound Must Exist";
+        END ELSE BEGIN
+            SNInfoRequired := (Inbound AND ItemTrackingCode."SN Info. Inbound Must Exist") OR
+              (NOT Inbound AND ItemTrackingCode."SN Info. Outbound Must Exist");
+
+            LotInfoRequired := (Inbound AND ItemTrackingCode."Lot Info. Inbound Must Exist") OR
+              (NOT Inbound AND ItemTrackingCode."Lot Info. Outbound Must Exist");
+        END;
+
+        IF ItemTrackingCode."SN Specific Tracking" THEN BEGIN
+            SNRequired := TRUE;
+        END ELSE
+            CASE EntryType OF
+                EntryType::Purchase:
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Purchase Inbound Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Purchase Outbound Tracking";
+                EntryType::Sale:
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Sales Inbound Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Sales Outbound Tracking";
+                EntryType::"Positive Adjmt.":
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Pos. Adjmt. Inb. Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Pos. Adjmt. Outb. Tracking";
+                EntryType::"Negative Adjmt.":
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Neg. Adjmt. Inb. Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Neg. Adjmt. Outb. Tracking";
+                EntryType::Transfer:
+                    SNRequired := ItemTrackingCode."SN Transfer Tracking";
+                EntryType::Consumption, EntryType::Output:
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Manuf. Inbound Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Manuf. Outbound Tracking";
+                EntryType::"Assembly Consumption", EntryType::"Assembly Output":
+                    IF Inbound THEN
+                        SNRequired := ItemTrackingCode."SN Assembly Inbound Tracking"
+                    ELSE
+                        SNRequired := ItemTrackingCode."SN Assembly Outbound Tracking";
+            END;
+
+        IF ItemTrackingCode."Lot Specific Tracking" THEN BEGIN
+            LotRequired := TRUE;
+        END ELSE
+            CASE EntryType OF
+                EntryType::Purchase:
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Purchase Inbound Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Purchase Outbound Tracking";
+                EntryType::Sale:
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Sales Inbound Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Sales Outbound Tracking";
+                EntryType::"Positive Adjmt.":
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Pos. Adjmt. Inb. Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Pos. Adjmt. Outb. Tracking";
+                EntryType::"Negative Adjmt.":
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Neg. Adjmt. Inb. Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Neg. Adjmt. Outb. Tracking";
+                EntryType::Transfer:
+                    LotRequired := ItemTrackingCode."Lot Transfer Tracking";
+                EntryType::Consumption, EntryType::Output:
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Manuf. Inbound Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Manuf. Outbound Tracking";
+                EntryType::"Assembly Consumption", EntryType::"Assembly Output":
+                    IF Inbound THEN
+                        LotRequired := ItemTrackingCode."Lot Assembly Inbound Tracking"
+                    ELSE
+                        LotRequired := ItemTrackingCode."Lot Assembly Outbound Tracking";
+            END;
     end;
 
     var

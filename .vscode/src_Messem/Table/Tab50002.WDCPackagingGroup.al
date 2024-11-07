@@ -1,6 +1,6 @@
 table 50002 "WDC Packaging Group"
 {
-    Caption = 'Packaging Group';
+    CaptionML = ENU = 'Packaging Group', FRA = 'Groupes emballage';
     DataClassification = ToBeClassified;
 
     fields

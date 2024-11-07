@@ -91,7 +91,7 @@ table 50518 "WDC-QA Registration Line"
                     DeleteRegistrationSteps;
             end;
         }
-        field(8; "Method Description"; Text[30])
+        field(8; "Method Description"; Text[100])
         {
             CaptionML = ENU = 'Method Description', FRA = 'Déscription méthode';
             Editable = false;
@@ -122,7 +122,7 @@ table 50518 "WDC-QA Registration Line"
             Editable = false;
             DecimalPlaces = 0 : 5;
         }
-        field(12; "Sample UOM"; Code[10])
+        field(12; "Sample UOM"; Code[20])
         {
             CaptionML = ENU = 'Sample UOM', FRA = 'Unité  échantillon';
             Editable = false;
@@ -198,7 +198,7 @@ table 50518 "WDC-QA Registration Line"
                 END;
             end;
         }
-        field(21; "Result Value UOM"; Code[10])
+        field(21; "Result Value UOM"; Code[20])
         {
             CaptionML = ENU = 'Result Value UOM', FRA = 'Unité valeur résultat';
             Editable = false;
@@ -511,5 +511,5 @@ table 50518 "WDC-QA Registration Line"
         MethodLine: Record "WDC-QA Method Line";
         Text0001: TextConst ENU = 'Equipment %1 is blocked.', FRA = 'Equipement %1 est bloqué.';
         Text0002: TextConst ENU = 'Equipment %1 requires calibration.', FRA = 'Equipement %1 nécessite une calibration.';
-        Text0003: TextConst ENU = '', FRA = 'Etes vous sûr de vouloir supprimer les lignes d''enregistrement CQ %1';
+        Text0003: TextConst ENU = 'Are you sure you want to delete the QC record lines %1', FRA = 'Etes vous sûr de vouloir supprimer les lignes d''enregistrement CQ %1';
 }

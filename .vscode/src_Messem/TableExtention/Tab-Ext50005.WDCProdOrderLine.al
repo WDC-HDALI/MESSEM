@@ -4,7 +4,7 @@ tableextension 50005 "WDC Prod. Order Line " extends "Prod. Order Line"
     {
         field(50000; "Shipment Unit"; Code[20])
         {
-            Caption = 'Shipment Unit';
+            CaptionML = ENU = 'Shipment Unit', FRA = 'Unité d''expédition';
             DataClassification = ToBeClassified;
         }
 

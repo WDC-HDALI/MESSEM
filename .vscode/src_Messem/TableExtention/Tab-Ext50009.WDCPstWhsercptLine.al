@@ -4,22 +4,26 @@ tableextension 50009 "WDC Pst Whse. rcpt Line " extends "Posted Whse. Receipt Li
     {
         field(50001; "Qty. per Shipment Unit"; Decimal)
         {
-            Caption = 'Qty. per Shipment Unit';
+            CaptionML = ENU = 'Qty. per Shipment Unit', FRA = 'Qté à traiter unité d''expédition';
+            ;
             DataClassification = ToBeClassified;
         }
         field(50000; "Shipment Unit"; Code[20])
         {
-            Caption = 'Shipment Unit';
+            CaptionML = ENU = 'Shipment Unit', FRA = 'Unité d''expédition';
+            ;
             DataClassification = ToBeClassified;
         }
         field(50003; "Shipment Container"; Code[20])
         {
-            Caption = 'Shipment Container';
+            CaptionML = ENU = 'Shipment Container', FRA = 'Support logistique';
+            ;
             DataClassification = ToBeClassified;
         }
         field(50005; "Qty. per Shipment Container"; Decimal)
         {
-            Caption = 'Qty. per Shipment Container';
+            CaptionML = ENU = 'Qty. per Shipment Container', FRA = 'Qté par support logistique';
+            ;
             DataClassification = ToBeClassified;
         }
     }

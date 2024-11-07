@@ -14,7 +14,7 @@ table 50512 "WDC-QA Method Line"
         {
             CaptionML = ENU = 'Line No.', FRA = 'N° ligne';
         }
-        field(3; "Column No."; Code[10])
+        field(3; "Column No."; Code[20])
         {
             CaptionML = ENU = 'Column No.', FRA = 'N° colonne';
             NotBlank = true;
@@ -46,7 +46,7 @@ table 50512 "WDC-QA Method Line"
                 END;
             end;
         }
-        field(6; "Value UOM"; Code[10])
+        field(6; "Value UOM"; Code[20])
         {
             CaptionML = ENU = 'Value UOM', FRA = 'Unité valeur';
             TableRelation = "Unit of Measure";
@@ -55,7 +55,7 @@ table 50512 "WDC-QA Method Line"
                 TESTFIELD("Type of Measure", "Type of Measure"::Value)
             end;
         }
-        field(7; "Measurement Code"; Code[10])
+        field(7; "Measurement Code"; Code[20])
         {
             CaptionML = ENU = 'Measurement Code', FRA = 'Code mesure';
             TableRelation = "WDC-QA Measurement";

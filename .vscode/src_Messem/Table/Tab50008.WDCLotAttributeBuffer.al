@@ -7,44 +7,44 @@ table 50008 "WDC Lot Attribute Buffer"
     {
         field(1; "Item No."; Code[20])
         {
-            Caption = 'Item No.';
+            CaptionML = ENU = 'Item No.', FRA = 'No. Article';
             NotBlank = true;
             TableRelation = Item;
         }
         field(2; "Variant Code"; code[20])
         {
-            Caption = 'Variant Code';
+            CaptionML = ENU = 'Variant Code', FRA = 'Code variant';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
         }
         field(3; "Lot No."; Code[20])
         {
-            Caption = 'Lot No.';
+            CaptionML = ENU = 'Lot No.', FRA = 'No. Lot';
             NotBlank = true;
         }
         field(4; "Source Type"; Integer)
         {
-            Caption = 'Source Type';
+            CaptionML = ENU = 'Source Type', FRA = 'Type origine';
         }
         field(5; "Source Subtype"; Enum "WDC Lot Attribute Src Subtype")
         {
-            Caption = 'Source Subtype';
+            CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
 
         }
         field(6; "Source ID"; Code[20])
         {
-            Caption = 'Source ID';
+            CaptionML = ENU = 'Source ID', FRA = 'ID origine';
         }
         field(7; "Source Batch Name"; Code[20])
         {
-            Caption = 'Source Batch Name';
+            CaptionML = ENU = 'Source Batch Name', FRA = 'Nom feuille origine';
         }
         field(8; "Source Prod. Order Line"; Integer)
         {
-            Caption = 'Source Prod. Order Line';
+            CaptionML = ENU = 'Source Prod. Order Line', FRA = 'Ligne O.F. origine';
         }
         field(9; "Source Ref. No."; Integer)
         {
-            Caption = 'Source Ref. No.';
+            CaptionML = ENU = 'Source Ref. No.', FRA = 'N° réf. origine';
         }
         field(10; "Lot Attribute 1"; code[20])
         {
@@ -86,8 +86,6 @@ table 50008 "WDC Lot Attribute Buffer"
         }
     }
 
-    fieldgroups
-    {
-    }
+
 }
 

@@ -78,8 +78,8 @@ page 50533 "WDC-QA Closed CoA Registration"
                 ApplicationArea = all;
                 CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
                 Image = ViewComments;
-                //RunObject=Page "Registration Comment Sheet";
-                //RunPageLink = Document Type=FIELD(Document Type),No.=FIELD(No.);
+                RunObject = Page "WDC-QARegistrationCommentSheet";
+                RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
             }
         }
         area(Reporting)

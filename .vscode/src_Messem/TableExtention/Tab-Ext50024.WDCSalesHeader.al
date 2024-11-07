@@ -8,7 +8,7 @@ tableextension 50024 WDCSalesHeader extends "Sales Header"
     {
         field(50000; "Pallet Quantity"; Integer)
         {
-            CaptionML = ENU = 'Pallet Quantity', FRA = 'par pallet';
+            CaptionML = ENU = 'Pallet Quantity', FRA = 'Qté Par pallet';
             DataClassification = ToBeClassified;
         }
         field(50001; "Scelle No."; code[20])
