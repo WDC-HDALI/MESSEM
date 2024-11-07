@@ -5,12 +5,12 @@ table 50510 "WDC-QA Qty. Shpt.Units per Shp"
 
     fields
     {
-        field(1; "Shipment Unit"; Code[10])
+        field(1; "Shipment Unit"; Code[20])
         {
             CaptionML = ENU = 'Shipment Unit', FRA = 'Unité d''expédition';
             TableRelation = "WDC Packaging" WHERE(Type = CONST("Shipment Unit"));
         }
-        field(2; "Shipment Container"; Code[10])
+        field(2; "Shipment Container"; Code[20])
         {
             CaptionML = ENU = 'Shipment Container', FRA = 'Support logistique';
             TableRelation = "WDC Packaging" WHERE(Type = CONST("Shipment Container"));

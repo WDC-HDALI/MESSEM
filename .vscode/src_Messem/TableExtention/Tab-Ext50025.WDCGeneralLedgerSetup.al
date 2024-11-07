@@ -1,6 +1,8 @@
 namespace MessemMA.MessemMA;
 
 using Microsoft.Finance.GeneralLedger.Setup;
+using Microsoft.Finance.GeneralLedger.Account;
+using Microsoft.Finance.GeneralLedger.Journal;
 
 tableextension 50025 WDCGeneralLedgerSetup extends "General Ledger Setup"
 {
@@ -25,6 +27,27 @@ tableextension 50025 WDCGeneralLedgerSetup extends "General Ledger Setup"
         {
             CaptionML = ENU = 'Calculation of Tax more 91 D', FRA = 'Calcul amende supérieur à 91J';
             DataClassification = ToBeClassified;
+        }
+        field(11018202; "Rebate Gen. Jnl. Templ."; Code[20])
+        {
+            Caption = 'Rebate Gen. Jnl. Templ.';
+            TableRelation = "Gen. Journal Template";
+
+            trigger OnValidate()
+            begin
+                IF "Rebate Gen. Jnl. Templ." <> xRec."Rebate Gen. Jnl. Templ." THEN
+                    "Rebate Gen. Jnl. Batch" := '';
+            end;
+        }
+        field(50004; "Rebate Gen. Jnl. Batch"; Code[20])
+        {
+            Caption = 'Rebate Gen. Jnl. Batch';
+            TableRelation = "Gen. Journal Batch".Name WHERE("Journal Template Name" = FIELD("Rebate Gen. Jnl. Templ."));
+        }
+        field(50005; "Rebate Corr. Account No."; Code[20])
+        {
+            Caption = 'Rebate Corr. Account No.';
+            TableRelation = "G/L Account" WHERE("Rebate G/L Account" = CONST(true));
         }
     }
 }

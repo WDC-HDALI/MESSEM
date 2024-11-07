@@ -25,21 +25,14 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
                 {
                     ApplicationArea = all;
                 }
-                field("Parameter Group Code"; Rec."Parameter Group Code")
-                {
-                    ApplicationArea = all;
-                }
                 field("Method No."; Rec."Method No.")
-                {
-                    ApplicationArea = all;
-                }
-                field("Method Description"; Rec."Method Description")
                 {
                     ApplicationArea = all;
                 }
                 field("Specification Remark"; Rec."Specification Remark")
                 {
                     ApplicationArea = all;
+                    Editable = "Specification RemarkEditable";
                 }
                 field("Item No. HF"; Rec."Item No. HF")
                 {
@@ -76,26 +69,32 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
                 field("Lower Limit"; Rec."Lower Limit")
                 {
                     ApplicationArea = all;
+                    Editable = "Lower LimitEditable";
                 }
                 field("Lower Warning Limit"; Rec."Lower Warning Limit")
                 {
                     ApplicationArea = all;
+                    Editable = "Lower Warning LimitEditable";
                 }
                 field("Target Result value"; Rec."Target Result value")
                 {
                     ApplicationArea = all;
+                    Editable = "Target Result valueEditable";
                 }
                 field("Upper Warning Limit"; Rec."Upper Warning Limit")
                 {
                     ApplicationArea = all;
+                    Editable = "Upper Warning LimitEditable";
                 }
                 field("Upper Limit"; Rec."Upper Limit")
                 {
                     ApplicationArea = all;
+                    Editable = "Upper LimitEditable";
                 }
                 field("Target Result Option"; Rec."Target Result Option")
                 {
                     ApplicationArea = all;
+                    Editable = "Target Result OptionEditable";
                 }
                 field(Formula; Rec.Formula)
                 {
@@ -128,10 +127,12 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
                 field("Conclusion Result"; Rec."Conclusion Result")
                 {
                     ApplicationArea = all;
+                    Visible = "Conclusion ResultVisible";
                 }
                 field("Conclusion Average Result"; Rec."Conclusion Average Result")
                 {
                     ApplicationArea = all;
+                    Visible = ConclusionAverageResultVisible;
                 }
                 field("QC Date"; Rec."QC Date")
                 {
@@ -152,4 +153,82 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
             }
         }
     }
+    trigger OnInit()
+    begin
+        "Target Result OptionEditable" := TRUE;
+        "Upper LimitEditable" := TRUE;
+        "Upper Warning LimitEditable" := TRUE;
+        "Target Result valueEditable" := TRUE;
+        "Lower Warning LimitEditable" := TRUE;
+        "Lower LimitEditable" := TRUE;
+        "Specification RemarkEditable" := TRUE;
+    end;
+
+    trigger OnOpenPage()
+    begin
+        UpdateFieldsVisible;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        IF RegistrationHeader.GET(Rec."Document Type", Rec."Document No.") THEN
+            CurrPage.EDITABLE(RegistrationHeader.Status <> RegistrationHeader.Status::Closed)
+        ELSE
+            CurrPage.EDITABLE(FALSE);
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        IF RegistrationHeader.GET(Rec."Document Type", Rec."Document No.") THEN
+            IF RegistrationHeader.Status <> RegistrationHeader.Status::Closed THEN BEGIN
+                "Specification RemarkEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Lower LimitEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Lower Warning LimitEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Target Result valueEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Upper Warning LimitEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Upper LimitEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Value);
+                "Target Result OptionEditable" := (Rec."Specification No." = '') AND (Rec."Type of Result" = Rec."Type of Result"::Option);
+            END;
+    end;
+
+    procedure GetCurrentRecord(var CalibrationRegistrationLine: Record "WDC-QA Registration Line")
+    begin
+        CalibrationRegistrationLine := Rec;
+    end;
+
+    procedure CreateSecondSample()
+    begin
+        QualityControlMgt.CreateSecondSampling(Rec);
+    end;
+
+    procedure LineUp()
+    begin
+        IF Rec.NEXT(-1) >= 0 THEN;
+        CurrPage.UPDATE(FALSE);
+    end;
+
+    procedure LineDown()
+    begin
+        IF Rec.NEXT <= 0 THEN;
+        CurrPage.UPDATE(FALSE);
+    end;
+
+    procedure UpdateFieldsVisible()
+    begin
+        "Conclusion ResultVisible" := TRUE;
+        ConclusionAverageResultVisible := TRUE;
+    end;
+
+    var
+        RegistrationHeader: Record "WDC-QA Registration Header";
+        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
+        "Specification RemarkEditable": Boolean;
+        "Lower LimitEditable": Boolean;
+        "Lower Warning LimitEditable": Boolean;
+        "Target Result valueEditable": Boolean;
+        "Upper Warning LimitEditable": Boolean;
+        "Upper LimitEditable": Boolean;
+        "Target Result OptionEditable": Boolean;
+        "Conclusion ResultVisible": Boolean;
+        ConclusionAverageResultVisible: Boolean;
 }

@@ -85,8 +85,8 @@ page 50520 "WDC-QA QC Registration List"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            Rec."Document Type"::Calibration:
-                                PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
+                            // Rec."Document Type"::Calibration:
+                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Registration", Rec);
                             Rec."Document Type"::CoA:

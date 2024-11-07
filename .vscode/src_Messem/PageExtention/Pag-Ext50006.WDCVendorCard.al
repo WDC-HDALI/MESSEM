@@ -35,6 +35,10 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
         }
         addfirst(Payments)
         {
+            field(Banque; Rec.Banque)
+            {
+                ApplicationArea = all;
+            }
             field(RIB; Rec.RIB)
             {
                 ApplicationArea = all;

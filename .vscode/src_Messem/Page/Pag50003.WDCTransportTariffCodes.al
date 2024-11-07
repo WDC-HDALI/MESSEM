@@ -1,9 +1,10 @@
 page 50003 "WDC Transport Tariff Codes"
 {
-    Caption = 'Transport Tariff Codes';
+    CaptionML = ENU = 'Transport Tariff Codes', FRA = 'Codes tarif transport';
     PageType = List;
     SourceTable = "WDC Transport Tariff Code";
-
+    UsageCategory = Lists;
+    ApplicationArea = All;
     layout
     {
         area(content)
@@ -44,11 +45,11 @@ page 50003 "WDC Transport Tariff Codes"
         {
             group("&Transport")
             {
-                Caption = '&Transport';
+                CaptionML = ENU = '&Transport', FRA = 'Transport';
                 action("Transport &Tariff Code Rates")
                 {
                     ApplicationArea = all;
-                    Caption = 'Transport &Tariff Code Rates';
+                    CaptionML = ENU = 'Transport &Tariff Code Rates', FRA = 'Transport & code tarifs ';
                     Image = RollUpCosts;
                     RunObject = Page "WDC Transp. Tariff Code Rates";
                     RunPageLink = "Transport Tariff Code" = FIELD(Code);

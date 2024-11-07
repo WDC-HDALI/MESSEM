@@ -104,7 +104,7 @@ page 50531 "WDC-QA Closed QC Registration"
             }
             group(LotInfo)
             {
-                CaptionML = ENU = '', FRA = '';
+                CaptionML = ENU = 'Lot Info', FRA = 'Info lot';
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = all;
@@ -165,8 +165,8 @@ page 50531 "WDC-QA Closed QC Registration"
                     ApplicationArea = all;
                     CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
                     Image = ViewComments;
-                    // RunObject=Page "Registration Comment Sheet";
-                    // RunPageLink = Document Type=FIELD(Document Type),No.=FIELD(No.);
+                    RunObject = Page "WDC-QARegistrationCommentSheet";
+                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
                 }
                 action(Receipts)
                 {

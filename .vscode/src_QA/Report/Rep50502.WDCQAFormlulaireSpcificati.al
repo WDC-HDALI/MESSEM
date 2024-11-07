@@ -78,7 +78,7 @@ report 50502 "WDC-QA Formlulaire Spécificati"
                     IF UnitofMeasure.GET(UnitMeas) THEN;
 
 
-                    IF WDCQASpecificationLine."Type of Result" = 1 THEN BEGIN
+                    IF (WDCQASpecificationLine."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(1)) THEN BEGIN
                         ResulLimit := 'OK';
 
                     END ELSE BEGIN
@@ -172,7 +172,7 @@ report 50502 "WDC-QA Formlulaire Spécificati"
 
     var
         RecGMethod: Record "WDC-QA Method Header";
-        UnitMeas: Code[10];
+        UnitMeas: Code[20];
         Company: Record "Company Information";
         ResulLimit: Text[50];
         Frequence: Text[250];

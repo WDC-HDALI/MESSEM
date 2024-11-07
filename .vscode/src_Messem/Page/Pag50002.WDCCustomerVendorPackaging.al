@@ -4,7 +4,7 @@ page 50002 "WDC Customer/Vendor Packaging"
     captionml = ENU = 'Customer/Vendor Packaging', FRA = 'Client/Fournisseur Emballage';
     PageType = Worksheet;
     SourceTable = "WDC Customer/Vendor Packaging";
-
+    UsageCategory = Lists;
     layout
     {
         area(Content)

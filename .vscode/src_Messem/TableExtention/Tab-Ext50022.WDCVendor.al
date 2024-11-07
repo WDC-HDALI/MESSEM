@@ -49,14 +49,15 @@ tableextension 50022 "WDC Vendor " extends Vendor
             Description = 'WDC01';
             DataClassification = ToBeClassified;
         }
-        // field(50006; "Solde Bonus"; Decimal)
-        // {
-        // CalcFormula = Sum("Rebate Entry"."Accrual Amount (LCY)" WHERE("Posting Type"=CONST(Purchase),
-        //                                                                "Sell-to/Buy-from No."=FIELD("No."),
-        //                                                                Open=CONST(true)));
-        // Editable = false;
-        // FieldClass = FlowField;
-        // }
+        field(50006; "Solde Bonus"; Decimal)
+        {
+            CalcFormula = Sum("WDC Rebate Entry"."Accrual Amount (LCY)" WHERE("Posting Type" = CONST(Purchase),
+                                                                       "Sell-to/Buy-from No." = FIELD("No."),
+                                                                       Open = CONST(true)));
+            Editable = false;
+            FieldClass = FlowField;
+            CaptionML = ENU = 'Solde Bonus', FRA = 'Solde Bonus';
+        }
         field(50007; "Convention Y/N"; Boolean)
         {
             CaptionML = ENU = 'Convention O/N', FRA = 'Convention O/N';
@@ -75,6 +76,27 @@ tableextension 50022 "WDC Vendor " extends Vendor
             CaptionML = ENU = 'No. RC', FRA = 'No. RC';
             Description = 'WDC02  DELAI DE PAIEMENT';
             DataClassification = ToBeClassified;
+        }
+        field(50010; "Banque"; Code[20])
+        {
+            CaptionML = ENU = 'Default Bank', FRA = 'Banque par defaut';
+            DataClassification = ToBeClassified;
+            TableRelation = "Vendor Bank Account".Code WHERE("Vendor No." = FIELD("No."));
+
+            trigger OnValidate()
+            var
+                RecLBanque: Record 288;
+            begin
+
+                IF Banque <> '' THEN BEGIN
+                    RecLBanque.RESET;
+                    RecLBanque.SETRANGE("Vendor No.", "No.");
+                    RecLBanque.SETRANGE(Code, Banque);
+                    IF RecLBanque.FINDSET THEN
+                        RIB := RecLBanque."Bank Account No.";
+                END;
+            end;
+
         }
 
     }

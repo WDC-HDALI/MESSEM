@@ -7,11 +7,12 @@ tableextension 50021 "WDC Gen Posting Setup " extends "General Posting Setup"
 {
     fields
     {
-        field(50000; "Bonus Purchase Account"; Code[20])
+        field(50000; "Purchase Rebate Account"; Code[20])
         {
-            CaptionML = ENU = 'Bonus Purchase Account', FRA = 'Compte d''achats bonus';
+            CaptionML = ENU = '"Purchase Rebate Account"', FRA = 'Compte d''achats bonus';
             DataClassification = ToBeClassified;
-            TableRelation = "G/L Account";
+            TableRelation = "G/L Account" WHERE("Rebate G/L Account" = CONST(true));
         }
+
     }
 }

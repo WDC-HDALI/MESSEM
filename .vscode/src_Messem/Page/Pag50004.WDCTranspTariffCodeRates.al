@@ -4,7 +4,8 @@ page 50004 "WDC Transp. Tariff Code Rates"
     DataCaptionFields = "No.", "Transport Tariff Code";
     PageType = List;
     SourceTable = "WDC Transport Tariff Code Rate";
-
+    UsageCategory = Lists;
+    ApplicationArea = All;
     layout
     {
         area(content)

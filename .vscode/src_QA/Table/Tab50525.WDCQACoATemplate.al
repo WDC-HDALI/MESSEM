@@ -15,7 +15,7 @@ table 50525 "WDC-QA CoA Template"
         field(2; "Check Point Code"; Code[20])
         {
             CaptionML = ENU = 'Check Point Code', FRA = 'Code point de contrôle';
-            TableRelation = IF (Type = CONST(Parameter)) "WDC-QA Check Point";
+            TableRelation = IF (Type = filter("WDC-QA Registration Line Type"::Parameter)) "WDC-QA Check Point";
         }
         field(3; "Type Value"; enum "WDC-QA CoA Type Value")
         {
@@ -84,5 +84,6 @@ table 50525 "WDC-QA CoA Template"
     var
         Parameter: Record "WDC-QA Parameter";
         MethodHeader: Record "WDC-QA Method Header";
-        Text0001: TextConst ENU = '%1 can not be %2 since %3 for method %4 is %5.', FRA = '%1 ne peut pas être %2 car %3 pour méthode %4 est %5.';
+        Text0001: TextConst ENU = '%1 can not be %2 since %3 for method %4 is %5.',
+                            FRA = '%1 ne peut pas être %2 car %3 pour méthode %4 est %5.';
 }

@@ -72,7 +72,7 @@ table 50528 "WDC-QA Registered Inspec Chang"
         {
             CaptionML = ENU = 'Delete Second Insp. Status', FRA = 'Supprimer second statut d''inspection';
         }
-        field(17; "Reason Code"; Code[10])
+        field(17; "Reason Code"; Code[20])
         {
             CaptionML = ENU = 'Reason Code', FRA = 'Code motif';
             TableRelation = "Reason Code";
@@ -85,7 +85,7 @@ table 50528 "WDC-QA Registered Inspec Chang"
         {
             CaptionML = ENU = 'User ID', FRA = 'Code utilisateur';
             TableRelation = User."User Name";
-            TestTableRelation = false;
+            //TestTableRelation = false;
             trigger OnLookup()
             var
                 LoginMgt: Codeunit "User Management";
@@ -97,27 +97,22 @@ table 50528 "WDC-QA Registered Inspec Chang"
         {
             CaptionML = ENU = 'Time of Change', FRA = 'Heure modification';
         }
-        field(21; "Source Type"; Option)
+        field(21; "Source Type"; Enum "WDC-QA Source Type")
         {
             CaptionML = ENU = 'Source Type', FRA = 'Type origine';
-            OptionMembers = " ","Reg. Header";
-            OptionCaptionML = ENU = ' ,Reg. Header', FRA = ' ,En-tête enregistrement';
             Editable = false;
         }
-        field(22; "Source Subtype"; Option)
+        field(22; "Source Subtype"; enum "WDC Lot Attribute Src Subtype")
         {
             CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
-            OptionMembers = "0","1","2","3","4","5","6","7","8","9","10";
-            OptionCaptionML = ENU = '0,1,2,3,4,5,6,7,8,9,10', FRA = '0,1,2,3,4,5,6,7,8,9,10';
             Editable = false;
         }
         field(23; "Source No."; Code[20])
         {
             CaptionML = ENU = 'Source No.', FRA = 'N° origine';
-            TableRelation = IF ("Source Type" = CONST("Reg. Header")) "WDC-QA Registration Header"."No." WHERE("Document Type" = FIELD("Source Subtype"));
+            TableRelation = IF ("Source Type" = filter('Reg. Header')) "WDC-QA Registration Header"."No." WHERE("Document Type" = FIELD("Source Subtype"));
             Editable = false;
         }
-
     }
     keys
     {

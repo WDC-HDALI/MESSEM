@@ -34,12 +34,12 @@ table 50505 "WDC-QA Specification Step"
         {
             CaptionML = ENU = 'Method Line No.', FRA = 'N° ligne méthode';
         }
-        field(7; "Column No."; Code[10])
+        field(7; "Column No."; Code[20])
         {
             CaptionML = ENU = 'Column No.', FRA = 'N° colonne';
             Editable = false;
         }
-        field(8; "Measurement Code"; Code[10])
+        field(8; "Measurement Code"; Code[20])
         {
             CaptionML = ENU = 'Measurement Code', FRA = 'Code mesure';
             Editable = false;
@@ -69,7 +69,7 @@ table 50505 "WDC-QA Specification Step"
             Editable = false;
             ValuesAllowed = 1, 2;
         }
-        field(13; "Value UOM"; Code[10])
+        field(13; "Value UOM"; Code[20])
         {
             CaptionML = ENU = 'Value UOM', FRA = 'Unité valeur';
             TableRelation = "Unit of Measure";

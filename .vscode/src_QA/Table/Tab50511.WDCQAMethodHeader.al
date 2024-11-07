@@ -55,13 +55,14 @@ table 50511 "WDC-QA Method Header"
         field(5; "Sample Quantity"; Decimal)
         {
             CaptionML = ENU = 'Sample Quantity', FRA = 'Quantité échantillon';
+            DecimalPlaces = 0 : 5;
         }
-        field(6; "Sample UOM"; Code[10])
+        field(6; "Sample UOM"; Code[20])
         {
             CaptionML = ENU = 'Sample UOM', FRA = 'Unité  échantillon';
             TableRelation = "Unit of Measure";
         }
-        field(7; "Result UOM"; Code[10])
+        field(7; "Result UOM"; Code[20])
         {
             CaptionML = ENU = 'Result UOM', FRA = 'Unité résultat';
             TableRelation = "Unit of Measure";
@@ -70,7 +71,7 @@ table 50511 "WDC-QA Method Header"
                 TESTFIELD("Result Type", "Result Type"::Value);
             end;
         }
-        field(8; "No. Series"; Code[10])
+        field(8; "No. Series"; Code[20])
         {
             CaptionML = ENU = 'No. Series', FRA = 'Souches de n°';
             TableRelation = "No. Series";
@@ -88,8 +89,7 @@ table 50511 "WDC-QA Method Header"
         IF "No." = '' THEN BEGIN
             QualityControlSetup.GET;
             QualityControlSetup.TESTFIELD(QualityControlSetup."Method Nos.");
-            NoSeriesMgt.InitSeries(QualityControlSetup."Method Nos.", xRec."No. Series", 0D, "No.", "No. Series");
-            //NoSeriesMgt.GetNextNo(QualityControlSetup."Method Nos.", 0D, true);
+            "No." := NoSeriesMgt.GetNextNo(QualityControlSetup."Method Nos.", 0D, true);
         END;
     end;
 
@@ -108,10 +108,10 @@ table 50511 "WDC-QA Method Header"
         MethodHeader := Rec;
         QualityControlSetup.GET;
         QualityControlSetup.TESTFIELD("Method Nos.");
-        IF NoSeriesMgt.SelectSeries(QualityControlSetup."Method Nos.", OldMethodHeader."No. Series", "No. Series") THEN BEGIN
+        IF NoSeriesMgt.LookupRelatedNoSeries(QualityControlSetup."Method Nos.", OldMethodHeader."No. Series", "No. Series") THEN BEGIN
             QualityControlSetup.GET;
             QualityControlSetup.TESTFIELD("Method Nos.");
-            NoSeriesMgt.SetSeries("No.");
+            NoSeriesMgt.GetNextNo("No.");
             Rec := MethodHeader;
             EXIT(TRUE);
         END;
@@ -261,8 +261,8 @@ table 50511 "WDC-QA Method Header"
     var
         QualityControlSetup: Record "WDC-QA Quality Control Setup";
         MethodHeader: Record "WDC-QA Method Header";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
-        //NoSeriesMgt: Codeunit "No. Series";
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         Text001: TextConst ENU = 'The parenthesis at position %1 is misplaced.', FRA = 'Position %1. La parenthèse est mal placée.';
         Text002: TextConst ENU = 'You cannot have two consecutive operators. The error occurred at position %1.', FRA = 'Position %1. Vous ne pouvez pas avoir deux opérateurs consécutifs.';
         Text003: TextConst ENU = 'There is an operand missing after position %1.', FRA = 'Il manque un opérateur après la position %1.';

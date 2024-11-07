@@ -1,10 +1,11 @@
 report 50505 "WDC-QA Quality COntrol Report"
 {
-    ApplicationArea = All;
+
     CaptionML = ENU = 'Quality Control Report', FRA = 'Etat contrôle qualité';
+    RDLCLayout = './.vscode/src_QA/Report/RDLC/QualityCOntrolReport.rdlc';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = './.vscode/src_QA/Report/RDLC/QualityCOntrolReport.rdlc';
+    ApplicationArea = All;
 
     dataset
     {
@@ -328,35 +329,35 @@ report 50505 "WDC-QA Quality COntrol Report"
         ColumnNo: Integer;
         ResultValueTxt: Text[30];
         ConclusionResultTxt: Text[30];
-        ItemDescription: Text[50];
+        ItemDescription: Text[100];
         OutputNo: Integer;
         ItemLedgerEntry: Record "Item Ledger Entry";
         Quant: Decimal;
-        Text001: Label 'COPY';
-        Text003: Label 'Customer';
-        Text004: Label 'Vendor';
-        Text005: Label 'QUALITY CONTROL REPORT';
-        CurrReport_PAGENOCaptionLbl: Label 'Page';
-        GeneralCaptionLbl: Label 'General';
-        QC_DateCaptionLbl: Label 'QC Date';
-        Registration_Header___No__CaptionLbl: Label 'QR. No.';
-        NameCaptionLbl: Label 'Name';
-        Registration_Header___Lot_No__CaptionLbl: Label 'Lot No.';
-        Registration_Header___Check_Point_Code_CaptionLbl: Label 'Check Point Code';
-        ControllerCaptionLbl: Label 'Controller';
-        Registration_Header___Sample_Temperature_CaptionLbl: Label 'Sample Temperature';
-        Item_No_CaptionLbl: Label 'Item No.';
-        Item_DescriptionCaptionLbl: Label 'Item Description';
-        Registration_Header___Production_Order_No__CaptionLbl: Label 'Production Order No.';
-        Registration_Header___Return_Order_No__CaptionLbl: Label 'Return Order No.';
-        Source_No_CaptionLbl: Label 'Source No.';
-        Registration_Header___Item_Category_Code_CaptionLbl: Label 'Item Category Code';
-        ResultsCaptionLbl: Label 'Results';
-        ResultCaptionLbl: Label 'Result';
-        CommentsCaptionLbl: Label 'Comments';
-        End_ResultsCaptionLbl: Label 'End Results';
-        DescriptionCaptionLbl: Label 'Description';
-        Next_on_new_pageCaptionLbl: Label 'Next on new page';
-        QuantCaption: Label 'Quantity';
+        Text001: TextConst ENU = 'COPY', FRA = 'Copier';
+        Text003: TextConst ENU = 'Customer', FRA = 'Client';
+        Text004: TextConst ENU = 'Vendor', FRA = 'Fournisseur';
+        Text005: TextConst ENU = 'QUALITY CONTROL REPORT', FRA = 'Etat contrôle qualité';
+        CurrReport_PAGENOCaptionLbl: TextConst ENU = 'Page', FRA = 'Page';
+        GeneralCaptionLbl: TextConst ENU = 'General', FRA = 'Général';
+        QC_DateCaptionLbl: TextConst ENU = 'QC Date', FRA = 'Date CQ';
+        Registration_Header___No__CaptionLbl: TextConst ENU = 'QR. No.', FRA = 'N° état qualité';
+        NameCaptionLbl: TextConst ENU = 'Name', FRA = 'Nom';
+        Registration_Header___Lot_No__CaptionLbl: TextConst ENU = 'Lot No.', FRA = 'N° lot';
+        Registration_Header___Check_Point_Code_CaptionLbl: TextConst ENU = 'Check Point Code', FRA = 'Code point de contrôle';
+        ControllerCaptionLbl: TextConst ENU = 'Controller', FRA = 'Controleur';
+        Registration_Header___Sample_Temperature_CaptionLbl: TextConst ENU = 'Sample Temperature', FRA = 'Température échantillon';
+        Item_No_CaptionLbl: TextConst ENU = 'Item No.', FRA = 'N° article';
+        Item_DescriptionCaptionLbl: TextConst ENU = 'Item Description', FRA = 'Désignation article';
+        Registration_Header___Production_Order_No__CaptionLbl: TextConst ENU = 'Production Order No.', FRA = 'N° O.F.';
+        Registration_Header___Return_Order_No__CaptionLbl: TextConst ENU = 'Return Order No.', FRA = 'N° retour';
+        Source_No_CaptionLbl: TextConst ENU = 'Source No.', FRA = 'N° origine';
+        Registration_Header___Item_Category_Code_CaptionLbl: TextConst ENU = 'Item Category Code', FRA = 'Code catégorie article';
+        ResultsCaptionLbl: TextConst ENU = 'Results', FRA = 'Résultats';
+        ResultCaptionLbl: TextConst ENU = 'Result', FRA = 'Résultat';
+        CommentsCaptionLbl: TextConst ENU = 'Comments', FRA = 'Commentaires';
+        End_ResultsCaptionLbl: TextConst ENU = 'End Results', FRA = 'Résultats fin';
+        DescriptionCaptionLbl: TextConst ENU = 'Description', FRA = 'Désignation';
+        Next_on_new_pageCaptionLbl: TextConst ENU = 'Next on new page', FRA = 'Suivant sur nouvelle page';
+        QuantCaption: TextConst ENU = 'Quantity', FRA = 'Quantité';
 }
 

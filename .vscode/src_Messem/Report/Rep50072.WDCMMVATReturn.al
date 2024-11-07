@@ -1,11 +1,12 @@
-report 50072 "MM VAT Return"
+report 50072 "WDC MM VAT Return"
 {
     // WDC01  27/05/2024  WDC.ST  Création
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MMVATReturn.rdlc';
 
     CaptionML = ENU = 'MM VAT Return', FRA = 'MM retour TVA';
-
+    ApplicationArea = all;
+    UsageCategory = ReportsAndAnalysis;
     dataset
     {
         dataitem(Vendor; 23)

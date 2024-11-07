@@ -42,7 +42,9 @@ page 50511 "WDC-QA Methods"
                     ApplicationArea = all;
                 }
                 field("Sample Quantity"; Rec."Sample Quantity")
-                { }
+                {
+                    ApplicationArea = all;
+                }
                 field("Sample UOM"; Rec."Sample UOM")
                 {
                     ApplicationArea = all;

@@ -1,12 +1,11 @@
 report 50504 "WDC-QA Suivi Enregistrement CQ"
 {
-    ApplicationArea = All;
+
     CaptionML = ENU = 'Quality Control Report', FRA = 'Etat contrôle qualité';
+    RDLCLayout = './.vscode/src_QA/Report/RDLC/SuiviEnregistrementCQ.rdlc';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = './.vscode/src_QA/Report/RDLC/SuiviEnregistrementCQ.rdlc';
-
-
+    ApplicationArea = All;
     dataset
     {
         dataitem("Registration Header"; "WDC-QA Registration Header")

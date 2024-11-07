@@ -24,15 +24,7 @@ page 50518 "WDC-QA Certificates Of Analysi"
                 {
                     ApplicationArea = all;
                 }
-                field("Customer Name"; Rec."Customer Name")
-                {
-                    ApplicationArea = all;
-                }
                 field("Report ID"; Rec."Report ID")
-                {
-                    ApplicationArea = all;
-                }
-                field("Report Name"; Rec."Report Name")
                 {
                     ApplicationArea = all;
                 }

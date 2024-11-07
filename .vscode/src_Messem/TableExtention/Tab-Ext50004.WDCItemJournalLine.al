@@ -70,6 +70,18 @@ tableextension 50004 "WDC Item Journal Line " extends "Item Journal Line"
             DataClassification = ToBeClassified;
 
         }
+
+        field(50010; "Rebate Accrual Amount (LCY)"; Decimal)
+        {
+            CaptionML = ENU = 'Rebate Accrual Amount (LCY)', FRA = 'Montant ajustement bonus DS';
+            DataClassification = ToBeClassified;
+
+        }
+        field(50011; "Source Subtype"; Enum "WDC Lot Attribute Src Subtype")
+        {
+            CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
+        }
+
         modify("Source No.")
         {
             trigger OnAfterValidate()

@@ -3,7 +3,8 @@ page 50005 "WDC Lot Attribute Values"
     CaptionML = ENU = 'Lot Attribute Value', FRA = 'Valeur Lot Attribue';
     PageType = List;
     SourceTable = "WDC Lot Attribute Value";
-
+    UsageCategory = Lists;
+    ApplicationArea = All;
     layout
     {
         area(content)

@@ -77,7 +77,7 @@ codeunit 50002 "WDC Lot Attribute Mngmt"
         LotAttributeBuffer."Variant Code" := SourceSpecification."Variant Code";
         LotAttributeBuffer."Lot No." := SourceSpecification."Lot No.";
         LotAttributeBuffer."Source Type" := SourceSpecification."Source Type";
-        LotAttributeBuffer."Source Subtype" := SourceSpecification."Source Subtype";
+        LotAttributeBuffer."Source Subtype" := Enum::"WDC Lot Attribute Src Subtype".FromInteger(SourceSpecification."Source Subtype");
         LotAttributeBuffer."Source ID" := SourceSpecification."Source ID";
         LotAttributeBuffer."Source Batch Name" := SourceSpecification."Source Batch Name";
         LotAttributeBuffer."Source Prod. Order Line" := SourceSpecification."Source Prod. Order Line";
@@ -107,17 +107,15 @@ codeunit 50002 "WDC Lot Attribute Mngmt"
             ValidLotAttribute(LotAttributeNo, LotAttributes[LotAttributeNo]);
 
         CreateTempTracking(TempTrackingSpecification, ItemNo, VariantCode, LotNo, SourceType, SourceSubtype, SourceID, SourceRefNo, SourceBatchName, SourceProdOrderLine);
-        WITH TempTrackingSpecification DO BEGIN
-            IF LotNoInformation.GET("Item No.", "Variant Code", "Lot No.") THEN BEGIN
-                CopyLotAttributesToLotNoInformation(LotNoInformation, LotAttributes);
-                LotNoInformation.MODIFY;
-            END ELSE BEGIN
-                IF NOT LotAttributeBufferExists(LotAttributeBuffer, TempTrackingSpecification) THEN
-                    CreateLotAttributeBuffer(TempTrackingSpecification, LotAttributeBuffer);
-                ModifyLotAttributeBuffer(LotAttributeBuffer, "Item No.", "Variant Code", "Lot No.", LotAttributes);
-            END;
+        IF LotNoInformation.GET(TempTrackingSpecification."Item No.", TempTrackingSpecification."Variant Code", TempTrackingSpecification."Lot No.") THEN BEGIN
+            CopyLotAttributesToLotNoInformation(LotNoInformation, LotAttributes);
+            LotNoInformation.MODIFY;
+        END ELSE BEGIN
+            IF NOT LotAttributeBufferExists(LotAttributeBuffer, TempTrackingSpecification) THEN
+                CreateLotAttributeBuffer(TempTrackingSpecification, LotAttributeBuffer);
+            ModifyLotAttributeBuffer(LotAttributeBuffer, TempTrackingSpecification."Item No.", TempTrackingSpecification."Variant Code", TempTrackingSpecification."Lot No.", LotAttributes);
         END;
-    end;
+    END;
 
     local procedure ModifyLotAttributeBuffer(var LotAttributeBuffer: Record "WDC Lot Attribute Buffer"; ItemNo: Code[20]; VariantCode: code[20]; LotNo: Code[20]; LotAttributes: array[5] of code[20])
     begin
@@ -142,11 +140,11 @@ codeunit 50002 "WDC Lot Attribute Mngmt"
             LotAttributeBuffer.DELETEALL;
     end;
 
-    local procedure DeleteDocumentAttributes(SourceType: Integer; SourceSubtype: Option; SourceID: Code[20]; SourceRefNo: Integer; SourceBatchName: code[20]; SourceProdOrderLine: Integer)
+    local procedure DeleteDocumentAttributes(SourceType: Integer; SourceSubtype: Enum "Purchase Document Type"; SourceID: Code[20]; SourceRefNo: Integer; SourceBatchName: code[20]; SourceProdOrderLine: Integer)
     var
         LotAttributeBuffer: Record "WDC Lot Attribute Buffer";
     begin
-        SetSourceFilterLotAttributeBuffer(LotAttributeBuffer, SourceType, SourceSubtype, SourceID, SourceRefNo, SourceBatchName, SourceProdOrderLine);
+        SetSourceFilterLotAttributeBuffer(LotAttributeBuffer, SourceType, SourceSubtype.AsInteger, SourceID, SourceRefNo, SourceBatchName, SourceProdOrderLine);
         IF NOT LotAttributeBuffer.ISEMPTY THEN
             LotAttributeBuffer.DELETEALL;
     end;
@@ -184,42 +182,43 @@ codeunit 50002 "WDC Lot Attribute Mngmt"
         DeleteLotAttributeBuffer(ItemNo, VariantCode, LotNo);
     end;
 
-    // procedure TransferProductionOrderToProductionOrder(FromProdudctionOrder: Record 5405; ToProductionOrder: Record 5405)
-    // var
-    //     ToLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
-    //     FromtLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
-    // begin
-    //     SetSourceFilterLotAttributeBuffer(FromtLotAttributeBuffer, DATABASE::"Prod. Order Line", FromProdudctionOrder.Status, FromProdudctionOrder."No.", 0, '', 0);
-    //     IF FromtLotAttributeBuffer.ISEMPTY THEN
-    //         EXIT;
+    procedure TransferProductionOrderToProductionOrder(FromProdudctionOrder: Record 5405; ToProductionOrder: Record 5405)
+    var
+        ToLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
+        FromtLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
+    begin
+        SetSourceFilterLotAttributeBuffer(FromtLotAttributeBuffer, DATABASE::"Prod. Order Line", FromProdudctionOrder.Status.AsInteger(), FromProdudctionOrder."No.", 0, '', 0);
+        IF FromtLotAttributeBuffer.ISEMPTY THEN
+            EXIT;
 
-    //     IF FromtLotAttributeBuffer.FINDSET THEN
-    //         REPEAT
-    //             ToLotAttributeBuffer := FromtLotAttributeBuffer;
-    //             ToLotAttributeBuffer."Source Subtype" := ToProductionOrder.Status;
-    //             ToLotAttributeBuffer."Source ID" := ToProductionOrder."No.";
-    //             ToLotAttributeBuffer.INSERT
-    //         UNTIL FromtLotAttributeBuffer.NEXT = 0;
-    // end;
+        IF FromtLotAttributeBuffer.FINDSET THEN
+            REPEAT
+                ToLotAttributeBuffer := FromtLotAttributeBuffer;
+                ToLotAttributeBuffer."Source Subtype" := Enum::"WDC Lot Attribute Src Subtype".FromInteger(ToProductionOrder.Status.AsInteger());
+                ToLotAttributeBuffer."Source ID" := ToProductionOrder."No.";
+                ToLotAttributeBuffer.INSERT
+            UNTIL FromtLotAttributeBuffer.NEXT = 0;
+    end;
 
-    // procedure TransferPurchaseLineToPurchaseLine(FromPurchaseLine: Record 39; ToPurchaseLine: Record 39)
-    // var
-    //     ToLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
-    //     FromtLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
-    // begin
-    //     SetSourceFilterLotAttributeBuffer(FromtLotAttributeBuffer, DATABASE::"Purchase Line", FromPurchaseLine."Document Type", FromPurchaseLine."Document No.", FromPurchaseLine."Line No.", '', 0);
-    //     IF FromtLotAttributeBuffer.ISEMPTY THEN
-    //         EXIT;
+    procedure TransferPurchaseLineToPurchaseLine(FromPurchaseLine: Record 39; ToPurchaseLine: Record 39)
+    var
+        ToLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
+        FromtLotAttributeBuffer: Record "WDC Lot Attribute Buffer";
+    begin
+        SetSourceFilterLotAttributeBuffer(FromtLotAttributeBuffer, DATABASE::"Purchase Line", FromPurchaseLine."Document Type".AsInteger(), FromPurchaseLine."Document No.", FromPurchaseLine."Line No.", '', 0);
+        IF FromtLotAttributeBuffer.ISEMPTY THEN
+            EXIT;
 
-    //     IF FromtLotAttributeBuffer.FINDSET THEN
-    //         REPEAT
-    //             ToLotAttributeBuffer := FromtLotAttributeBuffer;
-    //             ToLotAttributeBuffer."Source Subtype" := ToPurchaseLine."Document Type";
-    //             ToLotAttributeBuffer."Source ID" := ToPurchaseLine."Document No.";
-    //             ToLotAttributeBuffer."Source Ref. No." := ToPurchaseLine."Line No.";
-    //             ToLotAttributeBuffer.INSERT
-    //         UNTIL FromtLotAttributeBuffer.NEXT = 0;
-    // end;
+        IF FromtLotAttributeBuffer.FINDSET THEN
+            REPEAT
+                ToLotAttributeBuffer := FromtLotAttributeBuffer;
+                ToLotAttributeBuffer."Source Subtype" := Enum::"WDC Lot Attribute Src Subtype".FromInteger(ToPurchaseLine."Document Type".AsInteger());
+                ;
+                ToLotAttributeBuffer."Source ID" := ToPurchaseLine."Document No.";
+                ToLotAttributeBuffer."Source Ref. No." := ToPurchaseLine."Line No.";
+                ToLotAttributeBuffer.INSERT
+            UNTIL FromtLotAttributeBuffer.NEXT = 0;
+    end;
 
     local procedure CopyLotAttributesToLotNoInformation(var LotNoInformation: Record 6505; LotAttributes: array[5] of code[20])
     begin

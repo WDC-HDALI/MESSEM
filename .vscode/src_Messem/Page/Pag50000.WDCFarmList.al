@@ -4,6 +4,7 @@ page 50000 "WDC Farm List"
     captionml = ENU = 'Farm List', FRA = 'Liste ferme';
     PageType = List;
     SourceTable = "WDC Farm";
+    UsageCategory = Lists;
 
     layout
     {

@@ -33,6 +33,16 @@ tableextension 50015 "WDC Purch. Rcpt. Line " extends "Purch. Rcpt. Line"
             CaptionML = ENU = 'Quantity Shipment Containers', FRA = 'Qté de support logistique';
             DecimalPlaces = 0 : 0;
         }
+        field(50028; "Rebate Code"; Code[20])
+        {
+            CaptionML = ENU = 'Rebate Code', FRA = 'Code bonus';
+            TableRelation = "WDC Rebate Code";
+        }
+        field(50029; "Accrual Amount (LCY)"; Decimal)
+        {
+            CaptionML = ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
+            DataClassification = ToBeClassified;
+        }
     }
 
 }

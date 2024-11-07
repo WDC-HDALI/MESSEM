@@ -86,8 +86,8 @@ page 50522 "WDC-QA CoA Registration"
                     ApplicationArea = all;
                     CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
                     Image = ViewComments;
-                    //RunObject=page "WDC-QA Registration Comment Sheet";
-                    //RunPageLink="Document Type"=FIELD("Document Type"),"No."=FIELD("No.");
+                    RunObject = page "Wdc-QARegistrationCommentSheet";
+                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
                 }
                 action("Page Commentaire COA")
                 {
@@ -95,31 +95,29 @@ page 50522 "WDC-QA CoA Registration"
                     CaptionML = ENU = '', FRA = 'Insertion Commentaire COA';
                     Image = CalculateCalendar;
                     trigger OnAction()
-                    var
-                        myInt: Integer;
                     begin
-                        // CLEAR(GRegistCommentLine);
-                        // GRegistCommentLine.SETRANGE("No.", "No.");
-                        // IF GRegistCommentLine.FINDFIRST THEN
-                        //     GRegistCommentLine.DELETEALL;
+                        CLEAR(GRegistCommentLine);
+                        GRegistCommentLine.SETRANGE("No.", Rec."No.");
+                        IF GRegistCommentLine.FINDFIRST THEN
+                            GRegistCommentLine.DELETEALL;
 
-                        // Gline := 10000;
-                        // CLEAR(GCommentCOA);
-                        // IF GCommentCOA.FINDFIRST THEN
-                        //     REPEAT
-                        //         Gline := Gline + 1000;
-                        //         GRegistCommentLine.INIT;
-                        //         GRegistCommentLine."Document Type" := "Document Type";
-                        //         GRegistCommentLine."No." := "No.";
-                        //         GRegistCommentLine."Line No." := Gline;
-                        //         GRegistCommentLine.Date := "QC Date";
-                        //         GRegistCommentLine.Code := '';
-                        //         GRegistCommentLine.Comment := GCommentCOA."Commentaire COA";
-                        //         GRegistCommentLine.Display := FALSE;
-                        //         GRegistCommentLine.INSERT(TRUE);
-                        //     UNTIL GCommentCOA.NEXT = 0;
+                        Gline := 10000;
+                        CLEAR(GCommentCOA);
+                        IF GCommentCOA.FINDFIRST THEN
+                            REPEAT
+                                Gline := Gline + 1000;
+                                GRegistCommentLine.INIT;
+                                GRegistCommentLine."Document Type" := Rec."Document Type";
+                                GRegistCommentLine."No." := Rec."No.";
+                                GRegistCommentLine."Line No." := Gline;
+                                GRegistCommentLine.Date := Rec."QC Date";
+                                GRegistCommentLine.Code := '';
+                                GRegistCommentLine.Comment := GCommentCOA."Commentaire COA";
+                                GRegistCommentLine.Display := FALSE;
+                                GRegistCommentLine.INSERT(TRUE);
+                            UNTIL GCommentCOA.NEXT = 0;
 
-                        // PAGE.RUN(50012);
+                        PAGE.RUN(50543);
                     end;
                 }
             }
@@ -165,7 +163,7 @@ page 50522 "WDC-QA CoA Registration"
                         ManufacturingSetup."Production Date" := Rec."Production Date";
                         ManufacturingSetup.MODIFY;
                         COMMIT;
-                        //DocPrint.PrintCoAHeader(Rec);
+                        DocPrint.PrintCoAHeader(Rec);
                         PrintCoAHeader(Rec);
                     end;
                 }
@@ -230,8 +228,9 @@ page 50522 "WDC-QA CoA Registration"
 
     var
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
-        DocPrint: Codeunit "Document-Print";
-        GCommentCOA: Record "WDC-QA RegistrationCommentLine";
+        DocPrint: Codeunit "WDC-QA Document-Print";
+        GCommentCOA: Record "WDC-QA Commentaire COA";
+        GRegistCommentLine: Record "WDC-QA RegistrationCommentLine";
         Gline: Integer;
         RegistrationLine: Record "WDC-QA Registration Line";
 }

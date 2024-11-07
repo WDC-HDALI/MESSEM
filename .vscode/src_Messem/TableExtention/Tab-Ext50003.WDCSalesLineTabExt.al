@@ -124,17 +124,9 @@ tableextension 50003 "WDC Sales Line TabExt " extends "Sales Line"
                       ("Qty. Shipped Shipment Units" + "Reserv Qty. to Post Ship.Unit");
                     "Qty. S.Units to invoice" := MaxShipUnitsToInvoice;
                 end;
-                //END;
-
-                // // FW-20143-L19P
-                // CheckAvailUnitPriceCalculation(FIELDNO("Quantity Shipment Units"));
-                // //
-
             end;
 
         }
-
-
 
         field(50009; "Quantity Shipment Containers"; Decimal)
         {

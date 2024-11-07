@@ -97,6 +97,7 @@ page 50521 "WDC-QA QC Registration"
                 }
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = all;
                     trigger OnValidate()
                     begin
                         StatusOnAfterValidate;
@@ -128,7 +129,7 @@ page 50521 "WDC-QA QC Registration"
                     ApplicationArea = all;
                 }
             }
-            part(CalibraionLines; "WDC-QA Calib Registration Subf")
+            part(CalibraionLines; "WDC-QA QC Registration Subform")
             {
                 ApplicationArea = all;
                 SubPageLink = "Document Type" = FIELD("Document Type"), "Document No." = FIELD("No.");
@@ -164,6 +165,7 @@ page 50521 "WDC-QA QC Registration"
                 }
                 field("Expiration Date"; Rec."Expiration Date")
                 {
+                    ApplicationArea = all;
                     Editable = true;
                 }
                 field("Warranty Date"; Rec."Warranty Date")
@@ -207,14 +209,14 @@ page 50521 "WDC-QA QC Registration"
         {
             group("&Registration")
             {
-                captionML = ENU = '', FRA = '';
+                captionML = ENU = '&Registration', FRA = '&Enregistrement';
                 action("Co&mments")
                 {
                     ApplicationArea = all;
                     Image = ViewComments;
                     CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
-                    //RunObject="WDC-QA Page Registration Comment Sheet";
-                    //RunPageLink="Document Type"=FIELD("Document Type"),"No."=FIELD("No.");
+                    RunObject = page "WDC-QA RegistrationCommentList";
+                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
                 }
                 action("Information &Lot No.s")
                 {
@@ -255,7 +257,7 @@ page 50521 "WDC-QA QC Registration"
                         LotInspection: Codeunit "WDC-QA Lot Inspection";
                     begin
                         LotNoInformation.GET(Rec."Item No.", Rec."Variant Code", Rec."Lot No.");
-                        LotInspection.SetSourceValues(1, Rec."Document Type", Rec."No.");
+                        LotInspection.SetSourceValues(1, Rec."Document Type".AsInteger(), Rec."No.");
                         LotInspection.ModifyLotInfo(LotNoInformation, TRUE);
                     end;
                 }
@@ -269,21 +271,11 @@ page 50521 "WDC-QA QC Registration"
                         CLEAR(QualityControlMgt);
                         QualityControlMgt.CheckExistingReturnOrder(Rec);
 
-                        //CLEAR(CreateReturnOrder);
+                        CLEAR(CreateReturnOrder);
                         CurrPage.SETSELECTIONFILTER(RegistrationHeader);
-                        // CreateReturnOrder.SETTABLEVIEW(RegistrationHeader);
-                        // CreateReturnOrder.SetItemNo("Item No.");
-                        // CreateReturnOrder.RUNMODAL;
-                    end;
-                }
-                action("Create &Non Conformance")
-                {
-                    CaptionML = ENU = 'Create &Non Conformance', FRA = 'Créer &non conformité';
-                    Image = NewDocument;
-                    Ellipsis = true;
-                    trigger OnAction()
-                    begin
-                        Rec.CreateNonConformance;
+                        CreateReturnOrder.SETTABLEVIEW(RegistrationHeader);
+                        CreateReturnOrder.SetItemNo(Rec."Item No.");
+                        CreateReturnOrder.RUNMODAL;
                     end;
                 }
                 action("Calculate Result and Conclusion")
@@ -316,7 +308,6 @@ page 50521 "WDC-QA QC Registration"
                     begin
                         Rec.VALIDATE(Status, Rec.Status::Closed);
                         Rec.MODIFY;
-
                         Rec.ReleaseWhseDocument;
                     end;
                 }
@@ -351,6 +342,11 @@ page 50521 "WDC-QA QC Registration"
             }
         }
     }
+    trigger OnOpenPage()
+    begin
+        ActionReleaseWhseDocAndCloseVisible := FALSE;
+    end;
+
     trigger OnAfterGetCurrRecord()
     begin
         ActionReleaseWhseDocAndCloseVisible := Rec."Source Document No." <> '';
@@ -359,11 +355,6 @@ page 50521 "WDC-QA QC Registration"
     trigger OnAfterGetRecord()
     begin
         GetAtrributes;
-    end;
-
-    trigger OnOpenPage()
-    begin
-        ActionReleaseWhseDocAndCloseVisible := FALSE;
     end;
 
     procedure ActivateLotNoInfo()
@@ -376,7 +367,7 @@ page 50521 "WDC-QA QC Registration"
         LotNoInformation.SETFILTER("Lot No.", Rec."Lot No.");
         LotNoInformation.SETFILTER("Item Category Code", Rec."Item Category Code");
         LotNoInformationList2.SETTABLEVIEW(LotNoInformation);
-        LotNoInformationList2.SetSourceValues(1, Rec."Document Type", Rec."No.");
+        LotNoInformationList2.SetSourceValues(1, Rec."Document Type".AsInteger(), Rec."No.");
         LotNoInformationList2.RUNMODAL;
     end;
 
@@ -423,13 +414,12 @@ page 50521 "WDC-QA QC Registration"
 
     local procedure GetAtrributes()
     var
-        LotAttributeManagement: Codeunit "WDC-QALot Attribute Management";
+        LotAttributeManagement: Codeunit "WDC Lot Attribute Mngmt";
     begin
         CLEAR(LotAttributes);
         IF Rec."Lot No." <> '' THEN
             LotAttributeManagement.GetLotAttributes(LotAttributes, Rec."Item No.", Rec."Variant Code", Rec."Lot No.", 0, 0, '', 0, '', 0);
     end;
-
 
     var
         RegistrationHeader: Record "WDC-QA Registration Header";
@@ -441,8 +431,8 @@ page 50521 "WDC-QA QC Registration"
         OldPosition: Text[250];
         NewMethod: Text[30];
         OldMethod: Text[30];
-        //CreateReturnOrder: Report "11018220";
-        LotAttributes: array[5] of Code[10];
+        CreateReturnOrder: Report "WDC-QACreateRegistrReturnOrder";
+        LotAttributes: array[5] of Code[20];
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
 
         DocPrint: Codeunit "WDC-QA Document-Print";

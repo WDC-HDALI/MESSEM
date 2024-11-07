@@ -1,7 +1,7 @@
 page 50515 "WDC-QA Registration List"
 {
     ApplicationArea = All;
-    CaptionML = ENU = 'Registration Lis', FRA = 'Liste d''enregistrement';
+    CaptionML = ENU = 'Registration List', FRA = 'Liste d''enregistrement';
     DataCaptionFields = "Document Type";
     PageType = List;
     SourceTable = "WDC-QA Registration Header";
@@ -67,8 +67,8 @@ page 50515 "WDC-QA Registration List"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            Rec."Document Type"::Calibration:
-                                PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
+                            // Rec."Document Type"::Calibration:
+                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Registration", Rec);
                             Rec."Document Type"::CoA:

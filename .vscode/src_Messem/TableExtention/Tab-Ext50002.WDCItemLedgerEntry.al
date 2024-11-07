@@ -4,12 +4,14 @@ tableextension 50002 "WDC Item Ledger Entry " extends "Item Ledger Entry"
     {
         field(50000; "Shipment Unit"; Code[20])
         {
-            Caption = 'Shipment Unit';
+            CaptionML = ENU = 'Shipment Unit', FRA = 'Unité d''expédition';
+            ;
             DataClassification = ToBeClassified;
         }
         field(50003; "Shipment Container"; Code[20])
         {
-            Caption = 'Shipment Container';
+            CaptionML = ENU = 'Shipment Container', FRA = 'Support logistique';
+            ;
             DataClassification = ToBeClassified;
         }
         field(50004; "Qty Shipm.Units per Shipm.Cont"; Decimal)

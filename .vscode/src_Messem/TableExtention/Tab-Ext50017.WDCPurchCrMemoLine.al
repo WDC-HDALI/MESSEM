@@ -1,4 +1,4 @@
-tableextension 50017 WDCPurchCrMemoLineTabExt extends "Purch. Cr. Memo Line"
+tableextension 50017 "WDC PurchCrMemoLine" extends "Purch. Cr. Memo Line"
 {
 
     fields
@@ -33,6 +33,16 @@ tableextension 50017 WDCPurchCrMemoLineTabExt extends "Purch. Cr. Memo Line"
         {
             CaptionML = ENU = 'Quantity Shipment Containers', FRA = 'Qté de support logistique';
             DecimalPlaces = 0 : 0;
+        }
+        field(50028; "Rebate Code"; Code[20])
+        {
+            CaptionML = ENU = 'Rebate Code', FRA = 'Code bonus';
+            TableRelation = "WDC Rebate Code";
+        }
+        field(50029; "Accrual Amount (LCY)"; Decimal)
+        {
+            CaptionML = ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
+            DataClassification = ToBeClassified;
         }
 
 

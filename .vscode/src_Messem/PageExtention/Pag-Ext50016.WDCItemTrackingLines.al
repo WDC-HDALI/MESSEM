@@ -1,6 +1,9 @@
 namespace MESSEM.MESSEM;
 
 using Microsoft.Inventory.Tracking;
+using Microsoft.Purchases.Document;
+using Microsoft.Manufacturing.Document;
+using Microsoft.Inventory.Journal;
 
 pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
 {
@@ -27,7 +30,7 @@ pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = all;
                 CaptionClass = '13,1,2';
-                // Editable = LotAttributesEditable;
+                Editable = LotAttributesEditable;
                 TableRelation = "WDC Lot Attribute Value".Code WHERE("Lot Attribute No." = CONST("WDC Lot Attribute"::"2"));
 
                 trigger OnValidate()
@@ -39,7 +42,7 @@ pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = all;
                 CaptionClass = '13,1,3';
-                //Editable = LotAttributesEditable;
+                Editable = LotAttributesEditable;
                 TableRelation = "WDC Lot Attribute Value".Code WHERE("Lot Attribute No." = CONST("WDC Lot Attribute"::"3"));
 
                 trigger OnValidate()
@@ -51,7 +54,7 @@ pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = all;
                 CaptionClass = '13,1,4';
-                //Editable = LotAttributesEditable;
+                Editable = LotAttributesEditable;
                 TableRelation = "WDC Lot Attribute Value".Code WHERE("Lot Attribute No." = CONST("WDC Lot Attribute"::"4"));
 
                 trigger OnValidate()
@@ -64,7 +67,7 @@ pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
             {
                 ApplicationArea = all;
                 CaptionClass = '13,1,5';
-                //Editable = LotAttributesEditable;
+                Editable = LotAttributesEditable;
                 TableRelation = "WDC Lot Attribute Value".Code WHERE("Lot Attribute No." = CONST("WDC Lot Attribute"::"5"));
 
                 trigger OnValidate()
@@ -78,18 +81,18 @@ pageextension 50016 "WDC Item Tracking Lines" extends "Item Tracking Lines"
     }
     var
         LotAttributes: array[5] of Code[20];
-        LotNoRequiredErr: Label 'Cannot assign Lot Attributes without Lot No.';
-        TextSI003: Label 'Consignment Management in use.';
+        LotNoRequiredErr: TextConst ENU = 'Cannot assign Lot Attributes without Lot No.', FRA = 'Impossible d''attribuer des attributs sans numéro de lot. »';
+        TextSI003: TextConst ENU = 'Consignment Management in use.', FRA = 'Gestion des expéditions en cours d''utilisation.';
         LotAttributesEditable: Boolean;
         LotAttributeManagement: Codeunit "WDC Lot Attribute Mngmt";
 
-    // local procedure SetLotAttributesEditable(pTrackingSpec: Record "Tracking Specification")
-    // Begin
-    //     IF ((pTrackingSpec."Source Type" = DATABASE::"Item Journal Line") AND (pTrackingSpec."Source Subtype" IN [2, 6])) OR
-    //        ((pTrackingSpec."Source Type" = DATABASE::"Purchase Line") AND (pTrackingSpec."Source Subtype" IN [0, 1, 2, 4])) OR
-    //        (pTrackingSpec."Source Type" = DATABASE::"Prod. Order Line") THEN
-    //         LotAttributesEditable := TRUE;
-    // End;
+    local procedure SetLotAttributesEditable(pTrackingSpec: Record "Tracking Specification")
+    Begin
+        IF ((pTrackingSpec."Source Type" = DATABASE::"Item Journal Line") AND (pTrackingSpec."Source Subtype" IN [2, 6])) OR
+            ((pTrackingSpec."Source Type" = DATABASE::"Purchase Line") AND (pTrackingSpec."Source Subtype" IN [0, 1, 2, 4])) OR
+            (pTrackingSpec."Source Type" = DATABASE::"Prod. Order Line") THEN
+            LotAttributesEditable := TRUE;
+    End;
 
     local procedure GetAtrributes()
     begin

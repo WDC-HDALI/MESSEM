@@ -29,6 +29,7 @@ pageextension 50001 "WDC Prchse Order Subform" extends "Purchase Order Subform"
                 ApplicationArea = all;
 
             }
+
         }
         addafter("Qty. to Receive")
         {
@@ -56,6 +57,17 @@ pageextension 50001 "WDC Prchse Order Subform" extends "Purchase Order Subform"
             {
                 ApplicationArea = all;
 
+            }
+        }
+        addlast(content)
+        {
+            field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
+            {
+                ApplicationArea = all;
+            }
+            field("Rebate Code"; Rec."Rebate Code")
+            {
+                ApplicationArea = all;
             }
         }
     }

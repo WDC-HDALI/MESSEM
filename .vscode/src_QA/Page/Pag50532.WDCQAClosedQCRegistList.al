@@ -58,8 +58,8 @@ page 50532 "WDC-QA Closed QC Regist List"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            Rec."Document Type"::Calibration:
-                                PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
+                            // Rec."Document Type"::Calibration:
+                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Registration", Rec);
                             Rec."Document Type"::CoA:
@@ -80,7 +80,7 @@ page 50532 "WDC-QA Closed QC Regist List"
             {
                 Image = Bank;
                 CaptionML = FRA = 'Impression Suivi CQ';
-                //RunObject=report "WDC-QA Suivi Enregistrement CQ";
+                RunObject = report "WDC-QA Suivi Enregistrement CQ";
             }
         }
     }

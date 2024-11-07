@@ -7,6 +7,10 @@ tableextension 50506 "WDC-QA Warehouse Activity Line" extends "Warehouse Activit
             CaptionML = ENU = 'QC Status', FRA = 'Statut CQ';
             Editable = false;
         }
-
+        field(50501; "QC Registration No."; Code[20])
+        {
+            CaptionML = ENU = 'QC Registration No.', FRA = 'N° enregistrement CQ';
+            Editable = false;
+        }
     }
 }

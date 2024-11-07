@@ -13,7 +13,6 @@ pageextension 50015 WDCSalesOrder extends "Sales Order"
                 ApplicationArea = all;
             }
         }
-
     }
 }
 
