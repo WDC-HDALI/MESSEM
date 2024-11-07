@@ -24,6 +24,11 @@ pageextension 50002 "WDC Sales Order Subform " extends "Sales Order Subform"
                 ApplicationArea = all;
 
             }
+        }
+        addafter("Qty. to Ship")
+        {
+
+
             field("Qty. to Ship Shipment Units"; Rec."Qty. to Ship Shipment Units")
             {
                 ApplicationArea = all;
@@ -35,6 +40,7 @@ pageextension 50002 "WDC Sales Order Subform " extends "Sales Order Subform"
 
             }
         }
+
         addafter("Shipment Date")
         {
 
