@@ -11,7 +11,7 @@ tableextension 50020 "WDC Customer " extends Customer
             CaptionML = ENU = 'Packaging Price', FRA = 'Facturer emballage';
             DataClassification = ToBeClassified;
         }
-        field(50001; "Transport Tariff Code"; Boolean)
+        field(50001; "Transport Tariff Code"; code[20])
         {
             CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
             DataClassification = ToBeClassified;

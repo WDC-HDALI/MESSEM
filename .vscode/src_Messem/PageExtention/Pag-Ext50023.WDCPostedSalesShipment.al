@@ -1,12 +1,12 @@
 namespace MessemMA.MessemMA;
 
-using Microsoft.Sales.Document;
+using Microsoft.Sales.History;
 
-pageextension 50015 WDCSalesOrder extends "Sales Order"
+pageextension 50023 "WDC PostedSalesShipment" extends "Posted Sales Shipment"
 {
     layout
     {
-        addafter("External Document No.")
+        addafter("Order No.")
         {
             field("Pallet Quantity"; Rec."Pallet Quantity")
             {
@@ -25,12 +25,8 @@ pageextension 50015 WDCSalesOrder extends "Sales Order"
             }
             field("Scelle No."; Rec."Scelle No.")
             {
-                CaptionML = ENU = 'Scelle No.', FRA = 'N° Scellé';
                 ApplicationArea = all;
             }
-        }
-        addlast("Foreign Trade")
-        {
             field("Destination Port"; Rec."Destination Port")
             {
                 ApplicationArea = all;
@@ -43,8 +39,8 @@ pageextension 50015 WDCSalesOrder extends "Sales Order"
             {
                 ApplicationArea = all;
             }
+
         }
     }
+
 }
-
-

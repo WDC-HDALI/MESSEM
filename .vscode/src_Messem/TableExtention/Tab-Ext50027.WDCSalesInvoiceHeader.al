@@ -1,8 +1,8 @@
 namespace MessemMA.MessemMA;
 
-using Microsoft.Sales.Document;
+using Microsoft.Sales.History;
 
-tableextension 50024 WDCSalesHeader extends "Sales Header"
+tableextension 50027 "WDC SalesInvoiceHeader" extends "Sales Invoice Header"
 {
     fields
     {
@@ -31,7 +31,7 @@ tableextension 50024 WDCSalesHeader extends "Sales Header"
         {
             CaptionML = ENU = 'Destination Port', FRA = 'Port de destination';
             DataClassification = ToBeClassified;
-            TableRelation = "WDC Harbor";
+            TableRelation = "WDC Forwarding Agent";
         }
         field(50005; "Notify Party 1"; code[20])
         {
@@ -50,10 +50,7 @@ tableextension 50024 WDCSalesHeader extends "Sales Header"
             CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
             DataClassification = ToBeClassified;
             TableRelation = "WDC Transport Tariff Code";
-
         }
-
-
 
     }
 }

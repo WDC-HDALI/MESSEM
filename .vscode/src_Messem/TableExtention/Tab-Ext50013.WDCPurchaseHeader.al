@@ -15,5 +15,6 @@ tableextension 50013 "WDC Purchase Header " extends "Purchase Header"
 
         }
 
+
     }
 }

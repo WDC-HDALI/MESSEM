@@ -6,7 +6,7 @@ tableextension 50014 "WDC Location " extends Location
         {
             CaptionML = ENU = 'Packaging Receive/Shipment Bin Code', FRA = 'Emplacement réception/expédition d''emballage';
             DataClassification = ToBeClassified;
-            TableRelation = Bin.Code WHERE("Code" = FIELD("Code"));
+            TableRelation = Bin.Code WHERE("location code" = FIELD("Code"));
 
         }
     }
