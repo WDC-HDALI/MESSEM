@@ -2,7 +2,7 @@ namespace MessemMA.MessemMA;
 
 using Microsoft.Sales.History;
 
-tableextension 50028 "WDC SalesCrMemoLine" extends "Sales Cr.Memo Line"
+tableextension 50034 "WDC SalesCrMemoLine" extends "Sales Cr.Memo Line"
 {
     fields
     {

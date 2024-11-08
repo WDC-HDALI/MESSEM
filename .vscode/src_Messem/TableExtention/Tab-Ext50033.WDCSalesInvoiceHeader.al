@@ -2,13 +2,13 @@ namespace MessemMA.MessemMA;
 
 using Microsoft.Sales.History;
 
-tableextension 50026 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
+tableextension 50033 "WDC SalesInvoiceHeader" extends "Sales Invoice Header"
 {
     fields
     {
         field(50000; "Pallet Quantity"; Integer)
         {
-            CaptionML = ENU = 'Pallet Quantity', FRA = 'Nombre de palette';
+            CaptionML = ENU = 'Pallet Quantity', FRA = 'par pallet';
             DataClassification = ToBeClassified;
         }
         field(50001; "Scelle No."; code[20])
@@ -25,12 +25,13 @@ tableextension 50026 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
         {
             CaptionML = ENU = 'Forwarding Agent', FRA = 'Code transitaire';
             DataClassification = ToBeClassified;
+            TableRelation = "WDC Forwarding Agent";
         }
         field(50004; "Destination Port"; code[20])
         {
             CaptionML = ENU = 'Destination Port', FRA = 'Port de destination';
             DataClassification = ToBeClassified;
-            TableRelation = "WDC Harbor";
+            TableRelation = "WDC Forwarding Agent";
         }
         field(50005; "Notify Party 1"; code[20])
         {
@@ -44,5 +45,12 @@ tableextension 50026 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
             DataClassification = ToBeClassified;
             TableRelation = "WDC Notify Party".Code WHERE(harbor = FIELD("Destination Port"));
         }
+        field(50007; "Transport Tariff Code"; code[20])
+        {
+            CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
+            DataClassification = ToBeClassified;
+            TableRelation = "WDC Transport Tariff Code";
+        }
+
     }
 }

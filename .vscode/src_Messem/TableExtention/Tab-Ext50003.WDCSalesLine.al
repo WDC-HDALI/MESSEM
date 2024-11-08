@@ -1,4 +1,4 @@
-tableextension 50003 "WDC Sales Line TabExt " extends "Sales Line"
+tableextension 50003 "WDC Sales Line" extends "Sales Line"
 {
     fields
     {
@@ -190,7 +190,11 @@ tableextension 50003 "WDC Sales Line TabExt " extends "Sales Line"
                 // CheckAvailUnitPriceCalculation(FIELDNO("Quantity Shipment Containers"));//verif
             end;
         }
-
+        field(50010; "Packaging Item"; Boolean)
+        {
+            CaptionML = ENU = 'Packaging Item', FRA = 'Article d''emballage';
+            DataClassification = ToBeClassified;
+        }
 
         field(50011; "Qty. to Ship Shipment Units"; Decimal)
         {
@@ -343,13 +347,15 @@ tableextension 50003 "WDC Sales Line TabExt " extends "Sales Line"
             Editable = false;
 
         }
-        field(50010; "Packaging Item"; Boolean)
+
+        field(50027; "Packaging Return"; Boolean)
         {
-            Caption = 'Packaging Item';
+            CaptionML = ENU = 'Packaging Return', FRA = 'Retour d''emballage';
             DataClassification = ToBeClassified;
 
         }
     }
+
     procedure MaxShipUnitsToInvoice(): Decimal
     begin
         IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN

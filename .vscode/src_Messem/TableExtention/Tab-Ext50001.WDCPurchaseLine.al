@@ -260,7 +260,11 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             CaptionML = ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
             DataClassification = ToBeClassified;
         }
-
+        field(50030; "Scale Weight"; Decimal)
+        {
+            CaptionML = ENU = 'Scale Weight', FRA = 'Poids balance';
+            DataClassification = ToBeClassified;
+        }
 
     }
     procedure MaxShipUnitsToInvoice(): Decimal
