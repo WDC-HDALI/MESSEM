@@ -1,0 +1,33 @@
+{
+  "id": "716adee9-4ca9-4f1a-a41d-64b351d92a09",
+  "name": "MESSEM",
+  "publisher": "WEDATA CONSULT",
+  "version": "1.0.0.5",
+  "brief": "",
+  "description": "SPE Messem",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 50999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.1",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

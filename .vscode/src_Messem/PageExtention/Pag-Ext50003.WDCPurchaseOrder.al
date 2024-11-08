@@ -23,17 +23,17 @@ pageextension 50003 "WDC Purchase Order " extends "Purchase Order"
         {
             action("&Print Label")
             {
-                Caption = '&Print Label';
+                CaptionML = ENU = 'Label', FRA = 'Étiquette';
                 Ellipsis = true;
                 Image = PrintDocument;
                 Promoted = true;
                 PromotedCategory = "Report";
-
+                ApplicationArea = all;
                 trigger OnAction()
                 begin
 
                     CurrPage.SETSELECTIONFILTER(Rec);
-                    REPORT.RUNMODAL(50004, TRUE, FALSE, Rec);
+                    REPORT.RUNMODAL(50008, TRUE, FALSE, Rec);
                 end;
             }
 

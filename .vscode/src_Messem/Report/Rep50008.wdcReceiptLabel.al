@@ -1,12 +1,9 @@
 report 50008 "WDC Receipt Label"
 {
-    // 25/02/2015  ISAT01  Isatech.ML  Modification : Regroupement palette.
-    // 20/01/2014  ISAT01  Isatech.ST  Modification : le nbr de palette = Nb support log. et non le nbr de ligne
-    // 19/11/2013  ISAT01  Isatech.ST  Création d'un nouvel report 50002
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/ReceiptLabel.rdlc';
-
-    Caption = 'Receipt Label';
+    CaptionML = ENU = 'Receipt Label', FRA = 'Étiquette Réception';
+    ApplicationArea = all;
 
     dataset
     {
@@ -23,12 +20,7 @@ report 50008 "WDC Receipt Label"
 
                 trigger OnAfterGetRecord()
                 begin
-                    //<<ML
-                    //PalletTotal := "Purchase Line"."Quantity Shipment Containers";
                     PalletTotal += "Purchase Line"."Quantity Shipment Containers";
-                    //>>ML
-                    //IF "Purchase Line"."Quantity Received" = 0 THEN
-                    //CurrReport.SKIP;
                     LotNo := '';
                     ReservEntry.RESET;
                     ReservEntry.SETCURRENTKEY("Source Type", "Source Subtype", "Source ID", "Source Batch Name", "Source Prod. Order Line", "Source Ref. No.", "Reservation Status", "Expected Receipt Date");
@@ -53,10 +45,8 @@ report 50008 "WDC Receipt Label"
                     IF LotNo = '' THEN
                         CurrReport.SKIP;
 
-                    //<< ML
                     QuantityShipmentUnits += "Purchase Line"."Quantity Shipment Units";
                     ScaleWeight += "Purchase Line"."Scale Weight";
-                    //>> ML
                 end;
             }
             dataitem(DataItem1100281011; 2000000026)
