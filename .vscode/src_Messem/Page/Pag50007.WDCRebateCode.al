@@ -27,19 +27,11 @@ page 50007 "WDC Rebate Code"
             }
             repeater(Control1)
             {
-                field(Type; Rec.Type)
-                {
-                    ApplicationArea = all;
-                }
                 field(Code; Rec.Code)
                 {
                     ApplicationArea = all;
                 }
                 field(Description; Rec.Description)
-                {
-                    ApplicationArea = all;
-                }
-                field("Rebate Method"; Rec."Rebate Method")
                 {
                     ApplicationArea = all;
                 }
@@ -56,10 +48,6 @@ page 50007 "WDC Rebate Code"
                     ApplicationArea = all;
                 }
                 field("Currency Code"; Rec."Currency Code")
-                {
-                    ApplicationArea = all;
-                }
-                field("Register Option Purchase Rebat"; Rec."Register Option Purchase Rebat")
                 {
                     ApplicationArea = all;
                 }
@@ -86,10 +74,12 @@ page 50007 "WDC Rebate Code"
                 {
                     CaptionML = ENU = 'Rebate Scales', FRA = 'Accord échelonnement';
                     ApplicationArea = all;
+                    Promoted = true;
+                    PromotedIsBig = true;
+                    PromotedCategory = Process;
                     Image = RollUpCosts;
                     RunObject = Page "WDC Rebate Scales";
-                    RunPageLink = Type = FIELD(Type),
-                                  Code = FIELD(Code);
+                    RunPageLink = Code = FIELD(Code);
                 }
                 action("E&ntries")
                 {
@@ -97,13 +87,15 @@ page 50007 "WDC Rebate Code"
                     Image = CostEntries;
                     ShortCutKey = 'Ctrl+F7';
                     ApplicationArea = all;
+                    Promoted = true;
+                    PromotedIsBig = true;
+                    PromotedCategory = Process;
                     trigger OnAction()
                     var
                         RebateEntry: Record "WDC Rebate Entry";
                     begin
-                        RebateEntry.SETCURRENTKEY("Rebate Code", "Posting Type");
+                        RebateEntry.SETCURRENTKEY("Rebate Code");
                         RebateEntry.SETRANGE("Rebate Code", rec.Code);
-                        RebateEntry.SETRANGE("Posting Type", rec.Type.AsInteger + 1);
                         PAGE.RUNMODAL(0, RebateEntry);
                     end;
                 }
@@ -143,7 +135,7 @@ page 50007 "WDC Rebate Code"
     begin
         GetRecFilters;
 
-        EXIT(STRSUBSTNO('%1 %2', Rec.Type, Rec.Code));
+        EXIT(STRSUBSTNO('%1', Rec.Code));
     end;
 
     local procedure StartingDateFilterOnAfterValid()

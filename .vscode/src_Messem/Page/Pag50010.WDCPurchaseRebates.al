@@ -48,15 +48,6 @@ page 50010 "WDC Purchase Rebates"
                         StartingDateFilterOnAfterValid;
                     end;
                 }
-                field(ItemTypeFilter; ItemTypeFilter)
-                {
-                    CaptionML = ENU = 'Type Filter', FRA = 'Filtre Type';
-                    ApplicationArea = all;
-                    trigger OnValidate()
-                    begin
-                        ItemTypeFilterOnAfterValidate;
-                    end;
-                }
                 field(CodeFilterCtrl; CodeFilter)
                 {
                     CaptionML = ENU = 'Code Filter', FRA = 'Filtre Code';
@@ -68,26 +59,25 @@ page 50010 "WDC Purchase Rebates"
                         ItemList: Page 31;
                         ItemRebateGrList: Page "WDC Item Rebate Groups";
                     begin
-                        CASE Rec.Type OF
-                            Rec.Type::Item:
-                                BEGIN
-                                    ItemList.LOOKUPMODE := TRUE;
-                                    IF ItemList.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := ItemList.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                            Rec.Type::"Item Rebate Group":
-                                BEGIN
-                                    ItemRebateGrList.LOOKUPMODE := TRUE;
-                                    ItemRebateGrList.SetTypeFilter(1);
-                                    ItemRebateGrList.SETTABLEVIEW(ItemRebateGroup);
-                                    IF ItemRebateGrList.RUNMODAL = ACTION::LookupOK THEN
-                                        Text := ItemRebateGrList.GetSelectionFilter
-                                    ELSE
-                                        EXIT(FALSE);
-                                END;
-                        END;
+                        // CASE Rec.Type OF
+                        //     Rec.Type::Item:
+                        //         BEGIN
+                        //             ItemList.LOOKUPMODE := TRUE;
+                        //             IF ItemList.RUNMODAL = ACTION::LookupOK THEN
+                        //                 Text := ItemList.GetSelectionFilter
+                        //             ELSE
+                        //                 EXIT(FALSE);
+                        //         END;
+                        //     Rec.Type::"Item Rebate Group":
+                        //         BEGIN
+                        //             ItemRebateGrList.LOOKUPMODE := TRUE;
+                        //             ItemRebateGrList.SETTABLEVIEW(ItemRebateGroup);
+                        //             IF ItemRebateGrList.RUNMODAL = ACTION::LookupOK THEN
+                        //                 Text := ItemRebateGrList.GetSelectionFilter
+                        //             ELSE
+                        //                 EXIT(FALSE);
+                        //         END;
+                        // END;
 
                         EXIT(TRUE);
                     end;
@@ -105,24 +95,12 @@ page 50010 "WDC Purchase Rebates"
                     Editable = "Vendor No.Editable";
                     ApplicationArea = all;
                 }
-                field(Type; Rec.Type)
-                {
-                    ApplicationArea = all;
-                }
                 field(Code; Rec.Code)
                 {
                     ApplicationArea = all;
                 }
-                field("Unit of Measure Code"; Rec."Unit of Measure Code")
-                {
-                    Editable = true;
-                    ApplicationArea = all;
-                }
+
                 field("Rebate Code"; Rec."Rebate Code")
-                {
-                    ApplicationArea = all;
-                }
-                field("Rebate Method"; Rec."Rebate Method")
                 {
                     ApplicationArea = all;
                 }
@@ -144,10 +122,6 @@ page 50010 "WDC Purchase Rebates"
                 }
             }
         }
-    }
-
-    actions
-    {
     }
 
     trigger OnInit()
@@ -176,7 +150,6 @@ page 50010 "WDC Purchase Rebates"
         Item: Record 27;
         ItemRebateGr: Record "WDC Item Rebate Group";
         VendorNoFilter: Text[250];
-        ItemTypeFilter: Enum "WDC Rebate Item Type";
         CodeFilter: Text[250];
         StartingDateFilter: Text[30];
         "Vendor No.Editable": Boolean;
@@ -186,11 +159,6 @@ page 50010 "WDC Purchase Rebates"
     procedure GetRecFilters()
     begin
         IF Rec.GETFILTERS <> '' THEN BEGIN
-            IF Rec.GETFILTER(Type) <> '' THEN
-                ItemTypeFilter := Rec.Type
-            ELSE
-                ItemTypeFilter := ItemTypeFilter::None;
-
             EVALUATE(StartingDateFilter, Rec.GETFILTER("Starting Date"));
 
             VendorNoFilter := Rec.GETFILTER("Vendor No.");
@@ -207,16 +175,6 @@ page 50010 "WDC Purchase Rebates"
             Rec.SETFILTER("Vendor No.", VendorNoFilter)
         ELSE
             Rec.SETRANGE("Vendor No.");
-
-        IF ItemTypeFilter <> ItemTypeFilter::None THEN
-            Rec.SETRANGE(Type, ItemTypeFilter)
-        ELSE
-            Rec.SETRANGE(Type);
-
-        IF ItemTypeFilter = ItemTypeFilter::None THEN BEGIN
-            CodeFilterCtrlEnable := FALSE;
-            CodeFilter := '';
-        END;
 
         IF StartingDateFilter <> '' THEN
             Rec.SETFILTER("Starting Date", StartingDateFilter)
@@ -242,18 +200,7 @@ page 50010 "WDC Purchase Rebates"
         "Vendor No.Editable" := TRUE;
 
         SourceTableName := '';
-        CASE ItemTypeFilter OF
-            ItemTypeFilter::Item:
-                BEGIN
-                    SourceTableName := ObjTransl.TranslateObject(ObjTransl."Object Type"::Table, 27);
-                    Item."No." := CodeFilter;
-                END;
-            ItemTypeFilter::"Item Rebate Group":
-                BEGIN
-                    SourceTableName := ObjTransl.TranslateObject(ObjTransl."Object Type"::Table, 11018348);
-                    ItemRebateGr.Code := CodeFilter;
-                END;
-        END;
+
 
         PurchaseSrcTableName := ObjTransl.TranslateObject(ObjTransl."Object Type"::Table, 23);
         Vendor."No." := VendorNoFilter;
@@ -263,9 +210,8 @@ page 50010 "WDC Purchase Rebates"
         EXIT(STRSUBSTNO('%1 %2 %3 %4 %5', PurchaseSrcTableName, VendorNoFilter, Description, SourceTableName, CodeFilter));
     end;
 
-    procedure SetParameters(ItemTypeFilter2: Enum "WDC Rebate Item Type"; CodeFilter2: Code[20])
+    procedure SetParameters(CodeFilter2: Code[20])
     begin
-        ItemTypeFilter := ItemTypeFilter2;
         CodeFilter := CodeFilter2;
     end;
 

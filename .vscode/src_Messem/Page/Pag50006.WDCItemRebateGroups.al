@@ -14,10 +14,6 @@ page 50006 "WDC Item Rebate Groups"
         {
             repeater(control1)
             {
-                field(Type; rec.Type)
-                {
-                    ApplicationArea = all;
-                }
                 field(Code; rec.Code)
                 {
                     ApplicationArea = all;
@@ -48,14 +44,9 @@ page 50006 "WDC Item Rebate Groups"
                         PurchaseRebate: Record "WDC Purchase Rebate";
                         PurchaseRebates: Page "WDC Purchase Rebates";
                     begin
-                        CASE Rec.Type OF
-                            Rec.Type::Purchase:
-                                BEGIN
-                                    PurchaseRebates.SetParameters(PurchaseRebate.Type::"Item Rebate Group", Rec.Code);
-                                    PurchaseRebates.SETTABLEVIEW(PurchaseRebate);
-                                    PurchaseRebates.RUNMODAL();
-                                END;
-                        END;
+                        PurchaseRebates.SetParameters(Rec.Code);
+                        PurchaseRebates.SETTABLEVIEW(PurchaseRebate);
+                        PurchaseRebates.RUNMODAL();
                     end;
                 }
             }
@@ -67,8 +58,6 @@ page 50006 "WDC Item Rebate Groups"
     end;
 
     var
-        TransactionTypeFilter: Enum "WDC Rebate Posting type";
-
     procedure GetSelectionFilter(): Code[80]
     var
         ItemRebateGr: Record "WDC Item Rebate Group";
@@ -115,10 +104,6 @@ page 50006 "WDC Item Rebate Groups"
         EXIT(SelectionFilter);
     end;
 
-    procedure SetTypeFilter(TransactionTypeFilter2: enum "WDC Rebate Posting type")
-    begin
-        TransactionTypeFilter := TransactionTypeFilter2
-    end;
 
 
 }

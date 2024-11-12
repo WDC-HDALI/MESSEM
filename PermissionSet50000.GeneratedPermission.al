@@ -163,5 +163,7 @@ permissionset 50000 GeneratedPermission
         report "WDC Sales Shipment" = X,
         page "WDC Forwarding Agent" = X,
         page "WDC Harbor" = X,
-        page "WDC Notify Party" = X;
+        page "WDC Notify Party" = X,
+        codeunit "WDC Rebate Subsc Accounting" = X,
+        codeunit "WDC Rebate Subsc. Purchase" = X;
 }

@@ -2,8 +2,8 @@ page 50008 "WDC Rebate Entries"
 {
 
     CaptionML = ENU = 'Rebate Entries', FRA = 'Ecritures Bonus';
-    DataCaptionFields = "Sell-to/Buy-from No.";
-    Editable = true;
+    DataCaptionFields = "Buy-from No.";
+    Editable = false;
     PageType = List;
     SourceTable = "WDC Rebate Entry";
     UsageCategory = Lists;
@@ -39,11 +39,8 @@ page 50008 "WDC Rebate Entries"
                 {
                     ApplicationArea = all;
                 }
-                field("Posting Type"; Rec."Posting Type")
-                {
-                    ApplicationArea = all;
-                }
-                field("Sell-to/Buy-from No."; Rec."Sell-to/Buy-from No.")
+
+                field("Sell-to/Buy-from No."; Rec."Buy-from No.")
                 {
                     ApplicationArea = all;
                 }
@@ -59,15 +56,7 @@ page 50008 "WDC Rebate Entries"
                 {
                     ApplicationArea = all;
                 }
-                field("Rebate Unit of Measure Code"; Rec."Rebate Unit of Measure Code")
-                {
-                    ApplicationArea = all;
-                }
                 field(Open; rec.Open)
-                {
-                    ApplicationArea = all;
-                }
-                field("Rebate Method"; Rec."Rebate Method")
                 {
                     ApplicationArea = all;
                 }
@@ -91,18 +80,8 @@ page 50008 "WDC Rebate Entries"
                 {
                     ApplicationArea = all;
                 }
-                field("Item Type"; Rec."Item Type")
-                {
-                    ApplicationArea = all;
-                }
-                field("Item Code"; Rec."Item Code")
-                {
-                    ApplicationArea = all;
-                }
-                field("Unit of Measure Code"; Rec."Unit of Measure Code")
-                {
-                    ApplicationArea = all;
-                }
+
+
                 field("Closed by Entry No."; Rec."Closed by Entry No.")
                 {
                     ApplicationArea = all;
