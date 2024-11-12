@@ -1,6 +1,7 @@
 table 50014 "WDC Harbor"
 {
-    Caption = 'Harbor';
+
+    CaptionML = ENU = 'Harbor', FRA = 'Port';
     DrillDownPageID = "WDC Harbor";
     LookupPageID = "WDC Harbor";
 

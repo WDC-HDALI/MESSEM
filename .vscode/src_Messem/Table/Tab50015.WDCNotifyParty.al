@@ -1,7 +1,8 @@
 table 50015 "WDC Notify Party"
 {
 
-    Caption = 'Notify Party';
+
+    CaptionML = ENU = 'Notify Party', FRA = 'Partie à informer';
     DrillDownPageID = "WDC Notify Party";
     LookupPageID = "WDC Notify Party";
 

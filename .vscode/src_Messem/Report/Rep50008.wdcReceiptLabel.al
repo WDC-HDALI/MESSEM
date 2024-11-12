@@ -2,7 +2,7 @@ report 50008 "WDC Receipt Label"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/ReceiptLabel.rdlc';
-    CaptionML = ENU = 'Receipt Label', FRA = 'Étiquette Réception';
+    CaptionML = ENU = 'Receipt Label', FRA = 'Étiquette réception';
     ApplicationArea = all;
 
     dataset
@@ -49,7 +49,7 @@ report 50008 "WDC Receipt Label"
                     ScaleWeight += "Purchase Line"."Scale Weight";
                 end;
             }
-            dataitem(DataItem1100281011; 2000000026)
+            dataitem(DataItem1100281011; integer)
             {
                 column(CompanyInfoPicture; CompanyInfo.Picture)
                 {

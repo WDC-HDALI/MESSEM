@@ -185,6 +185,8 @@ table 50004 "WDC Customer/Vendor Packaging"
     }
 
 
+
+
     keys
     {
         key(Key1; "Source Type", "Source No.", "Code")
@@ -195,6 +197,20 @@ table 50004 "WDC Customer/Vendor Packaging"
         {
         }
     }
+    procedure IsShippingAgent(): Boolean
+    var
+        ShippingAgent: Record "Shipping Agent";
+    begin
+        CASE "Source Type" OF
+            DATABASE::Customer:
+                ShippingAgent.SETRANGE("Customer No.", "Source No.");
+            DATABASE::Vendor:
+                ShippingAgent.SETRANGE("Vendor No.", "Source No.");
+        END;
+
+        EXIT(NOT ShippingAgent.ISEMPTY);
+    end;
+
     var
         Customer: record Customer;
         Vendor: record Vendor;

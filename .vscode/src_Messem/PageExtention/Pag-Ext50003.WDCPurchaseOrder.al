@@ -15,20 +15,20 @@ pageextension 50003 "WDC Purchase Order " extends "Purchase Order"
                 CaptionML = ENU = 'Parcel No.', FRA = 'N° parcelle';
             }
         }
-
     }
     actions
     {
-        addlast(Reporting)
+
+        addlast(processing)
         {
-            action("&Print Label")
+
+            action("label")
             {
                 CaptionML = ENU = 'Label', FRA = 'Étiquette';
                 Ellipsis = true;
                 Image = PrintDocument;
-                Promoted = true;
-                PromotedCategory = "Report";
-                ApplicationArea = all;
+                ApplicationArea = Basic, Suite;
+
                 trigger OnAction()
                 begin
 
@@ -38,8 +38,19 @@ pageextension 50003 "WDC Purchase Order " extends "Purchase Order"
             }
 
         }
+        addlast(Category_Category10)
+        {
 
+            actionref("labelref"; "label")
+            {
+
+            }
+
+
+        }
     }
 
-
 }
+
+
+

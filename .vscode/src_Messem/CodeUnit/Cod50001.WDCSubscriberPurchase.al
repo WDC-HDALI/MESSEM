@@ -185,6 +185,13 @@ codeunit 50001 "WDC Subscriber Purchase"
               ROUND((PurchRcptLine.Quantity - PurchRcptLine."Quantity Invoiced") / PurchaseLine."Qty. per Shipment Container", 1, '>'));
     end;
 
+    [EventSubscriber(ObjectType::Table, database::"Purch. Rcpt. Line", OnAfterInitFromPurchLine, '', FALSE, FALSE)]
+    local procedure OnAfterInitFromPurchLine3(PurchRcptHeader: Record "Purch. Rcpt. Header"; PurchLine: Record "Purchase Line"; var PurchRcptLine: Record "Purch. Rcpt. Line")
+    begin
+        PurchRcptLine."Quantity Shipment Units" := PurchLine."Reserv Qty. to Post Ship.Unit";
+        PurchRcptLine."Quantity Shipment Containers" := PurchLine."Reserv Qty. to Post Ship.Cont.";
+    end;
+
     [EventSubscriber(ObjectType::Table, database::"Purch. Inv. Line", 'OnAfterInitFromPurchLine', '', FALSE, FALSE)]
     local procedure OnAfterInitFromPurchLine2(PurchInvHeader: Record "Purch. Inv. Header"; PurchLine: Record "Purchase Line"; var PurchInvLine: Record "Purch. Inv. Line")
     begin
@@ -208,6 +215,40 @@ codeunit 50001 "WDC Subscriber Purchase"
             PurchaseLine."Reserv Qty. to Post Ship.Cont." := 0;
         end;
     end;
+    //corection facture 
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnBeforeUpdateQtyToInvoiceForOrder', '', FALSE, FALSE)]
+    local procedure OnBeforeUpdateQtyToInvoiceForOrder(var PurchHeader: Record "Purchase Header"; TempPurchLine: Record "Purchase Line" temporary; var IsHandled: Boolean)
+    begin
+        if Abs(TempPurchLine."Quantity Invoiced" + TempPurchLine."Qty. to Invoice") > Abs(TempPurchLine."Quantity Received") then begin
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Units to invoice",
+                   TempPurchLine."Qty. Received Shipment Units" - TempPurchLine."Qty. S.Units Invoiced");
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Cont. to invoice",
+              TempPurchLine."Qty. Received Shipm.Containers" - TempPurchLine."Qty. S.Cont. Invoiced");
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnPostUpdateOrderLineOnSetDefaultQtyBlank', '', FALSE, FALSE)]
+    local procedure OnPostUpdateOrderLineOnSetDefaultQtyBlank(var PurchaseHeader: Record "Purchase Header"; var TempPurchaseLine: Record "Purchase Line" temporary; PurchPost: Record "Purchases & Payables Setup"; var SetDefaultQtyBlank: Boolean)
+    begin
+        TempPurchaseLine."Reserv Qty. to Post Ship.Unit" := 0;
+        TempPurchaseLine."Reserv Qty. to Post Ship.Cont." := 0;
+
+    end;
+
+    local procedure OnBeforeUpdateQtyToInvoiceForReturnOrder(var PurchHeader: Record "Purchase Header"; TempPurchLine: Record "Purchase Line" temporary; var IsHandled: Boolean)
+    begin
+        if Abs(TempPurchLine."Quantity Invoiced" + TempPurchLine."Qty. to Invoice") > Abs(TempPurchLine."Return Qty. Shipped") then begin
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Units to invoice",
+                TempPurchLine."Return Qty. Shipped S.Units" - TempPurchLine."Qty. S.Units Invoiced");
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Cont. to invoice",
+              TempPurchLine."Return Qty. Shipped S.Cont." - TempPurchLine."Qty. S.Cont. Invoiced");
+        end;
+        TempPurchLine."Qty. S.Units Invoiced" := TempPurchLine."Qty. S.Units Invoiced" + TempPurchLine."Qty. S.Units to invoice";
+        TempPurchLine."Qty. S.Cont. Invoiced" := TempPurchLine."Qty. S.Cont. Invoiced" + TempPurchLine."Qty. S.Cont. to invoice";
+
+    end;
+    //
+
     //avoir
     [EventSubscriber(ObjectType::Table, database::"Purch. Cr. Memo Line", 'OnAfterInitFromPurchLine', '', FALSE, FALSE)]
     local procedure OnAfterInitFromPurchLineavoir(PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; var PurchCrMemoLine: Record "Purch. Cr. Memo Line")

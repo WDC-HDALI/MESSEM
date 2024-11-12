@@ -11,7 +11,7 @@ report 50010 "WDC Sales Shipment"
 
     dataset
     {
-        dataitem("Sales Shipment Header"; 110)
+        dataitem("Sales Shipment Header"; "Sales Shipment Header")
         {
             DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
@@ -22,10 +22,10 @@ report 50010 "WDC Sales Shipment"
             column(No_SalesShptHeader; "No.")
             {
             }
-            dataitem(CopyLoop; 2000000026)
+            dataitem(CopyLoop; integer)
             {
                 DataItemTableView = SORTING(Number);
-                dataitem(PageLoop; 2000000026)
+                dataitem(PageLoop; integer)
                 {
                     DataItemTableView = SORTING(Number)
                                         WHERE(Number = CONST(1));
@@ -164,10 +164,28 @@ report 50010 "WDC Sales Shipment"
                     column(NotifyParty_Designation; NotifyParty.Désignation)
                     {
                     }
+                    column(NotifyParty2_Designation; NotifyParty2.Désignation)
+                    {
+                    }
                     column(NotifyParty_City; NotifyParty.City)
                     {
                     }
+                    column(NotifyParty2_City; NotifyParty2.City)
+                    {
+                    }
                     column(NotifyPostCode; NotifyPostCode)
+                    {
+                    }
+                    column(NotifyPartyAdress2; NotifyPartyAdress2)
+                    {
+                    }
+                    column(NotifyPartyPhone2; NotifyPartyPhone2)
+                    {
+                    }
+                    column(NotifyPartyEmail2; NotifyPartyEmail2)
+                    {
+                    }
+                    column(NotifyPostCode2; NotifyPostCode2)
                     {
                     }
                     column(ShipAddressCode; ShipAddress.Name)
@@ -248,7 +266,10 @@ report 50010 "WDC Sales Shipment"
                     column(TranspNameCaption; TranspNameCaption)
                     {
                     }
-                    column(NotifyPartyCaption; NotifyPartyCaption)
+                    column(NotifyPartyCaption; NotifyParty1Caption)
+                    {
+                    }
+                    column(NotifyParty2Caption; NotifyParty2Caption)
                     {
                     }
                     column(HarmTariffCodeCaption; HarmTariffCodeCaption)
@@ -296,7 +317,7 @@ report 50010 "WDC Sales Shipment"
                     column(Coment_2; Coment[2])
                     {
                     }
-                    dataitem(DimensionLoop1; 2000000026)
+                    dataitem(DimensionLoop1; integer)
                     {
                         DataItemLinkReference = "Sales Shipment Header";
                         DataItemTableView = SORTING(Number)
@@ -452,7 +473,7 @@ report 50010 "WDC Sales Shipment"
                         column(Format4; Format4)
                         {
                         }
-                        dataitem("Item Ledger Entry"; 32)
+                        dataitem("Item Ledger Entry"; "Item Ledger Entry")
                         {
                             DataItemLink = "Item No." = FIELD("No."),
                                            "Document Line No." = FIELD("Order Line No."),
@@ -473,7 +494,7 @@ report 50010 "WDC Sales Shipment"
                             {
                             }
                         }
-                        dataitem(DimensionLoop2; 2000000026)
+                        dataitem(DimensionLoop2; integer)
                         {
                             DataItemTableView = SORTING(Number)
                                                 WHERE(Number = FILTER(1 ..));
@@ -518,7 +539,7 @@ report 50010 "WDC Sales Shipment"
                                     CurrReport.BREAK;
                             end;
                         }
-                        dataitem(DisplayAsmInfo; 2000000026)
+                        dataitem(DisplayAsmInfo; integer)
                         {
                             DataItemTableView = SORTING(Number);
                             column(PostedAsmLineItemNo; BlanksForIndent + PostedAsmLine."No.")
@@ -583,19 +604,13 @@ report 50010 "WDC Sales Shipment"
                                     GrossWeightt += "Quantity Shipment Containers" * Packaging.Weight; //WDC01
                                     TotalWeight += "Quantity Shipment Containers" * Packaging.Weight;
                                 END;
-                                //  MESSAGE('%1', TotalWeight);
-                                //TotalWeighttxt:=FORMAT(TotalWeight);
-                                //posit:=STRPOS(TotalWeighttxt,'');
-                                //MESSAGE('%1',posit);
-                                //<<
+
                                 PalletDescription := Packaging.Description;
                             END;
-                            //<<
 
                             IF "Sales Shipment Line".Type = "Sales Shipment Line".Type::Item THEN //WDC03
                                 TotalQty2 += Quantity;
                             TotalBox += "Quantity Shipment Units";
-                            //>>Delta Achour 28/09/2018
                             IF "Unit of Measure" = 'Kilo' THEN
                                 UnitMeas := 'KG' ELSE
                                 UnitMeas := "Unit of Measure";
@@ -606,9 +621,7 @@ report 50010 "WDC Sales Shipment"
                                 'PAL E':
                                     UniContainer := 'PC';
                             END;
-                            //<< Delta Achour 28/09/2018
 
-                            //>> DELTA OKH
                             IF "Shipment Container" = 'PAL B' THEN
                                 lPAL := 'BLOCPallet'
                             ELSE IF "Shipment Container" = 'PAL E' THEN
@@ -635,7 +648,6 @@ report 50010 "WDC Sales Shipment"
                                 Format4 := '#0"."###'
                             ELSE
                                 Format4 := '###';
-                            // << DELTA OKH
                             //<<WDC02
                             IF ("Sales Shipment Line".Type = "Sales Shipment Line".Type::Item) OR ("Sales Shipment Line".Type = "Sales Shipment Line".Type::"Charge (Item)") THEN
                                 ItemNoGrp := "Sales Shipment Line"."No.";
@@ -644,7 +656,6 @@ report 50010 "WDC Sales Shipment"
 
                         trigger OnPostDataItem()
                         begin
-                            // Item Tracking:
                             IF ShowLotSN THEN BEGIN
                                 ItemTrackingMgt.SetRetrieveAsmItemTracking(TRUE);
                                 TrackingSpecCount := ItemTrackingMgt.RetrieveDocumentItemTracking(TrackingSpecBuffer, "Sales Shipment Header"."No.",
@@ -663,12 +674,12 @@ report 50010 "WDC Sales Shipment"
                             SETRANGE("Line No.", 0, "Line No.");
                         end;
                     }
-                    dataitem(Total; 2000000026)
+                    dataitem(Total; integer)
                     {
                         DataItemTableView = SORTING(Number)
                                             WHERE(Number = CONST(1));
                     }
-                    dataitem(Total2; 2000000026)
+                    dataitem(Total2; integer)
                     {
                         DataItemTableView = SORTING(Number)
                                             WHERE(Number = CONST(1));
@@ -712,7 +723,7 @@ report 50010 "WDC Sales Shipment"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(ItemTrackingLine; 2000000026)
+                    dataitem(ItemTrackingLine; integer)
                     {
                         DataItemTableView = SORTING(Number);
                         column(TrackingSpecBufferNo; TrackingSpecBuffer."Item No.")
@@ -751,7 +762,7 @@ report 50010 "WDC Sales Shipment"
                         column(NoCaption; NoCaptionLbl)
                         {
                         }
-                        dataitem(TotalItemTracking; 2000000026)
+                        dataitem(TotalItemTracking; integer)
                         {
                             DataItemTableView = SORTING(Number)
                                                 WHERE(Number = CONST(1));
@@ -796,7 +807,6 @@ report 50010 "WDC Sales Shipment"
 
                     trigger OnPreDataItem()
                     begin
-                        // Item Tracking:
                         IF ShowLotSN THEN BEGIN
                             TrackingSpecCount := 0;
                             OldRefNo := 0;
@@ -811,8 +821,7 @@ report 50010 "WDC Sales Shipment"
                         CopyText := Text001;
                         OutputNo += 1;
                     END;
-                    //CurrReport.PAGENO := 1;
-                    TotalQty := 0;           // Item Tracking
+                    TotalQty := 0;
                 end;
 
                 trigger OnPostDataItem()
@@ -832,7 +841,7 @@ report 50010 "WDC Sales Shipment"
 
             trigger OnAfterGetRecord()
             var
-                lNotifyPartyAPostCode: Record 225;
+                lNotifyPartyAPostCode: Record "Post Code";
             begin
                 CurrReport.LANGUAGE := Languagerec.GetLanguageID("Language Code");
 
@@ -870,12 +879,14 @@ report 50010 "WDC Sales Shipment"
                           5, "No.", 0, 0, DATABASE::Customer, "Sell-to Customer No.", "Salesperson Code",
                           "Campaign No.", "Posting Description", '');
 
-                //Notify party
                 Harbor.RESET;
                 NotifyParty.RESET;
                 NotifyPartyAdress := '';
                 NotifyPartyEmail := '';
                 NotifyPartyPhone := '';
+                NotifyPartyAdress2 := '';
+                NotifyPartyEmail2 := '';
+                NotifyPartyPhone2 := '';
                 CLEAR(NotifyParty);
                 IF Harbor.GET("Sales Shipment Header"."Destination Port") THEN
                     IF "Notify Party 1" = '' THEN BEGIN
@@ -895,10 +906,29 @@ report 50010 "WDC Sales Shipment"
                                 NotifyPostCode := lNotifyPartyAPostCode.Code;
                         END;
                     END;
+                //<<wdc.HG
+                NotifyParty2.RESET;
+                clear(NotifyParty2);
+                IF "Notify Party 2" = '' THEN BEGIN
+                    IF NotifyParty2.GET(Harbor."Notify Party", Harbor.Code) THEN BEGIN
+                        NotifyPartyAdress2 := NotifyParty2.Adress;
+                        NotifyPartyEmail2 := NotifyParty2."E-mail";
+                        NotifyPartyPhone2 := NotifyParty2."Phone No.";
+                    END;
+                END ELSE BEGIN
+                    IF NotifyParty2.GET("Notify Party 2", "Destination Port") THEN BEGIN
+                        NotifyPartyAdress2 := NotifyParty2.Adress;
+                        NotifyPartyEmail2 := NotifyParty2."E-mail";
+                        NotifyPartyPhone2 := NotifyParty2."Phone No.";
+                        lNotifyPartyAPostCode.RESET;
+                        lNotifyPartyAPostCode.SETRANGE(City, NotifyParty2.City);
+                        IF lNotifyPartyAPostCode.FINDFIRST THEN
+                            NotifyPostCode2 := lNotifyPartyAPostCode.Code;
+                    END;
+                END;
                 ShippingAgent.RESET;
                 IF ShippingAgent.GET("Sales Shipment Header"."Shipping Agent Code") THEN;
 
-                // ShipToAdress
                 ShipAddress.RESET;
                 IF ShipAddress.GET("Sell-to Customer No.", "Ship-to Code") THEN;
 
@@ -908,8 +938,7 @@ report 50010 "WDC Sales Shipment"
                 CountryRegion1.RESET;
                 IF CountryRegion1.GET("Sales Shipment Header"."Bill-to Country/Region Code") THEN;
 
-                CreateComment; //ML
-                //
+                CreateComment;
             end;
 
             trigger OnPreDataItem()
@@ -934,36 +963,36 @@ report 50010 "WDC Sales Shipment"
             {
                 group(Options)
                 {
-                    Caption = 'Options';
+                    CaptionML = ENU = 'Options', FRA = 'Options', NLD = 'Opties';
                     field(NoOfCopies; NoOfCopies)
                     {
-                        Caption = 'No. of Copies';
+                        CaptionML = ENU = 'No. of Copies', FRA = 'Nombre de copies', NLD = 'Aantal exemplaren';
                         ApplicationArea = all;
                     }
                     field(ShowInternalInfo; ShowInternalInfo)
                     {
-                        Caption = 'Show Internal Information';
+                        CaptionML = ENU = 'Show Internal Information', FRA = 'Afficher info. internes', NLD = 'Interne informatie weergeven';
                         ApplicationArea = all;
                     }
                     field(LogInteraction; LogInteraction)
                     {
-                        Caption = 'Log Interaction';
+                        CaptionML = ENU = 'Log Interaction', FRA = 'Journal interaction', NLD = 'Interactie registreren';
                         Enabled = LogInteractionEnable;
                         ApplicationArea = all;
                     }
                     field("Show Correction Lines"; ShowCorrectionLines)
                     {
-                        Caption = 'Show Correction Lines';
+                        CaptionML = ENU = 'Show Correction Lines', FRA = 'Afficher lignes correction', NLD = 'Correctieregels weergeven';
                         ApplicationArea = all;
                     }
                     field(ShowLotSN; ShowLotSN)
                     {
-                        Caption = 'Show Serial/Lot Number Appendix';
+                        CaptionML = ENU = 'Show Serial/Lot Number Appendix', FRA = 'Afficher annexe numéro série/lot', NLD = 'Bijlage serie-/lotnummers weergeven';
                         ApplicationArea = all;
                     }
                     field(DisplayAsmInfo; DisplayAssemblyInformation)
                     {
-                        Caption = 'Show Assembly Components';
+                        CaptionML = ENU = 'Show Assembly Components', FRA = 'Afficher composants d''assemblage', NLD = 'Assemblagecomponenten weergeven';
                         ApplicationArea = all;
                     }
                 }
@@ -1021,27 +1050,27 @@ report 50010 "WDC Sales Shipment"
     end;
 
     var
-        Text000: Label 'Salesperson';
-        Text001: Label 'COPY';
-        Text002: Label 'Shipping Instructions %1 \  Packing List';
-        SalesPurchPerson: Record 13;
-        CompanyInfo: Record 79;
-        CompanyInfo1: Record 79;
-        CompanyInfo2: Record 79;
-        CompanyInfo3: Record 79;
-        CompanyInfo5: Record 79;
-        SalesSetup: Record 311;
-        DimSetEntry1: Record 480;
-        DimSetEntry2: Record 480;
-        Languagerec: Record 8;
-        TrackingSpecBuffer: Record 336 temporary;
-        PostedAsmHeader: Record 910;
-        PostedAsmLine: Record 911;
-        ShptCountPrinted: Codeunit 314;
-        SegManagement: Codeunit 5051;
-        ItemTrackingMgt: Codeunit 6503;
-        RespCenter: Record 5714;
-        ItemTrackingAppendix: Report 6521;
+        Text000: TextConst ENU = 'Salesperson', FRA = 'Vendeur';
+        Text001: TextConst ENU = 'COPY', FRA = 'COPIE';
+        Text002: TextConst ENU = 'Shipping Instructions %1 \  Packing List', FRA = 'Ventes : Expédition%1 \  Liste de colisage';
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        CompanyInfo: Record "Company Information";
+        CompanyInfo1: Record "Company Information";
+        CompanyInfo2: Record "Company Information";
+        CompanyInfo3: Record "Company Information";
+        CompanyInfo5: Record "Company Information";
+        SalesSetup: Record "Sales & Receivables Setup";
+        DimSetEntry1: Record "Dimension Set Entry";
+        DimSetEntry2: Record "Dimension Set Entry";
+        Languagerec: Record Language;
+        TrackingSpecBuffer: Record "Tracking Specification" temporary;
+        PostedAsmHeader: Record "Posted Assembly Header";
+        PostedAsmLine: Record "Posted Assembly Line";
+        ShptCountPrinted: Codeunit "Sales Shpt.-Printed";
+        SegManagement: Codeunit SegManagement;
+        ItemTrackingMgt: Codeunit "Item Tracking Doc. Management";
+        RespCenter: Record "Responsibility Center";
+        ItemTrackingAppendix: Report "Item Tracking Appendix";
         CustAddr: array[8] of Text[50];
         ShipToAddr: array[8] of Text[50];
         CompanyAddr: array[8] of Text[50];
@@ -1057,7 +1086,7 @@ report 50010 "WDC Sales Shipment"
         CopyText: Text[30];
         ShowCustAddr: Boolean;
         i: Integer;
-        FormatAddr: Codeunit 365;
+        FormatAddr: Codeunit "Format Address";
         DimText: Text[120];
         OldDimText: Text[75];
         ShowInternalInfo: Boolean;
@@ -1068,57 +1097,63 @@ report 50010 "WDC Sales Shipment"
         ShowTotal: Boolean;
         ShowGroup: Boolean;
         TotalQty: Decimal;
-        [InDataSet]
         LogInteractionEnable: Boolean;
         DisplayAssemblyInformation: Boolean;
         AsmHeaderExists: Boolean;
         LinNo: Integer;
-        ItemTrackingAppendixCaptionLbl: Label 'Item Tracking - Appendix';
-        PhoneNoCaptionLbl: Label 'Phone No.';
-        VATRegNoCaptionLbl: Label 'VAT Reg. No.';
-        GiroNoCaptionLbl: Label 'Giro No.';
-        BankNameCaptionLbl: Label 'Bank';
-        BankAccNoCaptionLbl: Label 'Account No.';
-        ShipmentNoCaptionLbl: Label 'Shipment No.';
-        ShipmentDateCaptionLbl: Label 'Shipment Date';
-        HomePageCaptionLbl: Label 'Home Page';
-        EmailCaptionLbl: Label 'E-Mail';
-        DocumentDateCaptionLbl: Label 'Document Date';
-        HeaderDimensionsCaptionLbl: Label 'Header Dimensions';
-        LineDimensionsCaptionLbl: Label 'Line Dimensions';
-        BilltoAddressCaptionLbl: Label 'Bill-to Address';
-        QuantityCaptionLbl: Label 'Quantity';
-        SerialNoCaptionLbl: Label 'Serial No.';
-        LotNoCaptionLbl: Label 'Lot No.';
-        DescriptionCaptionLbl: Label 'Description';
-        NoCaptionLbl: Label 'No.';
-        ShptMethodDescCaptionLbl: Label 'Incoterm';
-        ContainerCaption: Label 'Container No.';
-        ScelleNoCaption: Label 'Seal No.';
-        TranspNameCaption: Label 'Transporter Name';
-        PalletNumbCaption: Label 'Pallet Quantity';
-        BoxNumCaption: Label 'Boxes Quantity';
-        BoxTypeCaption: Label 'Box Type';
+        ItemTrackingAppendixCaptionLbl: TextConst ENU = 'Item Tracking - Appendix', FRA = 'Traçabilité - Annexe';
+        PhoneNoCaptionLbl: TextConst ENU = 'Phone No.', FRA = 'N° téléphone';
+        VATRegNoCaptionLbl: TextConst ENU = 'VAT Reg. No.', FRA = 'N° id. intracomm.';
+        GiroNoCaptionLbl: TextConst ENU = 'Giro No.', FRA = 'N° CCP';
+        BankNameCaptionLbl: TextConst ENU = 'Bank', FRA = 'Banque';
+        BankAccNoCaptionLbl: TextConst ENU = 'Account No.', FRA = 'N° compte';
+        ShipmentNoCaptionLbl: TextConst ENU = 'Shipment No.', FRA = 'N° expédition';
+        ShipmentDateCaptionLbl: TextConst ENU = 'Shipment Date', FRA = 'Date d''expédition';
+        HomePageCaptionLbl: TextConst ENU = 'Home Page', FRA = 'Page d''accueil';
+        EmailCaptionLbl: TextConst ENU = 'E-Mail', FRA = 'E-Mail';
+        DocumentDateCaptionLbl: TextConst ENU = 'Document Date', FRA = 'Date document';
+        HeaderDimensionsCaptionLbl: TextConst ENU = 'Header Dimensions', FRA = 'Analytique en-tête';
+        LineDimensionsCaptionLbl: TextConst ENU = 'Line Dimensions', FRA = 'Analytique ligne';
+        BilltoAddressCaptionLbl: TextConst ENU = 'Bill-to Address', FRA = 'Adresse facturation';
+        QuantityCaptionLbl: TextConst ENU = 'Quantity', FRA = 'Quantité';
+        SerialNoCaptionLbl: TextConst ENU = 'Serial No.', FRA = 'N° de série';
+        LotNoCaptionLbl: TextConst ENU = 'Lot No.', FRA = 'N° lot';
+        DescriptionCaptionLbl: TextConst ENU = 'Description', FRA = 'Désignation';
+        NoCaptionLbl: TextConst ENU = 'No.', FRA = 'N°';
+        ShptMethodDescCaptionLbl: TextConst ENU = 'Incoterm', NLD = 'Verzendwijze';
+        ContainerCaption: TextConst ENU = 'Container No.', FRA = 'N° Conteneur';
+        ScelleNoCaption: TextConst ENU = 'Seal No.', FRA = 'N° Scellé';
+        TranspNameCaption: TextConst ENU = 'Transporter Name', FRA = 'Nom transporteur';
+        PalletNumbCaption: TextConst ENU = 'Pallet Quantity', FRA = 'Nombre de palette';
+        BoxNumCaption: TextConst ENU = 'Boxes Quantity', FRA = 'Nombre de carton';
+        BoxTypeCaption: TextConst ENU = 'Box Type', FRA = 'Type de carton';
         "--------------------------": Text;
-        ShippingAgent: Record 291;
-        DestHarborCaption: Label 'Destination Harbor';
-        NotifyPartyCaption: Label 'Notify Party';
+        ShippingAgent: Record "Shipping Agent";
+        DestHarborCaption: TextConst ENU = 'Destination Harbor', FRA = 'Port de destination';
+        NotifyParty1Caption: TextConst ENU = 'Notify Party 1', FRA = 'Partie à informer 1';
+        NotifyParty2Caption: TextConst ENU = 'Notify Party 2', FRA = 'Partie à informer 2';
         Harbor: Record "WDC Harbor";
         NotifyParty: Record "WDC Notify Party";
-        ShipAddress: Record 222;
-        Packaging: Record 50001;
+        NotifyParty2: Record "WDC Notify Party";
+        ShipAddress: Record "Ship-to Address";
+        Packaging: Record "WDC Packaging";
         CountryRegion: Record 9;
         CountryRegion1: Record 9;
         NotifyPartyAdress: Text[50];
         NotifyPartyEmail: Text[50];
         NotifyPartyPhone: Text[30];
-        HarmTariffCodeCaption: Label 'Harm. Tariff Code';
-        ShipAdressCaption: Label 'Ship to Adress';
+        NotifyPartyAdress2: Text[50];
+        NotifyPartyEmail2: Text[50];
+        NotifyPartyPhone2: Text[30];
+        HarmTariffCodeCaption: TextConst ENU = 'Harm. Tariff Code', FRA = 'Code tarifiaire harmonisé';
+        ShipAdressCaption: TextConst ENU = 'Ship to Adress', FRA = 'Adresse destinataire';
         NotifyPostCode: Code[30];
+        NotifyPostCode2: Code[30];
+
         TotalWeight: Decimal;
-        TotalWeightCaption: Label 'Gross Weight';
-        FreightPayableCaption: Label 'Freight Payable';
-        LosesBoxCaption: Label 'Loose Boxes';
+        TotalWeightCaption: TextConst ENU = 'Gross Weight', FRA = 'Poids total';
+        FreightPayableCaption: TextConst ENU = 'Freight Payable';
+        LosesBoxCaption: TextConst ENU = 'Loose Boxes', FRA = 'Cartons perdues';
         TotalQty2: Decimal;
         TotalBox: Decimal;
         Coment: array[10] of Text;
@@ -1127,16 +1162,16 @@ report 50010 "WDC Sales Shipment"
         UniContainer: Code[20];
         TotalWeighttxt: Text[15];
         posit: Integer;
-        ItemLedgerEntry: Record 32;
+        ItemLedgerEntry: Record "Item Ledger Entry";
         lPAL: Code[10];
         X: Code[10];
         Format2: Code[10];
         Format3: Code[10];
         Format4: Code[10];
         GrossWeightt: Decimal;
-        SalesShipmentLine: Record 111;
+        SalesShipmentLine: Record "Sales Shipment Line";
         ProdDate: Text;
-        LotNoInformation: Record 6505;
+        LotNoInformation: Record "Lot No. Information";
         lNo: Code[10];
         ItemNoGrp: Code[20];
         text1: text[10];
@@ -1174,7 +1209,7 @@ report 50010 "WDC Sales Shipment"
     procedure CreateComment()
     var
         lNbLineText: Integer;
-        DocumentComment: Record 44;
+        DocumentComment: Record "Sales Comment Line";
     begin
         DocumentComment.SETCURRENTKEY("Document Type", "No.", "Line No.");
         DocumentComment.SETRANGE("Document Type", DocumentComment."Document Type"::Shipment);

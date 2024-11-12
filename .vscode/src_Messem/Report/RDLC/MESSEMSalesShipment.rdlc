@@ -24,7 +24,7 @@
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>6.29278cm</Height>
+                  <Height>6.65844cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4615,7 +4615,8 @@
                                   </FilterValues>
                                 </Filter>
                               </Filters>
-                              <Top>0.03167cm</Top>
+                              <Top>0.37112cm</Top>
+                              <Left>0cm</Left>
                               <Height>6.16611cm</Height>
                               <Width>18.13631cm</Width>
                               <Visibility>
@@ -4723,7 +4724,14 @@ Cstr(Fields!ShptMethodDescCaption.Value) + Chr(177) +
 Cstr(Fields!Incoterm.Value) + Chr(177) +
 Cstr(Fields!NotifyParty_City.Value) + Chr(177) +
 Cstr(Fields!NotifyParty_Designation.Value) + Chr(177) +
-Cstr(Fields!NotifyPostCode.Value)</Value>
+Cstr(Fields!NotifyPostCode.Value)+ Chr(177) +
+Cstr(Fields!NotifyParty2_Designation.Value)+ Chr(177) +
+Cstr(Fields!NotifyParty2_City.Value)+ Chr(177) +
+Cstr(Fields!NotifyPartyAdress2.Value)+ Chr(177) +
+Cstr(Fields!NotifyPartyPhone2.Value)+ Chr(177) +
+Cstr(Fields!NotifyPostCode2.Value)+ Chr(177) +
+Cstr(Fields!NotifyPartyEmail2.Value)+ Chr(177) +
+Cstr(Fields!NotifyParty2Caption.Value)</Value>
                                                     <Style>
                                                       <Color>Red</Color>
                                                     </Style>
@@ -4801,18 +4809,18 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
             <Left>0.34007cm</Left>
-            <Height>6.29278cm</Height>
+            <Height>6.65844cm</Height>
             <Width>18.13631cm</Width>
             <Style />
           </Tablix>
         </ReportItems>
-        <Height>7.27552cm</Height>
+        <Height>6.79073cm</Height>
         <Style />
       </Body>
       <Width>18.47638cm</Width>
       <Page>
         <PageHeader>
-          <Height>10.09816cm</Height>
+          <Height>12.02962cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -5360,7 +5368,7 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>6.54921cm</Top>
+              <Top>6.5845cm</Top>
               <Left>4.04248cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
@@ -5491,8 +5499,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>8.14555cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>9.93589cm</Top>
+              <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>25</ZIndex>
@@ -5517,8 +5525,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>8.14555cm</Top>
-              <Left>0.29465cm</Left>
+              <Top>9.93589cm</Top>
+              <Left>0.26952cm</Left>
               <Height>10pt</Height>
               <Width>3.71012cm</Width>
               <ZIndex>26</ZIndex>
@@ -5544,8 +5552,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>8.49833cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>10.28867cm</Top>
+              <Left>3.96178cm</Left>
               <Height>11.00012pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>27</ZIndex>
@@ -5636,8 +5644,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>9.69777cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>11.48811cm</Top>
+              <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>30</ZIndex>
@@ -5662,8 +5670,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>9.69777cm</Top>
-              <Left>0.29465cm</Left>
+              <Top>11.48811cm</Top>
+              <Left>0.26952cm</Left>
               <Height>10pt</Height>
               <Width>3.67245cm</Width>
               <ZIndex>31</ZIndex>
@@ -5821,8 +5829,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>9.30972cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>11.10006cm</Top>
+              <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>36</ZIndex>
@@ -5847,8 +5855,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>8.88639cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>10.67673cm</Top>
+              <Left>3.96178cm</Left>
               <Height>12pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>37</ZIndex>
@@ -5952,8 +5960,8 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>7.74867cm</Top>
-              <Left>3.98691cm</Left>
+              <Top>7.67812cm</Top>
+              <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>41</ZIndex>
@@ -6027,6 +6035,163 @@ Cstr(Fields!NotifyPostCode.Value)</Value>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>
                 <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHeaderShptDt20">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(80,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>8.0309cm</Top>
+              <Left>3.96178cm</Left>
+              <Height>10pt</Height>
+              <Width>6.72571cm</Width>
+              <ZIndex>44</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHdrShptDtCptn13">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(86,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>8.0309cm</Top>
+              <Left>0.25166cm</Left>
+              <Height>10pt</Height>
+              <Width>3.71012cm</Width>
+              <ZIndex>45</ZIndex>
+              <Style>
+                <Border />
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHeaderShptDt21">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(82,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>8.38367cm</Top>
+              <Left>3.96178cm</Left>
+              <Height>11.00012pt</Height>
+              <Width>6.72571cm</Width>
+              <ZIndex>46</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHeaderShptDt22">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(85,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>9.58311cm</Top>
+              <Left>3.96178cm</Left>
+              <Height>10pt</Height>
+              <Width>6.72571cm</Width>
+              <ZIndex>47</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHeaderShptDt23">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(83,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>9.19506cm</Top>
+              <Left>3.96178cm</Left>
+              <Height>10pt</Height>
+              <Width>6.72571cm</Width>
+              <ZIndex>48</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="SalesShptHeaderShptDt24">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(84,1) &amp; " " &amp; Code.GetData(81,1)</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>8.77173cm</Top>
+              <Left>3.96178cm</Left>
+              <Height>10.99991pt</Height>
+              <Width>6.72571cm</Width>
+              <ZIndex>49</ZIndex>
+              <Style>
+                <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
           </ReportItems>
@@ -6357,11 +6522,29 @@ End Function
         <Field Name="NotifyParty_Designation">
           <DataField>NotifyParty_Designation</DataField>
         </Field>
+        <Field Name="NotifyParty2_Designation">
+          <DataField>NotifyParty2_Designation</DataField>
+        </Field>
         <Field Name="NotifyParty_City">
           <DataField>NotifyParty_City</DataField>
         </Field>
+        <Field Name="NotifyParty2_City">
+          <DataField>NotifyParty2_City</DataField>
+        </Field>
         <Field Name="NotifyPostCode">
           <DataField>NotifyPostCode</DataField>
+        </Field>
+        <Field Name="NotifyPartyAdress2">
+          <DataField>NotifyPartyAdress2</DataField>
+        </Field>
+        <Field Name="NotifyPartyPhone2">
+          <DataField>NotifyPartyPhone2</DataField>
+        </Field>
+        <Field Name="NotifyPartyEmail2">
+          <DataField>NotifyPartyEmail2</DataField>
+        </Field>
+        <Field Name="NotifyPostCode2">
+          <DataField>NotifyPostCode2</DataField>
         </Field>
         <Field Name="ShipAddressCode">
           <DataField>ShipAddressCode</DataField>
@@ -6446,6 +6629,9 @@ End Function
         </Field>
         <Field Name="NotifyPartyCaption">
           <DataField>NotifyPartyCaption</DataField>
+        </Field>
+        <Field Name="NotifyParty2Caption">
+          <DataField>NotifyParty2Caption</DataField>
         </Field>
         <Field Name="HarmTariffCodeCaption">
           <DataField>HarmTariffCodeCaption</DataField>
