@@ -44,6 +44,13 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
                 ApplicationArea = all;
             }
         }
+        addafter("Balance (LCY)")
+        {
+            field("Solde Bonus"; Rec."Solde Bonus")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
     actions
     {
@@ -60,6 +67,23 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
                         "Source No." = FIELD("No.");
                 RunPageView = SORTING("Source Type", "Source No.", Code);
             }
+            action("Rebate")
+            {
+                Captionml = ENU = 'Rebate', FRA = 'Bonus';
+                ApplicationArea = all;
+                Image = Calculate;
+                RunObject = Page "WDC Purchase Rebates";
+                RunPageLink = "Vendor No." = field("No.");
+            }
+            action("Rebate Entries")
+            {
+                Captionml = ENU = 'Rebate Entries', FRA = 'Ecritures Bonus';
+                ApplicationArea = all;
+                Image = ApplyEntries;
+                RunObject = Page "WDC Rebate Entries";
+                RunPageLink = "Buy-from No." = field("No.");
+            }
+
         }
     }
 

@@ -1,6 +1,5 @@
 report 50007 "WDC Purchase - Invoice"
 {
-    // 19/11/2013  ISAT01  Isatech.ST  Création d'un nouveau report
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MESSEMPurchaseInvoice.rdlc';
 
@@ -744,7 +743,7 @@ report 50007 "WDC Purchase - Invoice"
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := Languages.GetLanguageID("Language Code");
 
                 CompanyInfo.GET;
 
@@ -883,11 +882,11 @@ report 50007 "WDC Purchase - Invoice"
         ShipmentMethod: Record 10;
         PaymentTerms: Record 3;
         SalesPurchPerson: Record 13;
-        VATAmountLine: Record 290 temporary;
+        VATAmountLine: Record "VAT Amount Line" temporary;
         DimSetEntry1: Record 480;
         DimSetEntry2: Record 480;
         RespCenter: Record 5714;
-        Language: Record 8;
+        Languages: Record 8;
         CurrExchRate: Record 330;
         PurchInvCountPrinted: Codeunit 319;
         FormatAddr: Codeunit 365;

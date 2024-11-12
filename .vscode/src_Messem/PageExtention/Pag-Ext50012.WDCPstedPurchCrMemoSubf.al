@@ -24,9 +24,7 @@ pageextension 50012 WDCPstedPurchCrMemoSubf extends "Posted Purch. Cr. Memo Subf
                 ApplicationArea = all;
 
             }
-        }
-        addlast(content)
-        {
+
             field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
             {
                 ApplicationArea = all;

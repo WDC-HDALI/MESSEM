@@ -100,7 +100,7 @@ tableextension 50000 "WDC Item" extends Item
         field(50008; " Purchases Item Rebate Group"; Code[20])
         {
             CaptionML = ENU = 'Purchases Item Rebate Group', FRA = 'Groupe bonus article achat';
-            TableRelation = "WDC Item Rebate Group";
+            TableRelation = "WDC Item Rebate Group".Code;
         }
 
 

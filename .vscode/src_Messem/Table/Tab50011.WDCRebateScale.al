@@ -5,20 +5,16 @@ table 50011 "WDC Rebate Scale"
     DrillDownPageId = "WDC Rebate Scales";
     fields
     {
-        field(1; Type; Enum "WDC Code Rebate type")
-        {
-            CaptionML = ENU = 'Type', FRA = 'Type';
-        }
-        field(2; "Code"; Code[20])
+
+        field(1; "Code"; Code[20])
         {
             CaptionML = ENU = 'Code', FRA = 'Code';
-            TableRelation = "WDC Rebate Code";
         }
-        field(3; "Line No."; Integer)
+        field(2; "Line No."; Integer)
         {
             CaptionML = ENU = 'Line No.', FRA = 'N° Ligne';
         }
-        field(4; "Minimum Quantity"; Decimal)
+        field(3; "Minimum Quantity"; Decimal)
         {
             CaptionML = ENU = 'Minimum Quantity', FRA = 'Qte minimum';
             MinValue = 0;
@@ -27,16 +23,13 @@ table 50011 "WDC Rebate Scale"
             var
                 RebateCode: Record "WDC Rebate Code";
             begin
-                RebateCode.GET(Type, Code);
-                RebateCode.TESTFIELD("Rebate Method", RebateCode."Rebate Method"::Actual);
+                RebateCode.GET(Code);
                 TESTFIELD("Minimum Amount", 0);
-                //FW-31141-4KMG
                 CheckOtherLines(FIELDNO("Minimum Quantity"));
-                //
                 VALIDATE("Rebate Value");
             end;
         }
-        field(5; "Minimum Amount"; Decimal)
+        field(4; "Minimum Amount"; Decimal)
         {
             AutoFormatExpression = GetCurrencyCode;
             AutoFormatType = 1;
@@ -46,13 +39,11 @@ table 50011 "WDC Rebate Scale"
             trigger OnValidate()
             begin
                 TESTFIELD("Minimum Quantity", 0);
-                //FW-31141-4KMG
                 CheckOtherLines(FIELDNO("Minimum Amount"));
-                //
                 VALIDATE("Rebate Value");
             end;
         }
-        field(6; "Rebate Value"; Decimal)
+        field(5; "Rebate Value"; Decimal)
         {
             AutoFormatExpression = GetCurrencyCode;
             AutoFormatType = 1;
@@ -69,7 +60,7 @@ table 50011 "WDC Rebate Scale"
 
     keys
     {
-        key(Key1; Type, "Code", "Line No.")
+        key(Key1; "Code", "Line No.")
         {
             Clustered = true;
         }
@@ -87,7 +78,7 @@ table 50011 "WDC Rebate Scale"
     var
         RebateCode: Record "WDC Rebate Code";
     begin
-        IF RebateCode.GET(Type, Code) THEN
+        IF RebateCode.GET(Code) THEN
             EXIT(RebateCode."Currency Code");
     end;
 
@@ -95,7 +86,6 @@ table 50011 "WDC Rebate Scale"
     var
         RebateScale2: Record "WDC Rebate Scale";
     begin
-        RebateScale2.SETRANGE(Type, Type);
         RebateScale2.SETRANGE(Code, Code);
         RebateScale2.SETFILTER("Line No.", '<>%1', "Line No.");
 

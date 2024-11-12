@@ -38,7 +38,7 @@ page 50009 "WDC Rebate Scales"
 
     procedure GetCaption(): Text[250]
     begin
-        EXIT(STRSUBSTNO('%1 %2', Rec.Type, Rec.Code));
+        EXIT(STRSUBSTNO('%1', Rec.Code));
     end;
 }
 

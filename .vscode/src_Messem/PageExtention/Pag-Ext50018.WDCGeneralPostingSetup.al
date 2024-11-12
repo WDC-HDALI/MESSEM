@@ -6,7 +6,7 @@ pageextension 50018 "WDC General Posting Setup" extends "General Posting Setup"
 {
     layout
     {
-        addlast(content)
+        addafter("Purch. FA Disc. Account")
         {
             field("Bonus Purchase Account"; Rec."Purchase Rebate Account")
             {

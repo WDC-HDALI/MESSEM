@@ -6,25 +6,21 @@ table 50010 "WDC Rebate Code"
 
     fields
     {
-        field(1; Type; enum "WDC Code Rebate type")
-        {
-            CaptionML = ENU = 'Type', FRA = 'Type';
-        }
-        field(2; "Code"; Code[20])
+        field(1; "Code"; Code[20])
         {
             CaptionML = ENU = 'Code', FRA = 'Code';
             NotBlank = true;
         }
-        field(3; Description; Text[30])
+        field(2; Description; Text[30])
         {
             CaptionML = ENU = 'Description', FRA = 'Description';
         }
-        field(4; "Rebate GL-Acc. No."; Code[20])
+        field(3; "Rebate GL-Acc. No."; Code[20])
         {
             CaptionML = ENU = 'Rebate GL-Acc. No.', FRA = 'No. GL-Acc. Bonus';
             TableRelation = "G/L Account" WHERE("Rebate G/L Account" = CONST(true));
         }
-        field(5; "Starting Date"; Date)
+        field(4; "Starting Date"; Date)
         {
             CaptionML = ENU = 'Starting Date', FRA = 'Date début';
 
@@ -38,26 +34,22 @@ table 50010 "WDC Rebate Code"
                 IF xRec."Starting Date" = 0D THEN
                     EXIT;
 
-                IF Type = Type::Purchase THEN BEGIN
-                    PurchaseRebate.SETRANGE("Rebate Code", Code);
-                    IF PurchaseRebate.ISEMPTY THEN
-                        EXIT;
-                END;
+                PurchaseRebate.SETRANGE("Rebate Code", Code);
+                IF PurchaseRebate.ISEMPTY THEN
+                    EXIT;
 
                 TestNoEntriesExist;
 
                 IF NOT CONFIRM(Text005, FALSE, Code) THEN
                     ERROR('');
 
-                IF Type = Type::Purchase THEN BEGIN
-                    PurchaseRebate.FINDSET(TRUE);
-                    REPEAT
-                        PurchaseRebate.DELETE;
-                        PurchaseRebate."Starting Date" := "Starting Date";
-                        PurchaseRebate.INSERT;
-                    UNTIL PurchaseRebate.NEXT <= 0;
-                END;
-            end;
+                PurchaseRebate.FINDSET(TRUE);
+                REPEAT
+                    PurchaseRebate.DELETE;
+                    PurchaseRebate."Starting Date" := "Starting Date";
+                    PurchaseRebate.INSERT;
+                UNTIL PurchaseRebate.NEXT <= 0;
+            END;
         }
         field(6; "Ending Date"; Date)
         {
@@ -74,14 +66,11 @@ table 50010 "WDC Rebate Code"
                 IF xRec."Ending Date" = 0D THEN
                     EXIT;
 
-                IF Type = Type::Purchase THEN BEGIN
-                    PurchaseRebate.SETRANGE("Rebate Code", Code);
-                    IF PurchaseRebate.ISEMPTY THEN
-                        EXIT;
-                END;
+                PurchaseRebate.SETRANGE("Rebate Code", Code);
+                IF PurchaseRebate.ISEMPTY THEN
+                    EXIT;
 
-                RebateEntry.SETCURRENTKEY("Rebate Code", "Posting Type", "Posting Date", Open);
-                //RebateEntry.SETRANGE("Posting Type", type.AsInteger() + 1);
+                RebateEntry.SETCURRENTKEY("Rebate Code", "Posting Date", Open);
                 RebateEntry.SETRANGE("Rebate Code", Code);
                 RebateEntry.SETFILTER("Posting Date", '>%1', "Ending Date");
                 RebateEntry.SETRANGE(Open, TRUE);
@@ -96,17 +85,7 @@ table 50010 "WDC Rebate Code"
                 IF NOT RebateEntry.ISEMPTY THEN
                     RebateEntry.MODIFYALL("Ending Date", "Ending Date");
 
-                IF Type = Type::Purchase THEN
-                    PurchaseRebate.MODIFYALL("Ending Date", "Ending Date")
-            end;
-        }
-        field(7; "Rebate Method"; Enum "WDC Rebate Method")
-        {
-            CaptionML = ENU = 'Rebate Method', FRA = 'Méthode bonus';
-
-            trigger OnValidate()
-            begin
-                "Unit of Measure Code" := '';
+                PurchaseRebate.MODIFYALL("Ending Date", "Ending Date")
             end;
         }
         field(8; "Currency Code"; Code[20])
@@ -117,30 +96,11 @@ table 50010 "WDC Rebate Code"
         field(9; "Unit of Measure Code"; Code[20])
         {
             CaptionML = ENU = 'Unit of Measure Code', FRA = 'Code unité';
-            TableRelation = IF ("Rebate Method" = filter("WDC Rebate Method"::Actual)) "Unit of Measure";
+            TableRelation = "Unit of Measure";
 
-            trigger OnValidate()
-            begin
-                TESTFIELD("Rebate Method", "Rebate Method"::Actual)
-            end;
-        }
-        field(11; "Register Option Purchase Rebat"; Enum "WDC Register opt purch Rebat")
-        {
-            CaptionML = ENU = 'Register Option Purchase Rebate', FRA = 'Méthode d''enregistrement bonus achat';
-            trigger OnValidate()
-            var
-                PurchaseRebate: Record "WDC Purchase Rebate";
-            begin
-                TESTFIELD(Type, Type::Purchase);
-                IF "Register Option Purchase Rebat" <> xRec."Register Option Purchase Rebat" THEN BEGIN
-                    PurchaseRebate.SETRANGE("Rebate Code", Code);
-                    IF NOT PurchaseRebate.ISEMPTY THEN
-                        ERROR(Text003, FIELDCAPTION("Register Option Purchase Rebat"), Code, Type);
-                END;
 
-            end;
         }
-        field(12; "Rebate GL-Acc. No.2"; Code[20])
+        field(10; "Rebate GL-Acc. No.2"; Code[20])
         {
             CaptionML = ENU = 'Rebate GL-Acc. No.', FRA = 'N° compte général bonus 2';
             TableRelation = "G/L Account" WHERE("Rebate G/L Account" = CONST(true));
@@ -149,7 +109,7 @@ table 50010 "WDC Rebate Code"
 
     keys
     {
-        key(Key1; Type, "Code")
+        key(Key1; "Code")
         {
             Clustered = true;
         }
@@ -165,7 +125,6 @@ table 50010 "WDC Rebate Code"
     begin
         TestNoEntriesExist;
 
-        RebateScale.SETRANGE(Type, Type);
         RebateScale.SETRANGE(Code, Code);
         IF NOT RebateScale.ISEMPTY THEN
             RebateScale.DELETEALL;
@@ -209,9 +168,6 @@ table 50010 "WDC Rebate Code"
 
     procedure TestForInValidFields()
     begin
-        IF "Rebate Method" = "Rebate Method"::Actual THEN
-            TESTFIELD("Unit of Measure Code");
-
         TESTFIELD("Starting Date");
         TESTFIELD("Ending Date");
     end;
@@ -220,8 +176,7 @@ table 50010 "WDC Rebate Code"
     var
         RebateEntry: Record "WDC Rebate Entry";
     begin
-        RebateEntry.SETCURRENTKEY("Rebate Code", "Posting Type", Open);
-        //RebateEntry.SETRANGE("Posting Type", Enum::"WDC Rebate Posting type".FromInteger(Rec.Type.AsInteger() + 1));
+        RebateEntry.SETCURRENTKEY("Rebate Code", Open);
         RebateEntry.SETRANGE("Rebate Code", Code);
         IF NOT RebateEntry.ISEMPTY THEN
             ERROR(Text002);
@@ -231,8 +186,7 @@ table 50010 "WDC Rebate Code"
     var
         RebateEntry: Record "WDC Rebate Entry";
     begin
-        RebateEntry.SETCURRENTKEY("Rebate Code", "Posting Type", Open);
-        //RebateEntry.SETRANGE("Posting Type", Enum::"WDC Rebate Posting type".FromInteger(Rec.Type.AsInteger() + 1));
+        RebateEntry.SETCURRENTKEY("Rebate Code", Open);
         RebateEntry.SETRANGE("Rebate Code", Code);
         RebateEntry.SETRANGE(Open, TRUE);
         IF NOT RebateEntry.ISEMPTY THEN
@@ -243,10 +197,8 @@ table 50010 "WDC Rebate Code"
     var
         RebateScale: Record "WDC Rebate Scale";
     begin
-        IF ("Rebate Method" <> xRec."Rebate Method") OR
-           ("Unit of Measure Code" <> xRec."Unit of Measure Code") OR
+        IF ("Unit of Measure Code" <> xRec."Unit of Measure Code") OR
            ("Currency Code" <> xRec."Currency Code") THEN BEGIN
-            RebateScale.SETRANGE(Type, xRec.Type);
             RebateScale.SETRANGE(Code, xRec.Code);
             IF NOT RebateScale.ISEMPTY THEN
                 MESSAGE(Text004, Code);

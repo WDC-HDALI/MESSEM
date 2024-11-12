@@ -51,8 +51,7 @@ tableextension 50022 "WDC Vendor " extends Vendor
         }
         field(50006; "Solde Bonus"; Decimal)
         {
-            CalcFormula = Sum("WDC Rebate Entry"."Accrual Amount (LCY)" WHERE("Posting Type" = CONST(Purchase),
-                                                                       "Sell-to/Buy-from No." = FIELD("No."),
+            CalcFormula = Sum("WDC Rebate Entry"."Accrual Amount (LCY)" WHERE("Buy-from No." = FIELD("No."),
                                                                        Open = CONST(true)));
             Editable = false;
             FieldClass = FlowField;
