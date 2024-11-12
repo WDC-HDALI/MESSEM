@@ -5,12 +5,12 @@ report 50009 "WDC Sales Invoice"
 
     Caption = 'Sales - Invoice';
     EnableHyperlinks = true;
-    Permissions = TableData 7190 = rimd;
+    Permissions = TableData "Sales Shipment Buffer" = rimd;
     PreviewMode = PrintLayout;
 
     dataset
     {
-        dataitem("Sales Invoice Header"; 112)
+        dataitem("Sales Invoice Header"; "Sales Invoice Header")
         {
             DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
@@ -51,10 +51,10 @@ report 50009 "WDC Sales Invoice"
             column(EMailCaption; EMailCaptionLbl)
             {
             }
-            dataitem(CopyLoop; 2000000026)
+            dataitem(CopyLoop; integer)
             {
                 DataItemTableView = SORTING(Number);
-                dataitem(PageLoop; 2000000026)
+                dataitem(PageLoop; integer)
                 {
                     DataItemTableView = SORTING(Number)
                                         WHERE(Number = CONST(1));
@@ -313,7 +313,7 @@ report 50009 "WDC Sales Invoice"
                     column(ShipAddress_Name; ShipAddress.Name)
                     {
                     }
-                    dataitem(DimensionLoop1; 2000000026)
+                    dataitem(DimensionLoop1; integer)
                     {
                         DataItemLinkReference = "Sales Invoice Header";
                         DataItemTableView = SORTING(Number)
@@ -362,7 +362,7 @@ report 50009 "WDC Sales Invoice"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem("Sales Invoice Line"; 113)
+                    dataitem("Sales Invoice Line"; "Sales Invoice Line")
                     {
                         DataItemLink = "Document No." = FIELD("No.");
                         DataItemLinkReference = "Sales Invoice Header";
@@ -564,7 +564,7 @@ report 50009 "WDC Sales Invoice"
                         column(Format1; Format1)
                         {
                         }
-                        dataitem("Sales Shipment Buffer"; 2000000026)
+                        dataitem("Sales Shipment Buffer"; integer)
                         {
                             DataItemTableView = SORTING(Number);
                             column(SalesShptBufferPostDate; FORMAT(SalesShipmentBuffer."Posting Date"))
@@ -594,7 +594,7 @@ report 50009 "WDC Sales Invoice"
                                 SETRANGE(Number, 1, SalesShipmentBuffer.COUNT);
                             end;
                         }
-                        dataitem(DimensionLoop2; 2000000026)
+                        dataitem(DimensionLoop2; integer)
                         {
                             DataItemTableView = SORTING(Number)
                                                 WHERE(Number = FILTER(1 ..));
@@ -641,7 +641,7 @@ report 50009 "WDC Sales Invoice"
                                 DimSetEntry2.SETRANGE("Dimension Set ID", "Sales Invoice Line"."Dimension Set ID");
                             end;
                         }
-                        dataitem(AsmLoop; 2000000026)
+                        dataitem(AsmLoop; integer)
                         {
                             DataItemTableView = SORTING(Number);
                             column(TempPostedAsmLineNo; BlanksForIndent + TempPostedAsmLine."No.")
@@ -684,7 +684,6 @@ report 50009 "WDC Sales Invoice"
 
                         trigger OnAfterGetRecord()
                         begin
-                            //"Sales Invoice Line".SETFILTER(Description, '<>%1','<>%2', '@Code destinataire*','@*expédition*');
                             PostedShipmentDate := 0D;
                             IF Quantity <> 0 THEN
                                 PostedShipmentDate := FindPostedShipmentDate;
@@ -715,7 +714,6 @@ report 50009 "WDC Sales Invoice"
 
 
 
-                            //Cal. Montant en DS
                             IF "Sales Invoice Header"."Currency Code" = '' THEN
                                 deAmountLCY := TotalAmount
                             ELSE
@@ -723,7 +721,6 @@ report 50009 "WDC Sales Invoice"
                                   CurrExchRate.ExchangeAmtFCYToLCY(
                                     "Sales Invoice Header"."Posting Date", "Sales Invoice Header"."Currency Code", TotalAmount, "Sales Invoice Header"."Currency Factor");
 
-                            //Cal. Poids Total
                             IF "Sales Invoice Line".Type = "Sales Invoice Line".Type::Item THEN //WDC001
                                 TotalWeight += Quantity;
                             Packaging.RESET;
@@ -736,7 +733,6 @@ report 50009 "WDC Sales Invoice"
                                 TotalQty += Quantity;
                             TotalBox += "Quantity Shipment Units";
 
-                            //Identification de N° Lot
                             LotNo := '';
                             ItemLedgerEntry.RESET;
                             ItemLedgerEntry.SETCURRENTKEY("Document No.", "Document Type", "Document Line No.");
@@ -747,13 +743,10 @@ report 50009 "WDC Sales Invoice"
                             IF ItemLedgerEntry.FINDFIRST THEN BEGIN
                                 LotNo := ItemLedgerEntry."Lot No.";
                             END;
-                            //>>Delta Achour 28/09/2018
                             IF "Unit of Measure" = 'Kilo' THEN
                                 UnitMeas := 'KG' ELSE
                                 UnitMeas := "Unit of Measure";
-                            //<<Delta Achour 28/09/2018
 
-                            // >>DELTA OKH
                             IF ("Sales Invoice Line".Quantity > 999) THEN
                                 X := '#0"."##0.'
                             ELSE
@@ -763,7 +756,6 @@ report 50009 "WDC Sales Invoice"
                                 Y := '#0"."##0.#'
                             ELSE
                                 Y := '###';
-                            // <<DELTA OKH
 
                             //<<WDC02
                             No2 := COPYSTR("Sales Invoice Line"."No.", 1, 4);
@@ -786,7 +778,7 @@ report 50009 "WDC Sales Invoice"
                             CurrReport.CREATETOTALS("Line Amount", Amount, "Amount Including VAT", "Inv. Discount Amount");
                         end;
                     }
-                    dataitem(VATCounter; 2000000026)
+                    dataitem(VATCounter; integer)
                     {
                         DataItemTableView = SORTING(Number);
                         column(VATAmtLineVATBase; VATAmountLine."VAT Base")
@@ -844,7 +836,7 @@ report 50009 "WDC Sales Invoice"
                               VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
                         end;
                     }
-                    dataitem(VATClauseEntryCounter; 2000000026)
+                    dataitem(VATClauseEntryCounter; integer)
                     {
                         DataItemTableView = SORTING(Number);
                         column(VATClauseVATIdentifier; VATAmountLine."VAT Identifier")
@@ -889,7 +881,7 @@ report 50009 "WDC Sales Invoice"
                             CurrReport.CREATETOTALS(VATAmountLine."VAT Amount");
                         end;
                     }
-                    dataitem(VatCounterLCY; 2000000026)
+                    dataitem(VatCounterLCY; integer)
                     {
                         DataItemTableView = SORTING(Number);
                         column(VALSpecLCYHeader; VALSpecLCYHeader)
@@ -942,7 +934,7 @@ report 50009 "WDC Sales Invoice"
                             VALExchRate := STRSUBSTNO(Text009, CalculatedExchRate, CurrExchRate."Exchange Rate Amount");
                         end;
                     }
-                    dataitem(Total; 2000000026)
+                    dataitem(Total; integer)
                     {
                         DataItemTableView = SORTING(Number)
                                             WHERE(Number = CONST(1));
@@ -1027,14 +1019,11 @@ report 50009 "WDC Sales Invoice"
 
             trigger OnAfterGetRecord()
             begin
-                //>> DELTA OKH 29/01/2019
                 TotalBox2 := GetTotalBox("No.");
-                //message('%1',TotalBox2);
                 IF (TotalBox2 > 999) THEN
                     Format1 := '#0"."##0.#'
                 ELSE
                     Format1 := '###';
-                //<< DELTA OKH 29/01/2019
 
                 CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
 
@@ -1165,31 +1154,33 @@ report 50009 "WDC Sales Invoice"
             {
                 group(Options)
                 {
-                    Caption = 'Options';
+                    CaptionML = ENU = 'Options', FRA = 'Options', NLD = 'Opties';
                     field(NoOfCopies; NoOfCopies)
                     {
-                        Caption = 'No. of Copies';
+                        CaptionML = ENU = 'No. of Copies', FRA = 'Nombre de copies', NLD = 'Aantal exemplaren';
+                        ApplicationArea = all;
                     }
                     field(ShowInternalInfo; ShowInternalInfo)
                     {
-                        Caption = 'Show Internal Information';
+                        CaptionML = ENU = 'Show Internal Information', FRA = 'Afficher info. internes', NLD = 'Interne informatie weergeven';
+                        ApplicationArea = all;
                     }
                     field(LogInteraction; LogInteraction)
                     {
-                        Caption = 'Log Interaction';
+                        CaptionML = ENU = 'Log Interaction', FRA = 'Journal interaction', NLD = 'Interactie registreren';
                         Enabled = LogInteractionEnable;
+                        ApplicationArea = all;
                     }
                     field(DisplayAsmInformation; DisplayAssemblyInformation)
                     {
-                        Caption = 'Show Assembly Components';
+                        CaptionML = ENU = 'Show Assembly Components', FRA = 'Afficher composants d''assemblage', NLD = 'Assemblagecomponenten weergeven';
+                        ApplicationArea = all;
                     }
                 }
             }
         }
 
-        actions
-        {
-        }
+
 
         trigger OnInit()
         begin
@@ -1242,36 +1233,36 @@ report 50009 "WDC Sales Invoice"
     end;
 
     var
-        Text000: Label 'Salesperson';
-        Text001: Label 'Total %1';
-        Text002: Label 'Total %1 Incl. VAT';
-        Text003: Label 'COPY';
-        Text004: Label 'Sales - Invoice %1';
-        Text005: Label 'Page %1';
-        Text006: Label 'Total %1 Excl. VAT';
-        GLSetup: Record 98;
-        ShipmentMethod: Record 10;
-        PaymentTerms: Record 3;
-        SalesPurchPerson: Record 13;
-        CompanyInfo: Record 79;
-        CompanyInfo1: Record 79;
-        CompanyInfo2: Record 79;
-        CompanyInfo3: Record 79;
-        CompanyInfo5: Record 79;
-        SalesSetup: Record 311;
-        Cust: Record 18;
-        VATAmountLine: Record 290 temporary;
-        DimSetEntry1: Record 480;
-        DimSetEntry2: Record 480;
-        RespCenter: Record 5714;
-        Language: Record 8;
-        CurrExchRate: Record 330;
-        TempPostedAsmLine: Record 911 temporary;
-        VATClause: Record 560;
-        SalesInvCountPrinted: Codeunit 315;
-        FormatAddr: Codeunit 365;
-        SegManagement: Codeunit 5051;
-        SalesShipmentBuffer: Record 7190 temporary;
+        Text000: TextConst ENU = 'Salesperson', FRA = 'Vendeur';
+        Text001: TextConst ENU = 'Total %1', FRA = 'Total %1';
+        Text002: TextConst ENU = 'Total %1 Incl. VAT', FRA = 'Total %1 TTC';
+        Text003: TextConst ENU = 'COPY', FRA = 'Copier';
+        Text004: TextConst ENU = 'Sales - Invoice %1', FRA = 'Ventes : Facture %1';
+        Text005: TextConst ENU = 'Page %1', FRA = 'Page %1';
+        Text006: TextConst ENU = 'Total %1 Excl. VAT', FRA = 'Total %1 HT';
+        GLSetup: Record "General Ledger Setup";
+        ShipmentMethod: Record "Shipment Method";
+        PaymentTerms: Record "Payment Terms";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        CompanyInfo: Record "Company Information";
+        CompanyInfo1: Record "Company Information";
+        CompanyInfo2: Record "Company Information";
+        CompanyInfo3: Record "Company Information";
+        CompanyInfo5: Record "Company Information";
+        SalesSetup: Record "Sales & Receivables Setup";
+        Cust: Record Customer;
+        VATAmountLine: Record "VAT Amount Line" temporary;
+        DimSetEntry1: Record "Dimension Set Entry";
+        DimSetEntry2: Record "Dimension Set Entry";
+        RespCenter: Record "Responsibility Center";
+        Language: Record Language;
+        CurrExchRate: Record "Currency Exchange Rate";
+        TempPostedAsmLine: Record "Posted Assembly Line" temporary;
+        VATClause: Record "VAT Clause";
+        SalesInvCountPrinted: Codeunit "Sales Inv.-Printed";
+        FormatAddr: Codeunit "Format Address";
+        SegManagement: Codeunit SegManagement;
+        SalesShipmentBuffer: Record "Sales Shipment Buffer" temporary;
         PostedShipmentDate: Date;
         CustAddr: array[8] of Text[50];
         ShipToAddr: array[8] of Text[50];
@@ -1299,12 +1290,12 @@ report 50009 "WDC Sales Invoice"
         VALVATBaseLCY: Decimal;
         VALVATAmountLCY: Decimal;
         VALSpecLCYHeader: Text[80];
-        Text007: Label 'VAT Amount Specification in ';
-        Text008: Label 'Local Currency';
+        Text007: TextConst ENU = 'VAT Amount Specification in ', FRA = 'Détail TVA dans ';
+        Text008: TextConst ENU = 'Local Currency', FRA = 'Devise société';
         VALExchRate: Text[50];
-        Text009: Label 'Exchange rate: %1/%2';
+        Text009: TextConst ENU = 'Exchange rate: %1/%2', FRA = 'Taux de change : %1/%2';
         CalculatedExchRate: Decimal;
-        Text010: Label 'Sales - Prepayment Invoice %1';
+        Text010: TextConst ENU = 'Sales - Prepayment Invoice %1', FRA = 'Ventes - Facture acompte %1';
         OutputNo: Integer;
         TotalSubTotal: Decimal;
         TotalAmount: Decimal;
@@ -1314,77 +1305,77 @@ report 50009 "WDC Sales Invoice"
         TotalPaymentDiscOnVAT: Decimal;
         LogInteractionEnable: Boolean;
         DisplayAssemblyInformation: Boolean;
-        CompanyInfoPhoneNoCaptionLbl: Label 'Phone No.';
-        CompanyInfoVATRegNoCptnLbl: Label 'VAT Reg. No.';
-        CompanyInfoGiroNoCaptionLbl: Label 'Giro No.';
-        CompanyInfoBankNameCptnLbl: Label 'Bank';
-        CompanyInfoBankAccNoCptnLbl: Label 'Account No.';
-        SalesInvDueDateCaptionLbl: Label 'Due Date';
-        InvNoCaptionLbl: Label 'Invoice No.';
-        SalesInvPostingDateCptnLbl: Label 'Posting Date';
-        HeaderDimCaptionLbl: Label 'Header Dimensions';
-        UnitPriceCaptionLbl: Label 'Unit Price';
-        SalesInvLineDiscCaptionLbl: Label 'Discount %';
-        VATClausesCap: Label 'VAT Clause';
-        AmountCaptionLbl: Label 'Amount';
-        PostedShipmentDateCaptionLbl: Label 'Posted Shipment Date';
-        SubtotalCaptionLbl: Label 'Subtotal';
-        LineAmtAfterInvDiscCptnLbl: Label 'Payment Discount on VAT';
-        ShipmentCaptionLbl: Label 'Shipment';
-        LineDimCaptionLbl: Label 'Line Dimensions';
-        VATAmtSpecificationCptnLbl: Label 'VAT Amount Specification';
-        InvDiscBaseAmtCaptionLbl: Label 'Invoice Discount Base Amount';
-        LineAmtCaptionLbl: Label 'Line Amount';
-        ShiptoAddrCaptionLbl: Label 'Ship-to Address';
-        InvDiscountAmtCaptionLbl: Label 'Invoice Discount Amount';
-        DocumentDateCaptionLbl: Label 'Invoice Date';
-        PaymentTermsDescCaptionLbl: Label 'Payment Terms';
-        ShptMethodDescCaptionLbl: Label 'Incoterm';
-        VATPercentageCaptionLbl: Label 'VAT %';
-        TotalCaptionLbl: Label 'Total';
-        VATBaseCaptionLbl: Label 'VAT Base';
-        VATAmtCaptionLbl: Label 'VAT Amount';
-        VATIdentifierCaptionLbl: Label 'VAT Identifier';
-        HomePageCaptionLbl: Label 'Home Page';
-        EMailCaptionLbl: Label 'E-Mail';
+        CompanyInfoPhoneNoCaptionLbl: TextConst ENU = 'Phone No.', FRA = '';
+        CompanyInfoVATRegNoCptnLbl: TextConst ENU = 'VAT Reg. No.', FRA = '';
+        CompanyInfoGiroNoCaptionLbl: TextConst ENU = 'Giro No.', FRA = '';
+        CompanyInfoBankNameCptnLbl: TextConst ENU = 'Bank', FRA = '';
+        CompanyInfoBankAccNoCptnLbl: TextConst ENU = 'Account No.', FRA = '';
+        SalesInvDueDateCaptionLbl: TextConst ENU = 'Due Date', FRA = '';
+        InvNoCaptionLbl: TextConst ENU = 'Invoice No.', FRA = '';
+        SalesInvPostingDateCptnLbl: TextConst ENU = 'Posting Date', FRA = '';
+        HeaderDimCaptionLbl: TextConst ENU = 'Header Dimensions', FRA = '';
+        UnitPriceCaptionLbl: TextConst ENU = 'Unit Price', FRA = '';
+        SalesInvLineDiscCaptionLbl: TextConst ENU = 'Discount %', FRA = '';
+        VATClausesCap: TextConst ENU = 'VAT Clause', FRA = '';
+        AmountCaptionLbl: TextConst ENU = 'Amount', FRA = '';
+        PostedShipmentDateCaptionLbl: TextConst ENU = 'Posted Shipment Date', FRA = '';
+        SubtotalCaptionLbl: TextConst ENU = 'Subtotal', FRA = '';
+        LineAmtAfterInvDiscCptnLbl: TextConst ENU = 'Payment Discount on VAT', FRA = '';
+        ShipmentCaptionLbl: TextConst ENU = 'Shipment', FRA = '';
+        LineDimCaptionLbl: TextConst ENU = 'Line Dimensions', FRA = '';
+        VATAmtSpecificationCptnLbl: TextConst ENU = 'VAT Amount Specification', FRA = '';
+        InvDiscBaseAmtCaptionLbl: TextConst ENU = 'Invoice Discount Base Amount', FRA = '';
+        LineAmtCaptionLbl: TextConst ENU = 'Line Amount', FRA = '';
+        ShiptoAddrCaptionLbl: TextConst ENU = 'Ship-to Address', FRA = '';
+        InvDiscountAmtCaptionLbl: TextConst ENU = 'Invoice Discount Amount', FRA = '';
+        DocumentDateCaptionLbl: TextConst ENU = 'Invoice Date', FRA = '';
+        PaymentTermsDescCaptionLbl: TextConst ENU = 'Payment Terms', FRA = '';
+        ShptMethodDescCaptionLbl: TextConst ENU = 'Incoterm', FRA = '';
+        VATPercentageCaptionLbl: TextConst ENU = 'VAT %', FRA = '';
+        TotalCaptionLbl: TextConst ENU = 'Total', FRA = '';
+        VATBaseCaptionLbl: TextConst ENU = 'VAT Base', FRA = '';
+        VATAmtCaptionLbl: TextConst ENU = 'VAT Amount', FRA = '';
+        VATIdentifierCaptionLbl: TextConst ENU = 'VAT Identifier', FRA = '';
+        HomePageCaptionLbl: TextConst ENU = 'Home Page', FRA = '';
+        EMailCaptionLbl: TextConst ENU = 'E-Mail', FRA = '';
         "--------------------------": Text;
-        ItemLedgerEntry: Record 32;
-        ShippingAgent: Record 291;
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        ShippingAgent: Record "Shipping Agent";
         Harbor: Record "WDC Harbor";
         NotifyParty: Record "WDC Notify Party";
         ForwarAgent: Record "WDC Forwarding Agent";
         Packaging: Record "WDC Packaging";
-        CountryRegion: Record 9;
+        CountryRegion: Record "Country/Region";
         NotifyPartyAdress: Text[50];
         NotifyPartyEmail: Text[50];
         NotifyPartyPhone: Text[30];
         //"---------": ;
-        ContainerCaption: Label 'Container No.';
-        ScelleNoCaption: Label 'Seal No.';
-        TranspNameCaption: Label 'Transporter Name';
-        PalletNumbCaption: Label 'Pallet Quantity';
-        BoxNumCaption: Label 'Box Quan';
-        BoxTypeCaption: Label 'Box Type';
-        DestHarborCaption: Label 'Port of Destination';
-        NotifyPartyCaption: Label 'Customer Reference';
-        ForwardingAgentCaption: Label 'Forwarding Agent';
-        ShipAdressCaption: Label 'Ship to Adress';
+        ContainerCaption: TextConst ENU = 'Container No.', FRA = 'N° Conteneur';
+        ScelleNoCaption: TextConst ENU = 'Seal No.', FRA = 'N° Scellé';
+        TranspNameCaption: TextConst ENU = 'Transporter Name', FRA = 'Nom transporteur';
+        PalletNumbCaption: TextConst ENU = 'Pallet Quantity', FRA = 'Nombre de palette';
+        BoxNumCaption: TextConst ENU = 'Box Quan', FRA = 'Nombre de carton';
+        BoxTypeCaption: TextConst ENU = 'Box Type', FRA = 'Type de carton';
+        DestHarborCaption: TextConst ENU = 'Port of Destination', FRA = 'Port de destination';
+        NotifyPartyCaption: TextConst ENU = 'Customer Reference', FRA = 'Réferene client';
+        ForwardingAgentCaption: TextConst ENU = 'Forwarding Agent', FRA = 'Code transitaire';
+        ShipAdressCaption: TextConst ENU = 'Ship to Adress', FRA = 'Adresse destinataire';
         deAmountLCY: Decimal;
         TotalWeight: Decimal;
-        ShipCodeCaption: Label 'Ship-to Code';
-        ShipCityCaption: Label 'Ship-to City';
-        TotalWeightCaption: Label 'Total Weight';
+        ShipCodeCaption: TextConst ENU = 'Ship-to Code', FRA = 'Code destinataire';
+        ShipCityCaption: TextConst ENU = 'Ship-to City', FRA = 'Ville destinataire';
+        TotalWeightCaption: TextConst ENU = 'Total Weight', FRA = 'Poids total';
         TotalQty: Decimal;
         TotalBox: Decimal;
         LotNo: Code[20];
-        LosesBoxCaption: Label 'Lose Boxes';
-        ShipAddress: Record 222;
+        LosesBoxCaption: TextConst ENU = 'Lose Boxes', FRA = 'Cartons perdues';
+        ShipAddress: Record "Ship-to Address";
         UnitMeas: Code[20];
         X: Code[10];
         Y: Code[20];
         Format1: Code[10];
         TotalBox1: Decimal;
-        SalesInvoiceLine: Record 113;
+        SalesInvoiceLine: Record "Sales Invoice Line";
         TotalBox2: Decimal;
         No2: Code[10];
         textloseboxes: text[20];

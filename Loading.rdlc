@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompanyInfoPicture">
+          <DataField>CompanyInfoPicture</DataField>
+        </Field>
+        <Field Name="InvoiceNo">
+          <DataField>InvoiceNo</DataField>
+        </Field>
+        <Field Name="CustomerCode">
+          <DataField>CustomerCode</DataField>
+        </Field>
+        <Field Name="CustomerName">
+          <DataField>CustomerName</DataField>
+        </Field>
+        <Field Name="Port">
+          <DataField>Port</DataField>
+        </Field>
+        <Field Name="Container">
+          <DataField>Container</DataField>
+        </Field>
+        <Field Name="SO_No">
+          <DataField>SO_No</DataField>
+        </Field>
+        <Field Name="Transp">
+          <DataField>Transp</DataField>
+        </Field>
+        <Field Name="INCOTERM">
+          <DataField>INCOTERM</DataField>
+        </Field>
+        <Field Name="LoadigDate">
+          <DataField>LoadigDate</DataField>
+        </Field>
+        <Field Name="TransitAgentName">
+          <DataField>TransitAgentName</DataField>
+        </Field>
+        <Field Name="MaterialNbr">
+          <DataField>MaterialNbr</DataField>
+        </Field>
+        <Field Name="QuantityKG1">
+          <DataField>QuantityKG1</DataField>
+        </Field>
+        <Field Name="QuantityKG1Format">
+          <DataField>QuantityKG1Format</DataField>
+        </Field>
+        <Field Name="TotalEur">
+          <DataField>TotalEur</DataField>
+        </Field>
+        <Field Name="TotalEurFormat">
+          <DataField>TotalEurFormat</DataField>
+        </Field>
+        <Field Name="PriceEur">
+          <DataField>PriceEur</DataField>
+        </Field>
+        <Field Name="PriceEurFormat">
+          <DataField>PriceEurFormat</DataField>
+        </Field>
+        <Field Name="TotalMAD">
+          <DataField>TotalMAD</DataField>
+        </Field>
+        <Field Name="TotalMADFormat">
+          <DataField>TotalMADFormat</DataField>
+        </Field>
+        <Field Name="MontantLoadingMAD">
+          <DataField>MontantLoadingMAD</DataField>
+        </Field>
+        <Field Name="MontantLoadingMADFormat">
+          <DataField>MontantLoadingMADFormat</DataField>
+        </Field>
+        <Field Name="MontantLoadingEUR">
+          <DataField>MontantLoadingEUR</DataField>
+        </Field>
+        <Field Name="MontantLoadingEURFormat">
+          <DataField>MontantLoadingEURFormat</DataField>
+        </Field>
+        <Field Name="QuantityKG">
+          <DataField>QuantityKG</DataField>
+        </Field>
+        <Field Name="QuantityKGFormat">
+          <DataField>QuantityKGFormat</DataField>
+        </Field>
+        <Field Name="LotNo">
+          <DataField>LotNo</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

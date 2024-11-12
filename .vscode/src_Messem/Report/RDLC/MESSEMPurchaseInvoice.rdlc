@@ -19,7 +19,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>17.88775cm</Width>
+                  <Width>16.31327cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -169,9 +169,6 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>1.80975cm</Width>
-                                  </TablixColumn>
-                                  <TablixColumn>
-                                    <Width>1.59385cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>1.90515cm</Width>
@@ -371,36 +368,6 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="PurchInvLineVATIdentifierCptn">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>=Fields!VATIdentifier_PurchInvLineCaption.Value</Value>
-                                                    <Style>
-                                                      <FontStyle>Normal</FontStyle>
-                                                      <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                      <FontWeight>Bold</FontWeight>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <ZIndex>133</ZIndex>
-                                            <Style>
-                                              <VerticalAlign>Bottom</VerticalAlign>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell>
-                                        <CellContents>
                                           <Textbox Name="textbox156">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -468,10 +435,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>9</ColSpan>
+                                          <ColSpan>8</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -511,10 +477,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>9</ColSpan>
+                                          <ColSpan>8</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -704,35 +669,6 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               </Paragraph>
                                             </Paragraphs>
                                             <ZIndex>125</ZIndex>
-                                            <Style>
-                                              <VerticalAlign>Middle</VerticalAlign>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell>
-                                        <CellContents>
-                                          <Textbox Name="PurchInvLineVATIdentifier">
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>=Fields!VATIdentifier_PurchInvLine.Value</Value>
-                                                    <Style>
-                                                      <FontStyle>Normal</FontStyle>
-                                                      <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>PurchInvLineVATIdentifier</rd:DefaultName>
-                                            <ZIndex>123</ZIndex>
                                             <Style>
                                               <VerticalAlign>Middle</VerticalAlign>
                                               <PaddingLeft>5pt</PaddingLeft>
@@ -984,35 +920,6 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
-                                          <Textbox Name="Textbox44">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value />
-                                                    <Style>
-                                                      <FontStyle>Normal</FontStyle>
-                                                      <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>Textbox44</rd:DefaultName>
-                                            <Style>
-                                              <VerticalAlign>Middle</VerticalAlign>
-                                              <PaddingLeft>5pt</PaddingLeft>
-                                              <PaddingRight>5pt</PaddingRight>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixCell>
-                                      <TablixCell>
-                                        <CellContents>
                                           <Textbox Name="Textbox45">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -1072,10 +979,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>9</ColSpan>
+                                          <ColSpan>8</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -1154,10 +1060,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox73">
@@ -1259,10 +1163,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox75">
@@ -1330,10 +1232,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -1407,10 +1308,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -1516,10 +1416,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox133">
@@ -1621,10 +1519,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox17">
@@ -1723,10 +1619,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox26">
@@ -1793,10 +1687,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -1870,10 +1763,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -1977,10 +1869,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox56">
@@ -2045,10 +1935,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -2116,10 +2005,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -2231,10 +2119,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox148">
@@ -2303,10 +2189,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -2380,10 +2265,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>8</ColSpan>
+                                          <ColSpan>7</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -2488,10 +2372,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox110">
@@ -2556,10 +2438,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>9</ColSpan>
+                                          <ColSpan>8</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
                                       <TablixCell />
@@ -2634,10 +2515,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox114">
@@ -2735,10 +2614,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                               <PaddingRight>5pt</PaddingRight>
                                             </Style>
                                           </Textbox>
-                                          <ColSpan>2</ColSpan>
                                         </CellContents>
                                       </TablixCell>
-                                      <TablixCell />
                                       <TablixCell>
                                         <CellContents>
                                           <Textbox Name="textbox140">
@@ -2784,14 +2661,13 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                   <TablixMember />
                                   <TablixMember />
                                   <TablixMember />
-                                  <TablixMember />
                                 </TablixMembers>
                               </TablixColumnHierarchy>
                               <TablixRowHierarchy>
                                 <TablixMembers>
                                   <TablixMember>
                                     <TablixHeader>
-                                      <Size>1.75918in</Size>
+                                      <Size>1.72563in</Size>
                                       <CellContents>
                                         <Textbox Name="Textbox1">
                                           <CanGrow>true</CanGrow>
@@ -2828,7 +2704,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                   </TablixMember>
                                   <TablixMember>
                                     <TablixHeader>
-                                      <Size>1.75918in</Size>
+                                      <Size>1.72563in</Size>
                                       <CellContents>
                                         <Textbox Name="Textbox2">
                                           <CanGrow>true</CanGrow>
@@ -2869,7 +2745,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                   </TablixMember>
                                   <TablixMember>
                                     <TablixHeader>
-                                      <Size>1.75918in</Size>
+                                      <Size>1.72563in</Size>
                                       <CellContents>
                                         <Textbox Name="Textbox46">
                                           <CanGrow>true</CanGrow>
@@ -2926,7 +2802,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                           </SortExpression>
                                         </SortExpressions>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Group3">
                                               <CanGrow>true</CanGrow>
@@ -2987,7 +2863,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox7">
                                               <CanGrow>true</CanGrow>
@@ -3025,7 +2901,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox8">
                                               <CanGrow>true</CanGrow>
@@ -3066,7 +2942,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox9">
                                               <CanGrow>true</CanGrow>
@@ -3106,7 +2982,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox10">
                                               <CanGrow>true</CanGrow>
@@ -3149,7 +3025,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox12">
                                               <CanGrow>true</CanGrow>
@@ -3189,7 +3065,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox13">
                                               <CanGrow>true</CanGrow>
@@ -3230,7 +3106,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox14">
                                               <CanGrow>true</CanGrow>
@@ -3271,7 +3147,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox15">
                                               <CanGrow>true</CanGrow>
@@ -3311,7 +3187,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox19">
                                               <CanGrow>true</CanGrow>
@@ -3354,7 +3230,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox20">
                                               <CanGrow>true</CanGrow>
@@ -3394,7 +3270,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox21">
                                               <CanGrow>true</CanGrow>
@@ -3435,7 +3311,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox22">
                                               <CanGrow>true</CanGrow>
@@ -3475,7 +3351,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox24">
                                               <CanGrow>true</CanGrow>
@@ -3515,7 +3391,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox25">
                                               <CanGrow>true</CanGrow>
@@ -3556,7 +3432,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox28">
                                               <CanGrow>true</CanGrow>
@@ -3599,7 +3475,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox29">
                                               <CanGrow>true</CanGrow>
@@ -3639,7 +3515,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox30">
                                               <CanGrow>true</CanGrow>
@@ -3680,7 +3556,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox31">
                                               <CanGrow>true</CanGrow>
@@ -3721,7 +3597,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox32">
                                               <CanGrow>true</CanGrow>
@@ -3762,7 +3638,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>1.75918in</Size>
+                                          <Size>1.72563in</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox33">
                                               <CanGrow>true</CanGrow>
@@ -3815,7 +3691,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
                               </Filters>
                               <Top>0.05903in</Top>
                               <Height>2.80216in</Height>
-                              <Width>17.88775cm</Width>
+                              <Width>16.26035cm</Width>
                               <ZIndex>1</ZIndex>
                               <Style />
                             </Tablix>
@@ -3884,14 +3760,14 @@ Cstr(Fields!HeureCreation.Value)</Value>
             </PageBreak>
             <Left>0.05379cm</Left>
             <Height>8.1582cm</Height>
-            <Width>17.88775cm</Width>
+            <Width>16.31327cm</Width>
             <Style />
           </Tablix>
         </ReportItems>
         <Height>8.1582cm</Height>
         <Style />
       </Body>
-      <Width>18.03784cm</Width>
+      <Width>17.95456cm</Width>
       <Page>
         <PageHeader>
           <Height>8.77619cm</Height>
@@ -4063,6 +3939,9 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Width>6.77719cm</Width>
               <ZIndex>5</ZIndex>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
             </Textbox>
@@ -4458,62 +4337,6 @@ Cstr(Fields!HeureCreation.Value)</Value>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
             </Textbox>
-            <Textbox Name="CompanyInfoBankNameCptn1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(45,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>7.30021cm</Top>
-              <Left>10.33608cm</Left>
-              <Height>10pt</Height>
-              <Width>3.77294cm</Width>
-              <ZIndex>20</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoGiroNoCptn1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(46,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.88221cm</Top>
-              <Left>10.33608cm</Left>
-              <Height>10pt</Height>
-              <Width>3.77294cm</Width>
-              <ZIndex>21</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
             <Textbox Name="CompanyInfoVATRegNoCptn1">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
@@ -4533,123 +4356,11 @@ Cstr(Fields!HeureCreation.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.46021cm</Top>
+              <Top>5.20366cm</Top>
               <Left>10.33608cm</Left>
               <Height>10pt</Height>
               <Width>3.77294cm</Width>
-              <ZIndex>22</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoHomePageCptn1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(48,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5.61021cm</Top>
-              <Left>10.33608cm</Left>
-              <Height>10pt</Height>
-              <Width>3.77294cm</Width>
-              <ZIndex>23</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoPhoneNoCptn1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(49,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5.19021cm</Top>
-              <Left>10.33608cm</Left>
-              <Height>10pt</Height>
-              <Width>3.77294cm</Width>
-              <ZIndex>24</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoBankName1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(19,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>7.30021cm</Top>
-              <Left>14.17615cm</Left>
-              <Height>10pt</Height>
-              <Width>3.74293cm</Width>
-              <ZIndex>25</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoGiroNo1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(18,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.88221cm</Top>
-              <Left>14.17615cm</Left>
-              <Height>10pt</Height>
-              <Width>3.74293cm</Width>
-              <ZIndex>26</ZIndex>
+              <ZIndex>20</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -4673,67 +4384,11 @@ Cstr(Fields!HeureCreation.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.46021cm</Top>
+              <Top>5.20366cm</Top>
               <Left>14.17615cm</Left>
               <Height>10pt</Height>
               <Width>3.74293cm</Width>
-              <ZIndex>27</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoHomePage">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(16,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5.61021cm</Top>
-              <Left>14.17615cm</Left>
-              <Height>10pt</Height>
-              <Width>3.74293cm</Width>
-              <ZIndex>28</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoPhoneNo1">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(15,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5.19021cm</Top>
-              <Left>14.17615cm</Left>
-              <Height>10pt</Height>
-              <Width>3.74293cm</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>21</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -4762,7 +4417,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>10.33608cm</Left>
               <Height>10pt</Height>
               <Width>7.583cm</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>22</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -4786,7 +4441,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>0.08801cm</Left>
               <Height>0.2423in</Height>
               <Width>0.02646cm</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>23</ZIndex>
               <Visibility>
                 <Hidden>=Code.SetData(ReportItems!Addr.Value,1)</Hidden>
               </Visibility>
@@ -4817,7 +4472,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>10.33608cm</Left>
               <Height>10pt</Height>
               <Width>7.583cm</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>24</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -4847,67 +4502,11 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Top>7.076cm</Top>
               <Height>10pt</Height>
               <Width>3.29826cm</Width>
-              <ZIndex>33</ZIndex>
+              <ZIndex>25</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
                 </Border>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoEMailCaption">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(54,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.03521cm</Top>
-              <Left>10.33608cm</Left>
-              <Height>10pt</Height>
-              <Width>3.77294cm</Width>
-              <ZIndex>34</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="CompanyInfoEMail">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(38,1)</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.03521cm</Top>
-              <Left>14.17615cm</Left>
-              <Height>10pt</Height>
-              <Width>3.74293cm</Width>
-              <ZIndex>35</ZIndex>
-              <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
             </Textbox>
@@ -4934,7 +4533,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>0.04011cm</Left>
               <Height>10pt</Height>
               <Width>3.32472cm</Width>
-              <ZIndex>36</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -4962,7 +4561,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>3.37368cm</Left>
               <Height>10pt</Height>
               <Width>6.77719cm</Width>
-              <ZIndex>37</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -4990,7 +4589,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>3.37368cm</Left>
               <Height>10pt</Height>
               <Width>6.77719cm</Width>
-              <ZIndex>38</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -5018,7 +4617,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>0.01368cm</Left>
               <Height>10pt</Height>
               <Width>3.29826cm</Width>
-              <ZIndex>39</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -5047,7 +4646,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Left>3.36cm</Left>
               <Height>10pt</Height>
               <Width>6.77719cm</Width>
-              <ZIndex>40</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style>
                 <Border />
                 <VerticalAlign>Top</VerticalAlign>
@@ -5075,7 +4674,7 @@ Cstr(Fields!HeureCreation.Value)</Value>
               <Top>6.69315cm</Top>
               <Height>10pt</Height>
               <Width>3.29826cm</Width>
-              <ZIndex>41</ZIndex>
+              <ZIndex>31</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -5190,8 +4789,8 @@ Cstr(Fields!HeureCreation.Value)</Value>
         <PageWidth>21cm</PageWidth>
         <InteractiveHeight>11in</InteractiveHeight>
         <InteractiveWidth>8.5in</InteractiveWidth>
-        <LeftMargin>1.71388cm</LeftMargin>
-        <RightMargin>1.05834cm</RightMargin>
+        <LeftMargin>0.5cm</LeftMargin>
+        <RightMargin>0.5cm</RightMargin>
         <TopMargin>1.05834cm</TopMargin>
         <BottomMargin>1.48166cm</BottomMargin>
         <ColumnSpacing>1.27cm</ColumnSpacing>

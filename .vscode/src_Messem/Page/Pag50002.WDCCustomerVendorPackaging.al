@@ -118,6 +118,20 @@ page 50002 "WDC Customer/Vendor Packaging"
             }
         }
 
+
+    }
+    actions
+    {
+        area(reporting)
+        {
+            action("Customer/Vendor Packaging")
+            {
+                CaptionML = ENU = 'Customer/Vendor Packaging', FRA = 'Client/Fournisseur Emballage';
+                Image = "Report";
+                Promoted = false;
+                RunObject = Report 50011;
+            }
+        }
     }
     trigger OnOpenPage()
     begin

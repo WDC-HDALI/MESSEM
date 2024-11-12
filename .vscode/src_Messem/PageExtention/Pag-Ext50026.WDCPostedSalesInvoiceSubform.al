@@ -25,6 +25,10 @@ pageextension 50026 "WDC PostedSalesInvoiceSubform" extends "Posted Sales Invoic
             {
                 ApplicationArea = all;
             }
+            field("Unit Price per Sales Price UOM"; Rec."Unit Price per Sales Price UOM")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }

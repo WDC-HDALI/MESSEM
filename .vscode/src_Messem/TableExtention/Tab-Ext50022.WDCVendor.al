@@ -10,7 +10,7 @@ tableextension 50022 "WDC Vendor " extends Vendor
     {
         field(50000; Transporter; Boolean)
         {
-            CaptionML = ENU = 'Transporter', FRA = 'Transporteur';
+            CaptionML = ENU = 'Transporter', FRA = 'Fournisseur transport';
             DataClassification = ToBeClassified;
         }
 
