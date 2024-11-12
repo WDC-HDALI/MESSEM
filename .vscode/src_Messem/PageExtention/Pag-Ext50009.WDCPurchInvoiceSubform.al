@@ -28,7 +28,7 @@ pageextension 50009 "WDC Purch Invoice Subform" extends "Purch. Invoice Subform"
 
 
         }
-        addlast(content)
+        addlast(PurchDetailLine)
         {
             field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
             {

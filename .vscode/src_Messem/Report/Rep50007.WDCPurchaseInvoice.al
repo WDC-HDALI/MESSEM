@@ -487,6 +487,7 @@ report 50007 "WDC Purchase - Invoice"
                             TotalAmountInclVAT += "Amount Including VAT";
                             TotalPaymentDiscountOnVAT += -("Line Amount" - "Inv. Discount Amount" - "Amount Including VAT");
 
+                            //Identification de N° Lot
                             LotNo := '';
                             ItemLedgerEntry.RESET;
                             ItemLedgerEntry.SETCURRENTKEY("Document No.", "Document Type", "Document Line No.");
@@ -733,6 +734,7 @@ report 50007 "WDC Purchase - Invoice"
                 trigger OnPreDataItem()
                 begin
                     OutputNo := 1;
+                    //NoOfLoops := ABS(NoOfCopies) + 1;
                     NoOfLoops := ABS(NoOfCopies);
                     CopyText := '';
                     SETRANGE(Number, 1, NoOfLoops);

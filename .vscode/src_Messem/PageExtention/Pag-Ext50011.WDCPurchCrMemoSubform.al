@@ -24,9 +24,6 @@ pageextension 50011 "WDC PurchCrMemoSubform" extends "Purch. Cr. Memo Subform"
                 ApplicationArea = all;
 
             }
-        }
-        addlast(content)
-        {
             field("Accrual Amount (LCY)"; Rec."Accrual Amount (LCY)")
             {
                 ApplicationArea = all;

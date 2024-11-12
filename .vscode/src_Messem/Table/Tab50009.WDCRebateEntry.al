@@ -1,7 +1,5 @@
 table 50009 "WDC Rebate Entry"
 {
-
-
     CaptionML = ENU = 'Rebate Entry', FRA = 'Ecritures Bonus';
     DrillDownPageID = "WDC Rebate Entries";
     LookupPageID = "WDC Rebate Entries";
@@ -28,21 +26,17 @@ table 50009 "WDC Rebate Entry"
         field(5; "Rebate Code"; Code[20])
         {
             CaptionML = ENU = 'Rebate Code', FRA = 'Code Bonus';
-            TableRelation = IF ("Posting Type" = filter("WDC Rebate Posting type"::Purchase)) "WDC Rebate Code".Code WHERE(Type = filter("WDC Code Rebate type"::Purchase));
+            TableRelation = "WDC Rebate Code".Code;
         }
         field(6; "Rebate Document Type"; enum "WDC Rebate Doc. Type")
         {
             CaptionML = ENU = 'Rebate Document Type', FRA = 'Type document Bonus';
         }
-        field(7; "Posting Type"; Enum "WDC Rebate Posting type")
+        field(8; "Buy-from No."; Code[20])
         {
-            CaptionML = ENU = 'Posting Type', FRA = 'Type validation';
-        }
-        field(8; "Sell-to/Buy-from No."; Code[20])
-        {
-            CaptionML = ENU = 'Sell-to/Buy-from No.', FRA = 'Fournisseur';
-            TableRelation = IF ("Posting Type" = filter("WDC Rebate Posting type"::Purchase)) Vendor
-            ELSE IF ("Posting Type" = filter("WDC Rebate Posting type"::Purchase)) Vendor;
+            CaptionML = ENU = 'Buy-from No.', FRA = 'N° Fournisseur';
+            TableRelation = Vendor;
+
         }
         field(9; "Base Amount"; Decimal)
         {
@@ -57,10 +51,6 @@ table 50009 "WDC Rebate Entry"
         field(11; Open; Boolean)
         {
             CaptionML = ENU = 'Open', FRA = 'Ouvert';
-        }
-        field(12; "Rebate Method"; Enum "WDC Rebate Method")
-        {
-            CaptionML = ENU = 'Rebate Method', FRA = 'Méthode bonus';
         }
         field(13; "Accrual Value (LCY)"; Decimal)
         {
@@ -85,42 +75,13 @@ table 50009 "WDC Rebate Entry"
         field(17; "Bill-to/Pay-to No."; Code[20])
         {
             CaptionML = ENU = 'Bill-to/Pay-to No.', FRA = 'Personne à payer';
-            TableRelation = IF ("Posting Type" = filter("WDC Rebate Posting type"::Purchase)) Vendor
-            ELSE IF ("Posting Type" = filter("WDC Rebate Posting type"::Purchase)) Vendor;
-        }
-        field(18; "Item Type"; enum "WDC Rebate Item Type")
-        {
-            CaptionML = ENU = 'Item Type', FRA = 'Type article';
+            TableRelation = Vendor;
 
-            trigger OnValidate()
-            begin
-                IF xRec."Item Type" <> "Item Type" THEN
-                    VALIDATE("Item Code", '');
-            end;
         }
         field(19; "Currency Code"; Code[20])
         {
             CaptionML = ENU = 'Currency Code', FRA = 'Code devise';
             TableRelation = Currency;
-        }
-        field(20; "Rebate Unit of Measure Code"; Code[20])
-        {
-            CaptionML = ENU = 'Rebate Unit of Measure Code', FRA = 'Code unité bonus';
-            TableRelation = IF ("Item Type" = CONST(Item),
-                                "Rebate Method" = CONST(Actual)) "Item Unit of Measure".Code WHERE("Item No." = FIELD("Item Code"));
-        }
-        field(22; "Item Code"; Code[20])
-        {
-            CaptionML = ENU = 'Item Code', FRA = 'Code article';
-            NotBlank = true;
-            TableRelation = IF ("Item Type" = CONST(Item)) Item;
-        }
-
-        field(25; "Unit of Measure Code"; Code[20])
-        {
-            CaptionML = ENU = 'Unit of Measure Code', FRA = 'Code Unité';
-            TableRelation = IF ("Item Type" = CONST(Item),
-                                "Rebate Method" = CONST(Actual)) "Item Unit of Measure".Code WHERE("Item No." = FIELD("Item Code"));
         }
         field(26; "Closed by Entry No."; Integer)
         {
@@ -168,10 +129,10 @@ table 50009 "WDC Rebate Entry"
         {
             Clustered = true;
         }
-        key(Key2; "Sell-to/Buy-from No.", "Rebate Code", Open, "Correction Posted")
+        key(Key2; "Buy-from No.", "Rebate Code", Open, "Correction Posted")
         {
         }
-        key(Key3; "Item Type", "Item Code", "Vendor No.", "Rebate Code", "Starting Date", "Unit of Measure Code")
+        key(Key3; "Vendor No.", "Rebate Code", "Starting Date")
         {
         }
         key(Key4; "Document No.", "Posting Date")
@@ -180,10 +141,10 @@ table 50009 "WDC Rebate Entry"
         key(Key5; "Rebate Code", "Posting Date")
         {
         }
-        key(Key6; "Posting Type", "Sell-to/Buy-from No.", "Rebate Code", "Rebate Document Type", "Posting Date")
+        key(Key6; "Buy-from No.", "Rebate Code", "Rebate Document Type", "Posting Date")
         {
         }
-        key(Key7; "Rebate Code", "Posting Type", "Posting Date", Open)
+        key(Key7; "Rebate Code", "Posting Date", Open)
         {
         }
     }

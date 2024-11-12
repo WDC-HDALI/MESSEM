@@ -2,27 +2,26 @@ report 50003 "WDC Rebate Correction"
 {
     DefaultLayout = RDLC;
     CaptionML = ENU = 'Rebate Correction', FRA = 'Correction bonus';
-    //ProcessingOnly = true;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = all;
     dataset
     {
         dataitem("Rebate Entry"; "WDC Rebate Entry")
         {
-            DataItemTableView = SORTING("Sell-to/Buy-from No.", "Rebate Code", Open, "Correction Posted")
+            DataItemTableView = SORTING("Buy-from No.", "Rebate Code", Open, "Correction Posted")
                                 WHERE("Rebate Document Type" = CONST(Accrual),
                                       "Correction Posted" = CONST(false));
-            RequestFilterFields = "Posting Type", "Sell-to/Buy-from No.", "Bill-to/Pay-to No.", "Rebate Code";
+            RequestFilterFields = "Buy-from No.", "Bill-to/Pay-to No.", "Rebate Code";
 
             trigger OnAfterGetRecord()
             begin
                 IF ("Rebate Code" <> PreviousRebateCode) OR
-                   ("Sell-to/Buy-from No." <> PreviousSelltoBuyFromNo) OR
+                   ("Buy-from No." <> PreviousSelltoBuyFromNo) OR
                    FirstRecord
                 THEN BEGIN
                     FirstRecord := FALSE;
                     PreviousRebateCode := "Rebate Code";
-                    PreviousSelltoBuyFromNo := "Sell-to/Buy-from No.";
+                    PreviousSelltoBuyFromNo := "Buy-from No.";
                     TempRebateEntry.INIT;
                     TempRebateEntry := "Rebate Entry";
                     TempRebateEntry.INSERT;
@@ -135,7 +134,7 @@ report 50003 "WDC Rebate Correction"
         RebateCorrectionAdded: Boolean;
     begin
 
-        TempRebateEntry.SETCURRENTKEY("Sell-to/Buy-from No.", "Rebate Code", Open, TempRebateEntry."Correction Posted");
+        TempRebateEntry.SETCURRENTKEY("Buy-from No.", "Rebate Code", Open, TempRebateEntry."Correction Posted");
         IF TempRebateEntry.FINDSET THEN BEGIN
             GenJournalLine.SETRANGE("Journal Template Name", GLSetup."Rebate Gen. Jnl. Templ.");
             GenJournalLine.SETRANGE("Journal Batch Name", GLSetup."Rebate Gen. Jnl. Batch");
@@ -151,11 +150,8 @@ report 50003 "WDC Rebate Correction"
 
                     CLEAR(RebateCode);
 
-                    CASE TempRebateEntry."Posting Type" OF
-                        TempRebateEntry."Posting Type"::Purchase:
-                            RebateCode.GET(RebateCode.Type::Purchase, TempRebateEntry."Rebate Code");
+                    RebateCode.GET(TempRebateEntry."Rebate Code");
 
-                    END;
                     RebateCode.TESTFIELD("Rebate GL-Acc. No.");
 
                     GenJournalLine.INIT;
@@ -177,7 +173,7 @@ report 50003 "WDC Rebate Correction"
                         GenJournalLine.VALIDATE("Bal. Account No.", RebateCode."Rebate GL-Acc. No.");
                     END;
                     GenJournalLine."Rebate Correction Amount (LCY)" := TempRebateEntry."Rebate Amount (LCY)" - TempRebateEntry."Accrual Amount (LCY)";
-                    GenJournalLine.VALIDATE("Sell-to/Buy-from No.", TempRebateEntry."Sell-to/Buy-from No.");
+                    GenJournalLine.VALIDATE("Sell-to/Buy-from No.", TempRebateEntry."Buy-from No.");
                     GenJournalLine."Rebate Code" := TempRebateEntry."Rebate Code";
                     GenJournalLine."Include Open Rebate Entries" := IncludeOpenRebateEntries;
                     GenJournalLine."Source Code" := GenJournalTemplate."Source Code";

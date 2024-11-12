@@ -10,8 +10,8 @@ report 50004 "WDC Purchase Rebate Entries"
     {
         dataitem("Rebate Entry"; "WDC Rebate Entry")
         {
-            DataItemTableView = SORTING("Posting Type", "Sell-to/Buy-from No.", "Rebate Code", "Rebate Document Type", "Posting Date");
-            RequestFilterFields = "Posting Type", "Sell-to/Buy-from No.", "Rebate Code";
+            DataItemTableView = SORTING("Buy-from No.", "Rebate Code", "Rebate Document Type", "Posting Date");
+            RequestFilterFields = "Buy-from No.", "Rebate Code";
             column(TODAY; TODAY)
             {
             }
@@ -24,10 +24,7 @@ report 50004 "WDC Purchase Rebate Entries"
             column(USERID; USERID)
             {
             }
-            column(Rebate_Entry__Posting_Type_; "Posting Type")
-            {
-            }
-            column(Rebate_Entry__Sell_to_Buy_from_No__; "Sell-to/Buy-from No.")
+            column(Rebate_Entry__Sell_to_Buy_from_No__; "Buy-from No.")
             {
             }
             column(Sell_To_Buy_FromName_; "Sell-To/Buy-FromName")
@@ -117,19 +114,16 @@ report 50004 "WDC Purchase Rebate Entries"
 
             trigger OnAfterGetRecord()
             begin
-                IF (PostingType <> '') AND (PostingType <> FORMAT("Posting Type")) THEN
-                    CurrReport.NEWPAGE;
-                PostingType := FORMAT("Posting Type");
+                PostingType := FORMAT('Purchase');
 
                 "Sell-To/Buy-FromName" := '';
                 "Sell-To/Buy-FromNoTxt" := '';
-                IF "Posting Type" = "Posting Type"::Purchase THEN BEGIN
-                    "Sell-To/Buy-FromNoTxt" := Text002;
-                    IF NOT RebateCode.GET(RebateCode.Type::Purchase, "Rebate Code") THEN
-                        RebateCode.INIT;
-                    IF Vendor.GET("Sell-to/Buy-from No.") THEN
-                        "Sell-To/Buy-FromName" := Vendor.Name;
-                END;
+                "Sell-To/Buy-FromNoTxt" := Text002;
+                IF NOT RebateCode.GET("Rebate Code") THEN
+                    RebateCode.INIT;
+                IF Vendor.GET("Buy-from No.") THEN
+                    "Sell-To/Buy-FromName" := Vendor.Name;
+
 
                 AccrualAmount := 0;
                 PaymentAmount := 0;
@@ -144,9 +138,9 @@ report 50004 "WDC Purchase Rebate Entries"
                 END;
 
                 // SI-44258-V6M3
-                IF "Sell-To/Buy-FromNo" <> "Sell-to/Buy-from No." THEN
+                IF "Sell-To/Buy-FromNo" <> "Buy-from No." THEN
                     TotalRebatePayment := 0;
-                "Sell-To/Buy-FromNo" := "Sell-to/Buy-from No.";
+                "Sell-To/Buy-FromNo" := "Buy-from No.";
 
                 IF RebCode <> "Rebate Code" THEN BEGIN
                     RebatePayment := 0;
@@ -154,65 +148,50 @@ report 50004 "WDC Purchase Rebate Entries"
                     RebateValue := 0;
                     MinimumQuantity := 0;
 
-                    RebateEntry.SETRANGE("Sell-to/Buy-from No.", "Sell-to/Buy-from No.");
+                    RebateEntry.SETRANGE("Buy-from No.", "Buy-from No.");
                     RebateEntry.SETRANGE("Rebate Code", "Rebate Code");
                     RebateEntry.SETFILTER(Open, '%1', TRUE);
                     IF RebateEntry.FINDSET THEN
                         REPEAT
+                            RebateCode.GET(RebateEntry."Rebate Code");
+                            RebateScale.SETRANGE(Code, RebateEntry."Rebate Code");
+                            IF RebateScale.FINDSET THEN BEGIN
+                                REPEAT
 
-                            CASE RebateEntry."Posting Type" OF
-                                RebateEntry."Posting Type"::Purchase:
-                                    BEGIN
-                                        RebateCode.GET(RebateCode.Type::Purchase, RebateEntry."Rebate Code");
+                                    IF RebateCode."Currency Code" = RebateEntry."Currency Code" THEN BEGIN
+                                        IF (RebateScale."Minimum Quantity" <> 0) AND
+                                           (RebateScale."Minimum Quantity" <= ABS(RebateEntry."Base Quantity")) AND
+                                           (RebateScale."Minimum Quantity" > MinimumQuantity) AND
+                                           (RebateScale."Rebate Value" > RebateValue)
+                                        THEN BEGIN
+                                            RebateValue := RebateScale."Rebate Value";
+                                            MinimumQuantity := RebateScale."Minimum Quantity";
+                                        END;
 
-                                        RebateScale.SETRANGE(Type, RebateScale.Type::Purchase);
-                                        RebateScale.SETRANGE(Code, RebateEntry."Rebate Code");
-                                        IF RebateScale.FINDSET THEN BEGIN
-                                            REPEAT
-
-                                                IF RebateCode."Currency Code" = RebateEntry."Currency Code" THEN BEGIN
-                                                    IF (RebateScale."Minimum Quantity" <> 0) AND
-                                                       (RebateScale."Minimum Quantity" <= ABS(RebateEntry."Base Quantity")) AND
-                                                       (RebateScale."Minimum Quantity" > MinimumQuantity) AND
-                                                       (RebateScale."Rebate Value" > RebateValue)
-                                                    THEN BEGIN
-                                                        RebateValue := RebateScale."Rebate Value";
-                                                        MinimumQuantity := RebateScale."Minimum Quantity";
-                                                    END;
-
-                                                    IF (RebateScale."Minimum Amount" <> 0) AND
-                                                       (RebateScale."Minimum Amount" <= ABS(RebateEntry."Base Amount")) AND
-                                                       (RebateScale."Minimum Amount" > MinimumAmount) AND
-                                                       (RebateScale."Rebate Value" > RebateValue)
-                                                    THEN BEGIN
-                                                        RebateValue := RebateScale."Rebate Value";
-                                                        MinimumQuantity := RebateScale."Minimum Quantity";
-                                                    END;
-                                                END;
-
-                                            UNTIL RebateScale.NEXT <= 0;
-
-                                            CASE RebateCode."Rebate Method" OF
-                                                RebateCode."Rebate Method"::Percentage:
-                                                    RebatePayment := RebateEntry."Base Amount" * RebateValue / 100;
-                                                RebateCode."Rebate Method"::Actual:
-                                                    RebatePayment := RebateEntry."Base Quantity" * RebateValue;
-                                            END;
-
-                                        END ELSE BEGIN
-                                            IF RebateEntry."Currency Code" <> '' THEN BEGIN
-                                                Currency.GET(RebateEntry."Currency Code");
-                                                Currency.TESTFIELD("Amount Rounding Precision");
-                                                RebatePayment := ROUND(
-                                                  CurrencyExchangeRate.ExchangeAmtLCYToFCY(PostingDate, RebateEntry."Currency Code",
-                                                  RebateEntry."Accrual Amount (LCY)",
-                                                  CurrencyExchangeRate.ExchangeRate(PostingDate, RebateEntry."Currency Code")), Currency."Amount Rounding Precision");
-                                            END ELSE
-                                                RebatePayment := RebatePayment + RebateEntry."Accrual Amount (LCY)";
+                                        IF (RebateScale."Minimum Amount" <> 0) AND
+                                           (RebateScale."Minimum Amount" <= ABS(RebateEntry."Base Amount")) AND
+                                           (RebateScale."Minimum Amount" > MinimumAmount) AND
+                                           (RebateScale."Rebate Value" > RebateValue)
+                                        THEN BEGIN
+                                            RebateValue := RebateScale."Rebate Value";
+                                            MinimumQuantity := RebateScale."Minimum Quantity";
                                         END;
                                     END;
 
-                            end;
+                                UNTIL RebateScale.NEXT <= 0;
+
+                                RebatePayment := RebateEntry."Base Quantity" * RebateValue;
+                            END ELSE BEGIN
+                                IF RebateEntry."Currency Code" <> '' THEN BEGIN
+                                    Currency.GET(RebateEntry."Currency Code");
+                                    Currency.TESTFIELD("Amount Rounding Precision");
+                                    RebatePayment := ROUND(
+                                      CurrencyExchangeRate.ExchangeAmtLCYToFCY(PostingDate, RebateEntry."Currency Code",
+                                      RebateEntry."Accrual Amount (LCY)",
+                                      CurrencyExchangeRate.ExchangeRate(PostingDate, RebateEntry."Currency Code")), Currency."Amount Rounding Precision");
+                                END ELSE
+                                    RebatePayment := RebatePayment + RebateEntry."Accrual Amount (LCY)";
+                            END;
                         UNTIL RebateEntry.NEXT = 0;
 
                     IF RebatePayment > 0 THEN
@@ -239,18 +218,11 @@ report 50004 "WDC Purchase Rebate Entries"
         PostingDate := WORKDATE;
     end;
 
-    trigger OnPreReport()
-    begin
-        IF "Rebate Entry".GETFILTER("Posting Type") = '' THEN
-            ERROR(Text001);
-    end;
-
     var
         RebateCode: Record "WDC Rebate Code";
         RebateScale: Record "WDC Rebate Scale";
         Currency: Record 4;
         CurrencyExchangeRate: Record 330;
-        Cust: Record 18;
         Vendor: Record 23;
         "Sell-To/Buy-FromName": Text[50];
         AccrualAmount: Decimal;
@@ -264,10 +236,8 @@ report 50004 "WDC Purchase Rebate Entries"
         PostingDate: Date;
         PostingType: Text[30];
         LastFieldNo: Integer;
-        Text001: Label 'Posting Type may not be empty!';
         RebateEntry: Record "WDC Rebate Entry";
         Text002: Label 'Buy-from No.';
-        Text003: Label 'Sell-to No.';
         "Sell-To/Buy-FromNoTxt": Text[30];
         Rebate_Entry_Accrual_and_PaymentsCaptionLbl: Label 'Rebate Entry Accrual and Payments';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
