@@ -148,7 +148,6 @@ permissionset 50000 GeneratedPermission
         report "WDC  Délai des paiments" = X,
         report "WDC MM VAT Return" = X,
         report "WDC Purchase Rebate Entries" = X,
-        codeunit "WDC Subscribers Accounting" = X,
         codeunit "WDC subscribers Werehouse" = X,
         report "WDC-QA Lot Information" = X,
         tabledata "WDC Forwarding Agent" = RIMD,
@@ -163,5 +162,7 @@ permissionset 50000 GeneratedPermission
         report "WDC Sales Shipment" = X,
         page "WDC Forwarding Agent" = X,
         page "WDC Harbor" = X,
-        page "WDC Notify Party" = X;
+        page "WDC Notify Party" = X,
+        codeunit "WDC Rebate Subsc Accounting" = X,
+        codeunit "WDC Rebate Subsc. Purchase" = X;
 }
