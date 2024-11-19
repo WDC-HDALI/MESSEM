@@ -1,4 +1,4 @@
-report 50007 "WDC Sales Invoice"
+report 50009 "WDC Sales Invoice"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MESSEMSalesInvoice.rdlc';
