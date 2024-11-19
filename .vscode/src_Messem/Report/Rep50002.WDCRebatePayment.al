@@ -1,9 +1,12 @@
 report 50002 "WDC Rebate Payment"
 {
-    DefaultLayout = RDLC;
+
     CaptionML = ENU = 'Rebate payment', FRA = 'Paiement bonus';
     ApplicationArea = all;
     UsageCategory = ReportsAndAnalysis;
+    ProcessingOnly = true;
+    DefaultLayout = RDLC;
+    RDLCLayout = './.vscode/src_Messem/Report/RDLC/PaymentRebate.rdlc';
     dataset
     {
         dataitem("Rebate Entry"; "WDC Rebate Entry")
@@ -42,7 +45,7 @@ report 50002 "WDC Rebate Payment"
                 IF DocumentDate = 0D THEN
                     ERROR(Text001);
 
-                SETFILTER("Ending Date", '<%1', WORKDATE);
+                SETFILTER("Ending Date", '<%1', WORKDATE); //HD01 0 vérifier pour que le rapport va traiter 
             end;
         }
     }
@@ -79,19 +82,22 @@ report 50002 "WDC Rebate Payment"
     end;
 
     var
-        Text000: Label 'Posting Date not valid.';
-        Text001: Label 'Document Date not valid.';
-        Text002: Label 'Rebate Payment %1';
-        Text003: Label 'No Valid Rebate Scale found for Sell-to/Buy-from No. %1, %2 Rebate Code %3.';
-        Text004: Label 'Succesfully added one or more credit memo''s.';
-        Text005: Label 'No credit memo''s added.';
-        Text006: Label '\Rebate Codes with Currency Code must have a valid Rebate Scale.';
+        Text000: TextConst ENU = 'Posting Date not valid.', FRA = 'Date comptabilisation n''est pas valide';
+        Text001: TextConst ENU = 'Document Date not valid.', FRA = 'Date document n''est pas valide';
+        Text002: TextConst ENU = 'Rebate Payment %1', FRA = 'Bonus Payment %1';
+        Text003: TextConst ENU = 'No Valid Rebate Scale found for Sell-to/Buy-from No. %1, %2 Rebate Code %3.',
+                           FRA = 'Pas de règle de bonus valable trouvée pour Donneur d''ordre/Preneur d''ordre n° %1, %2 Code Bonue %3.';
+        Text004: TextConst ENU = 'Succesfully added one or more credit memo''s.', FRA = 'Un ou plusieurs avoirs ont bien été ajouté.';
+        Text005: TextConst ENU = 'No credit memo''s added.', FRA = 'Aucune facture ajoutée';
+        Text006: TextConst ENU = 'Rebate Codes with Currency Code must have a valid Rebate Scale.',
+                           FRA = 'Les Codes bonus avec un code devise doivent avoir une Règle de Bonus';
         PreviousSelltoBuyFromNo: Code[20];
         PreviousRebateCode: Code[20];
         TempRebateEntry: Record "WDC Rebate Entry" temporary;
         PostingDate: Date;
         DocumentDate: Date;
-        Text007: Label 'Succesfully added one or more credit memo''s.';
+        Text007: TextConst ENU = 'Succesfully added one or more credit memo''s.',
+                           FRA = 'Un ou plusieurs avoirs ont bien été ajouté.';
 
     procedure CreateOrders()
     var
@@ -176,7 +182,6 @@ report 50002 "WDC Rebate Payment"
                 IF RebatePayment = 0 THEN
                     ERROR(Text003, TempRebateEntry."Buy-from No.", TempRebateEntry."Rebate Code");
                 //
-                //<< cmt HD01
                 PurchaseLine.INIT;
                 PurchaseLine.VALIDATE("System-Created Entry", TRUE);
                 PurchaseLine.VALIDATE("Document Type", PurchaseLine."Document Type"::Invoice);

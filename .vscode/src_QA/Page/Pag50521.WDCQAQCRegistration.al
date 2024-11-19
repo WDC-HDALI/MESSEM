@@ -354,7 +354,7 @@ page 50521 "WDC-QA QC Registration"
 
     trigger OnAfterGetRecord()
     begin
-        GetAtrributes;
+        // GetAtrributes;
     end;
 
     procedure ActivateLotNoInfo()
@@ -412,14 +412,14 @@ page 50521 "WDC-QA QC Registration"
         END;
     end;
 
-    local procedure GetAtrributes()
-    var
-        LotAttributeManagement: Codeunit "WDC Lot Attribute Mngmt";
-    begin
-        CLEAR(LotAttributes);
-        IF Rec."Lot No." <> '' THEN
-            LotAttributeManagement.GetLotAttributes(LotAttributes, Rec."Item No.", Rec."Variant Code", Rec."Lot No.", 0, 0, '', 0, '', 0);
-    end;
+    // local procedure GetAtrributes()
+    // var
+    //     LotAttributeManagement: Codeunit "WDC Lot Attribute Mngmt";
+    // begin
+    //     CLEAR(LotAttributes);
+    //     IF Rec."Lot No." <> '' THEN
+    //         LotAttributeManagement.GetLotAttributes(LotAttributes, Rec."Item No.", Rec."Variant Code", Rec."Lot No.", 0, 0, '', 0, '', 0);
+    // end;
 
     var
         RegistrationHeader: Record "WDC-QA Registration Header";

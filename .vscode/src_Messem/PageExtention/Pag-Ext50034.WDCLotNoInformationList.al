@@ -1,17 +1,18 @@
-pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
+namespace MESSEM.MESSEM;
+
+using Microsoft.Inventory.Tracking;
+using Microsoft.Purchases.Document;
+using Microsoft.Manufacturing.Document;
+using Microsoft.Inventory.Journal;
+
+pageextension 50034 "WDC Lot No. Information List" extends "Lot No. Information List"
 {
     layout
     {
-        addafter("Entry No.")
-        {
-            field("Balance Reg. Customer/Vend.No."; Rec."Balance Reg. Customer/Vend.No.")
-            {
-                ApplicationArea = all;
-            }
 
-        }
-        addafter(Quantity)
+        addbefore(Blocked)
         {
+
             field(PFD; Rec.PFD)
             {
                 ApplicationArea = all;
@@ -33,7 +34,6 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
             {
                 ApplicationArea = all;
             }
-
         }
     }
 }

@@ -2,7 +2,7 @@ namespace MESSEM.MESSEM;
 
 using Microsoft.Inventory.Tracking;
 
-tableextension 50023 "WDC Lot No. Information" extends "Lot No. Information"
+tableextension 50036 "WDC Tracking Specification" extends "Tracking Specification"
 {
     fields
     {
@@ -23,7 +23,7 @@ tableextension 50023 "WDC Lot No. Information" extends "Lot No. Information"
         }
         field(50003; "Package Number"; Integer)
         {
-            CaptionML = ENU = 'Package Number', FRA = 'Nbre de Palette';
+            CaptionML = ENU = 'Package Number', FRA = 'Nombre Palette';
             DataClassification = ToBeClassified;
         }
         field(50004; Place; Code[20])
