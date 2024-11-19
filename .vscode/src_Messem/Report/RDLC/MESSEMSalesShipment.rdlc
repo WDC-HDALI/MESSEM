@@ -19,12 +19,12 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>18.13631cm</Width>
+                  <Width>18.18173cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>6.65844cm</Height>
+                  <Height>7.94663cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -2918,7 +2918,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Colis</Value>
+                                                    <Value>Package</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Segoe UI</FontFamily>
@@ -4615,8 +4615,8 @@
                                   </FilterValues>
                                 </Filter>
                               </Filters>
-                              <Top>0.37112cm</Top>
-                              <Left>0cm</Left>
+                              <Top>0.48406cm</Top>
+                              <Left>0.04542cm</Left>
                               <Height>6.16611cm</Height>
                               <Width>18.13631cm</Width>
                               <Visibility>
@@ -4731,7 +4731,9 @@ Cstr(Fields!NotifyPartyAdress2.Value)+ Chr(177) +
 Cstr(Fields!NotifyPartyPhone2.Value)+ Chr(177) +
 Cstr(Fields!NotifyPostCode2.Value)+ Chr(177) +
 Cstr(Fields!NotifyPartyEmail2.Value)+ Chr(177) +
-Cstr(Fields!NotifyParty2Caption.Value)</Value>
+Cstr(Fields!NotifyParty2Caption.Value)+ Chr(177) +
+Cstr(Fields!NotifyParty1value.Value)+ Chr(177) +
+Cstr(Fields!NotifyParty2value.Value)</Value>
                                                     <Style>
                                                       <Color>Red</Color>
                                                     </Style>
@@ -4765,7 +4767,7 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
-                              <Left>6.66664in</Left>
+                              <Left>6.68452in</Left>
                               <Height>0.4064cm</Height>
                               <Width>0.1cm</Width>
                               <ZIndex>1</ZIndex>
@@ -4809,15 +4811,15 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
             <Left>0.34007cm</Left>
-            <Height>6.65844cm</Height>
-            <Width>18.13631cm</Width>
+            <Height>7.94663cm</Height>
+            <Width>18.18173cm</Width>
             <Style />
           </Tablix>
         </ReportItems>
-        <Height>6.79073cm</Height>
+        <Height>7.94663cm</Height>
         <Style />
       </Body>
-      <Width>18.47638cm</Width>
+      <Width>18.5218cm</Width>
       <Page>
         <PageHeader>
           <Height>12.02962cm</Height>
@@ -4978,7 +4980,7 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>0.2099cm</Top>
-              <Left>0.29465cm</Left>
+              <Left>0.34007cm</Left>
               <Height>20pt</Height>
               <Width>10.39284cm</Width>
               <ZIndex>5</ZIndex>
@@ -5156,8 +5158,8 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>4.24734cm</Top>
-              <Left>4.0072cm</Left>
+              <Top>4.28261cm</Top>
+              <Left>4.04247cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>12</ZIndex>
@@ -5373,7 +5375,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>20</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -5399,6 +5407,9 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>3.71255cm</Width>
               <ZIndex>21</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
                 <Border />
                 <VerticalAlign>Middle</VerticalAlign>
@@ -5426,7 +5437,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>22</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -5452,7 +5469,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>23</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -5644,12 +5667,18 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>11.48811cm</Top>
+              <Top>11.52339cm</Top>
               <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>30</ZIndex>
+              <Visibility>
+                <Hidden>true</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -5675,6 +5704,9 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>3.67245cm</Width>
               <ZIndex>31</ZIndex>
+              <Visibility>
+                <Hidden>true</Hidden>
+              </Visibility>
               <Style>
                 <Border />
                 <VerticalAlign>Middle</VerticalAlign>
@@ -5829,7 +5861,7 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>11.10006cm</Top>
+              <Top>11.13534cm</Top>
               <Left>3.96178cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
@@ -5934,12 +5966,18 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>6.16821cm</Top>
+              <Top>6.19644cm</Top>
               <Left>3.98691cm</Left>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>40</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -5965,7 +6003,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>41</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty1value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6059,7 +6103,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>44</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6085,6 +6135,9 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>3.71012cm</Width>
               <ZIndex>45</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
                 <Border />
                 <VerticalAlign>Middle</VerticalAlign>
@@ -6112,7 +6165,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>11.00012pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>46</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6138,7 +6197,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>47</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6164,7 +6229,13 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
               <Height>10pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>48</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6186,11 +6257,17 @@ Cstr(Fields!NotifyParty2Caption.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>8.77173cm</Top>
-              <Left>3.96178cm</Left>
+              <Left>3.98691cm</Left>
               <Height>10.99991pt</Height>
               <Width>6.72571cm</Width>
               <ZIndex>49</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Fields!NotifyParty2value.Value = "", true, false)</Hidden>
+              </Visibility>
               <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
@@ -6510,6 +6587,12 @@ End Function
         <Field Name="DestPort_SalesShipHeader">
           <DataField>DestPort_SalesShipHeader</DataField>
         </Field>
+        <Field Name="NotifyParty1value">
+          <DataField>NotifyParty1value</DataField>
+        </Field>
+        <Field Name="NotifyParty2value">
+          <DataField>NotifyParty2value</DataField>
+        </Field>
         <Field Name="NotifyPartyAdress">
           <DataField>NotifyPartyAdress</DataField>
         </Field>
@@ -6758,6 +6841,9 @@ End Function
         </Field>
         <Field Name="BoxType_SalesLine">
           <DataField>BoxType_SalesLine</DataField>
+        </Field>
+        <Field Name="HarmTariff">
+          <DataField>HarmTariff</DataField>
         </Field>
         <Field Name="TotalQty2_SalesLine">
           <DataField>TotalQty2_SalesLine</DataField>

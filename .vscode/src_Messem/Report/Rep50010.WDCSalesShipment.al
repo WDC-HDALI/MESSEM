@@ -152,6 +152,12 @@ report 50010 "WDC Sales Shipment"
                     column(DestPort_SalesShipHeader; Harbor.Description)
                     {
                     }
+                    column(NotifyParty1value; "Sales Shipment Header"."Notify Party 1")
+                    {
+                    }
+                    column(NotifyParty2value; "Sales Shipment Header"."Notify Party 2")
+                    {
+                    }
                     column(NotifyPartyAdress; NotifyPartyAdress)
                     {
                     }
@@ -431,9 +437,9 @@ report 50010 "WDC Sales Shipment"
                         column(BoxType_SalesLine; "Sales Shipment Line"."Shipment Unit")
                         {
                         }
-                        // column(HarmTariff;"Sales Shipment Line"."Harmonised Tariff Code")
-                        // {
-                        // }
+                        column(HarmTariff; "Sales Shipment Line"."Harmonised Tariff Code")
+                        {
+                        }
                         column(TotalQty2_SalesLine; TotalQty2)
                         {
                         }
@@ -1052,7 +1058,7 @@ report 50010 "WDC Sales Shipment"
     var
         Text000: TextConst ENU = 'Salesperson', FRA = 'Vendeur';
         Text001: TextConst ENU = 'COPY', FRA = 'COPIE';
-        Text002: TextConst ENU = 'Shipping Instructions %1 \  Packing List', FRA = 'Ventes : Expédition%1 \  Liste de colisage';
+        Text002: TextConst ENU = 'Packing List', FRA = 'Liste de colisage';
         SalesPurchPerson: Record "Salesperson/Purchaser";
         CompanyInfo: Record "Company Information";
         CompanyInfo1: Record "Company Information";
@@ -1130,7 +1136,7 @@ report 50010 "WDC Sales Shipment"
         "--------------------------": Text;
         ShippingAgent: Record "Shipping Agent";
         DestHarborCaption: TextConst ENU = 'Destination Harbor', FRA = 'Port de destination';
-        NotifyParty1Caption: TextConst ENU = 'Notify Party 1', FRA = 'Partie à informer 1';
+        NotifyParty1Caption: TextConst ENU = 'Notify Party 1', FRA = 'à inforPartie mer 1';
         NotifyParty2Caption: TextConst ENU = 'Notify Party 2', FRA = 'Partie à informer 2';
         Harbor: Record "WDC Harbor";
         NotifyParty: Record "WDC Notify Party";

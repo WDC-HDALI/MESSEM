@@ -258,13 +258,20 @@ codeunit 50001 "WDC Subscriber Purchase"
         PurchCrMemoLine."Return Shipment No." := PurchLine."Return Shipment No.";
         PurchCrMemoLine."Return Shipment Line No." := PurchLine."Return Shipment Line No.";
     end;
+    //filtrage de liste retour
+    [EventSubscriber(ObjectType::page, page::"Get Post.Doc - P.RcptLn Sbfrm", 'OnBeforeIsShowRec', '', FALSE, FALSE)]
+    local procedure OnBeforeIsShowRec(PurchRcptLine: Record "Purch. Rcpt. Line"; var RevQtyFilter: Boolean; var Result: Boolean; var IsHandled: Boolean; var RemainingQty: Decimal; var RevUnitCostLCY: Decimal; FillExactCostReverse: Boolean)
+    begin
+        if PurchRcptLine."Packaging Item" = true then
+            IsHandled := true;
+        //Result := false;
+    end;
 
     procedure AddOrderPackaging(PurchHeader: Record "Purchase Header")
     var
         purchLine: Record "Purchase Line";
         PurchLine2: Record "Purchase Line";
         LineNo: Integer;
-        t: page "Posted Purchase Document Lines";
     begin
 
         PurchLine.RESET;

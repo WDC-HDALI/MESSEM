@@ -226,6 +226,7 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
             Editable = false;
             BlankZero = true;
+            DecimalPlaces = 5;
 
         }
         field(50013; "Qty. Shipped Shipment Units"; Decimal)
@@ -345,6 +346,7 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
             BlankZero = true;
             Editable = false;
+            DecimalPlaces = 5;
 
         }
 
@@ -354,6 +356,40 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
 
         }
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if "Location Code" = '' then
+                    "Location Code" := InventoryPostingGroup."Location Code";
+                if ("Bin Code" = '') and ("Location Code" <> '') then
+                    if item.get("No.") then
+                        if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                            if InventoryPostingGroup."Location Code" = "Location Code" then
+                                "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+        modify("Location Code")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                //if (rec."Location Code" <> xRec."Location Code") and (rec."Location Code" <>'') then
+                if "Bin Code" = '' then
+                    if item.get("No.") then
+                        if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                            if InventoryPostingGroup."Location Code" = "Location Code" then
+                                "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+
     }
 
     procedure MaxShipUnitsToInvoice(): Decimal
@@ -372,9 +408,62 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             EXIT("Qty. Shipped Shipm. Containers" + "Qty. to Ship Shipm. Containers" - "Qty. S.Cont. Invoiced");
     end;
 
+    procedure GetBalanceRegCustomerNo(): Code[20]
+    var
+        Packaging: Record "WDC Packaging";
+        CustomerVendorPackaging: Record "WDC Customer/Vendor Packaging";
+        ShippingAgent: Record "Shipping Agent";
+    begin
+        IF Type <> Type::Item THEN
+            EXIT;
+
+        GetSalesHeader;
+        IF NOT (("Document Type" IN ["Document Type"::Order, "Document Type"::"Return Order"]) OR
+                (SalesHeader.Ship AND ("Document Type" = "Document Type"::Invoice)) OR
+                (SalesHeader.Receive AND ("Document Type" = "Document Type"::"Credit Memo"))) THEN
+            EXIT;
+
+        Packaging.SETCURRENTKEY("Item No.");
+        Packaging.SETRANGE("Item No.", "No.");
+        IF NOT Packaging.FINDFIRST THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging.GET(DATABASE::Customer, "Sell-to Customer No.", Packaging.Code) THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging."Register Balance" THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging."Balance Reg. Shipping Agent" THEN
+            EXIT("Sell-to Customer No.");
+
+        SalesHeader.TESTFIELD("Shipping Agent Code");
+        ShippingAgent.GET(SalesHeader."Shipping Agent Code");
+        ShippingAgent.TESTFIELD("Customer No.");
+
+        EXIT(ShippingAgent."Customer No.");
+    end;
+
+    procedure GetSalesHeader()
+    begin
+        TESTFIELD("Document No.");
+        IF ("Document Type" <> SalesHeader."Document Type") OR ("Document No." <> SalesHeader."No.") THEN BEGIN
+            SalesHeader.GET("Document Type", "Document No.");
+            IF SalesHeader."Currency Code" = '' THEN
+                Currency.InitRoundingPrecision
+            ELSE BEGIN
+                SalesHeader.TESTFIELD("Currency Factor");
+                Currency.GET(SalesHeader."Currency Code");
+                Currency.TESTFIELD("Amount Rounding Precision");
+            END;
+        END;
+    end;
+
+
 
     var
-
+        SalesHeader: record "Sales Header";
+        Currency: record Currency;
         Text001: TextConst ENU = 'Field %1 cannot be changed when the line has been shipped.', FRA = 'Champ %1 ne peut pas être modifié quand la ligne a été expédiée.';
         Text002: TextConst ENU = 'must not be less than %1', FRA = 'ne doit pas être inférieur(e) à %1';
         text003: TextConst ENU = 'Sales Cost for category %1 are linked to this %2.', FRA = 'Coût de vente catégorie %1 est lié à %2.';

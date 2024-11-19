@@ -1,4 +1,4 @@
-report 50011 "Customer/Vendor Packaging"
+report 50011 "WDC Customer/Vendor Packaging"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/CustomerVendorPackaging.rdlc';

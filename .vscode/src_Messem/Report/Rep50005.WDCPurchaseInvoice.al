@@ -1,4 +1,4 @@
-report 50007 "WDC Purchase - Invoice"
+report 50005 "WDC Purchase Invoice"
 {
     CaptionML = ENU = 'Purchase - Invoice', FRA = 'Facture Achat';
     DefaultLayout = RDLC;

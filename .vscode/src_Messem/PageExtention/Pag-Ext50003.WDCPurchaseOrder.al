@@ -15,6 +15,25 @@ pageextension 50003 "WDC Purchase Order " extends "Purchase Order"
                 CaptionML = ENU = 'Parcel No.', FRA = 'N° parcelle';
             }
         }
+        addlast("Shipping and Payment")
+        {
+            // field("No. of Shipment Containers"; Rec."No. of Shipment Containers")
+            // {
+            //     ApplicationArea = all;
+            // }
+            // field("No. of Shipment Units"; Rec."No. of Shipment Units")
+            // {
+            //     ApplicationArea = all;
+            // }
+            field("Pick up Post Code"; Rec."Pick up Post Code")
+            {
+                ApplicationArea = all;
+            }
+            field("Pick up City"; Rec."Pick up City")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
     actions
     {

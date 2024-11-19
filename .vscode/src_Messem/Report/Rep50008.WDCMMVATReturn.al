@@ -1,4 +1,4 @@
-report 50072 "WDC MM VAT Return"
+report 50008 "WDC MM VAT Return"
 {
     // WDC01  27/05/2024  WDC.ST  Création
     DefaultLayout = RDLC;
@@ -9,7 +9,7 @@ report 50072 "WDC MM VAT Return"
     UsageCategory = ReportsAndAnalysis;
     dataset
     {
-        dataitem(Vendor; 23)
+        dataitem(Vendor; Vendor)
         {
             DataItemTableView = SORTING("Gen. Bus. Posting Group")
                                 ORDER(Ascending)
@@ -55,7 +55,7 @@ report 50072 "WDC MM VAT Return"
             column(Vendor_PaymentMethodCode; Vendor."Payment Method Code")
             {
             }
-            dataitem("Vendor Ledger Entry"; 25)
+            dataitem("Vendor Ledger Entry"; "Vendor Ledger Entry")
             {
                 CalcFields = Amount;
                 DataItemLink = "Vendor No." = FIELD("No.");
@@ -77,7 +77,7 @@ report 50072 "WDC MM VAT Return"
                 column(VendorLedgerEntry_PostingDate; "Vendor Ledger Entry"."Posting Date")
                 {
                 }
-                dataitem("VendorLedger Entry1"; 25)
+                dataitem("VendorLedger Entry1"; "Vendor Ledger Entry")
                 {
                     DataItemLink = "Vendor No." = FIELD("Vendor No.");
                     DataItemTableView = SORTING("Entry No.");
@@ -203,25 +203,21 @@ report 50072 "WDC MM VAT Return"
             {
                 field(DateDebut; DateDebut)
                 {
-                    Caption = 'Starting Date';
+                    CaptionML = ENU = 'Starting Date', FRA = 'Date début';
                     ApplicationArea = all;
                 }
                 field(Datefin; Datefin)
                 {
-                    Caption = 'Ending Date';
+                    Captionml = ENU = 'Ending Date', FRA = 'Date fin';
                     ApplicationArea = all;
                 }
                 field(Nfact; Nfact)
                 {
-                    Caption = 'Invoice No.';
+                    CaptionML = ENU = 'Invoice No.', FRA = 'N° facture';
                     Visible = false;
                     ApplicationArea = all;
                 }
             }
-        }
-
-        actions
-        {
         }
     }
 
@@ -244,24 +240,24 @@ report 50072 "WDC MM VAT Return"
     end;
 
     var
-        RecGCompanyinformation: Record 79;
-        CreateVendLedgEntry: Record 25;
-        rec25: Record 25;
-        rec380: Record 380;
+        RecGCompanyinformation: Record "Company Information";
+        CreateVendLedgEntry: Record "Vendor Ledger Entry";
+        rec25: Record "Vendor Ledger Entry";
+        rec380: Record "Detailed Vendor Ledg. Entry";
         SoldeT: Decimal;
         MontantLettre: Decimal;
         DateDebut: Date;
         Datefin: Date;
         Nfact: Code[20];
         // recPayLine: Record 10866;
-        recVendor: Record 23;
-        PurchInvHeader: Record 122;
-        PurchCrMemoHdr: Record 24;
+        recVendor: Record Vendor;
+        PurchInvHeader: Record "Purch. Inv. Header";
+        PurchCrMemoHdr: Record "Vendor Invoice Disc.";
 
     procedure FindApplnEntriesDtldtLedgEntry(var rec25Bis: Record 25; recCreate: Record 25)
     var
-        DtldVendLedgEntry1: Record 380;
-        DtldVendLedgEntry2: Record 380;
+        DtldVendLedgEntry1: Record "Detailed Vendor Ledg. Entry";
+        DtldVendLedgEntry2: Record "Detailed Vendor Ledg. Entry";
     begin
         DtldVendLedgEntry1.SETCURRENTKEY("Vendor Ledger Entry No.");
         DtldVendLedgEntry1.SETRANGE("Vendor Ledger Entry No.", CreateVendLedgEntry."Entry No.");

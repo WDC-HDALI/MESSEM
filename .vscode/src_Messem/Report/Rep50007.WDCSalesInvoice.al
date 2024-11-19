@@ -1,4 +1,4 @@
-report 50009 "WDC Sales Invoice"
+report 50007 "WDC Sales Invoice"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MESSEMSalesInvoice.rdlc';
@@ -504,9 +504,9 @@ report 50009 "WDC Sales Invoice"
                         column(LotNo; LotNo)
                         {
                         }
-                        // column(HarmoTariffCode;"Sales Invoice Line"."Harmonised Tariff Code")
-                        // {
-                        // }
+                        column(HarmoTariffCode; "Sales Invoice Line"."Harmonised Tariff Code")
+                        {
+                        }
                         column(TotalQty_SalesLine; TotalQty)
                         {
                         }
@@ -1305,39 +1305,39 @@ report 50009 "WDC Sales Invoice"
         TotalPaymentDiscOnVAT: Decimal;
         LogInteractionEnable: Boolean;
         DisplayAssemblyInformation: Boolean;
-        CompanyInfoPhoneNoCaptionLbl: TextConst ENU = 'Phone No.', FRA = '';
-        CompanyInfoVATRegNoCptnLbl: TextConst ENU = 'VAT Reg. No.', FRA = '';
-        CompanyInfoGiroNoCaptionLbl: TextConst ENU = 'Giro No.', FRA = '';
-        CompanyInfoBankNameCptnLbl: TextConst ENU = 'Bank', FRA = '';
-        CompanyInfoBankAccNoCptnLbl: TextConst ENU = 'Account No.', FRA = '';
-        SalesInvDueDateCaptionLbl: TextConst ENU = 'Due Date', FRA = '';
-        InvNoCaptionLbl: TextConst ENU = 'Invoice No.', FRA = '';
-        SalesInvPostingDateCptnLbl: TextConst ENU = 'Posting Date', FRA = '';
-        HeaderDimCaptionLbl: TextConst ENU = 'Header Dimensions', FRA = '';
-        UnitPriceCaptionLbl: TextConst ENU = 'Unit Price', FRA = '';
-        SalesInvLineDiscCaptionLbl: TextConst ENU = 'Discount %', FRA = '';
-        VATClausesCap: TextConst ENU = 'VAT Clause', FRA = '';
-        AmountCaptionLbl: TextConst ENU = 'Amount', FRA = '';
-        PostedShipmentDateCaptionLbl: TextConst ENU = 'Posted Shipment Date', FRA = '';
-        SubtotalCaptionLbl: TextConst ENU = 'Subtotal', FRA = '';
-        LineAmtAfterInvDiscCptnLbl: TextConst ENU = 'Payment Discount on VAT', FRA = '';
-        ShipmentCaptionLbl: TextConst ENU = 'Shipment', FRA = '';
-        LineDimCaptionLbl: TextConst ENU = 'Line Dimensions', FRA = '';
-        VATAmtSpecificationCptnLbl: TextConst ENU = 'VAT Amount Specification', FRA = '';
-        InvDiscBaseAmtCaptionLbl: TextConst ENU = 'Invoice Discount Base Amount', FRA = '';
-        LineAmtCaptionLbl: TextConst ENU = 'Line Amount', FRA = '';
-        ShiptoAddrCaptionLbl: TextConst ENU = 'Ship-to Address', FRA = '';
-        InvDiscountAmtCaptionLbl: TextConst ENU = 'Invoice Discount Amount', FRA = '';
-        DocumentDateCaptionLbl: TextConst ENU = 'Invoice Date', FRA = '';
-        PaymentTermsDescCaptionLbl: TextConst ENU = 'Payment Terms', FRA = '';
-        ShptMethodDescCaptionLbl: TextConst ENU = 'Incoterm', FRA = '';
-        VATPercentageCaptionLbl: TextConst ENU = 'VAT %', FRA = '';
-        TotalCaptionLbl: TextConst ENU = 'Total', FRA = '';
-        VATBaseCaptionLbl: TextConst ENU = 'VAT Base', FRA = '';
-        VATAmtCaptionLbl: TextConst ENU = 'VAT Amount', FRA = '';
-        VATIdentifierCaptionLbl: TextConst ENU = 'VAT Identifier', FRA = '';
-        HomePageCaptionLbl: TextConst ENU = 'Home Page', FRA = '';
-        EMailCaptionLbl: TextConst ENU = 'E-Mail', FRA = '';
+        CompanyInfoPhoneNoCaptionLbl: TextConst ENU = 'Phone No.';
+        CompanyInfoVATRegNoCptnLbl: TextConst ENU = 'VAT Reg. No.';
+        CompanyInfoGiroNoCaptionLbl: TextConst ENU = 'Giro No.';
+        CompanyInfoBankNameCptnLbl: TextConst ENU = 'Bank';
+        CompanyInfoBankAccNoCptnLbl: TextConst ENU = 'Account No.';
+        SalesInvDueDateCaptionLbl: TextConst ENU = 'Due Date';
+        InvNoCaptionLbl: TextConst ENU = 'Invoice No.';
+        SalesInvPostingDateCptnLbl: TextConst ENU = 'Posting Date';
+        HeaderDimCaptionLbl: TextConst ENU = 'Header Dimensions';
+        UnitPriceCaptionLbl: TextConst ENU = 'Unit Price';
+        SalesInvLineDiscCaptionLbl: TextConst ENU = 'Discount %';
+        VATClausesCap: TextConst ENU = 'VAT Clause';
+        AmountCaptionLbl: TextConst ENU = 'Amount';
+        PostedShipmentDateCaptionLbl: TextConst ENU = 'Posted Shipment Date';
+        SubtotalCaptionLbl: TextConst ENU = 'Subtotal';
+        LineAmtAfterInvDiscCptnLbl: TextConst ENU = 'Payment Discount on VAT';
+        ShipmentCaptionLbl: TextConst ENU = 'Shipment';
+        LineDimCaptionLbl: TextConst ENU = 'Line Dimensions';
+        VATAmtSpecificationCptnLbl: TextConst ENU = 'VAT Amount Specification';
+        InvDiscBaseAmtCaptionLbl: TextConst ENU = 'Invoice Discount Base Amount';
+        LineAmtCaptionLbl: TextConst ENU = 'Line Amount';
+        ShiptoAddrCaptionLbl: TextConst ENU = 'Ship-to Address';
+        InvDiscountAmtCaptionLbl: TextConst ENU = 'Invoice Discount Amount';
+        DocumentDateCaptionLbl: TextConst ENU = 'Invoice Date';
+        PaymentTermsDescCaptionLbl: TextConst ENU = 'Payment Terms';
+        ShptMethodDescCaptionLbl: TextConst ENU = 'Incoterm';
+        VATPercentageCaptionLbl: TextConst ENU = 'VAT %';
+        TotalCaptionLbl: TextConst ENU = 'Total';
+        VATBaseCaptionLbl: TextConst ENU = 'VAT Base';
+        VATAmtCaptionLbl: TextConst ENU = 'VAT Amount';
+        VATIdentifierCaptionLbl: TextConst ENU = 'VAT Identifier';
+        HomePageCaptionLbl: TextConst ENU = 'Home Page';
+        EMailCaptionLbl: TextConst ENU = 'E-Mail';
         "--------------------------": Text;
         ItemLedgerEntry: Record "Item Ledger Entry";
         ShippingAgent: Record "Shipping Agent";

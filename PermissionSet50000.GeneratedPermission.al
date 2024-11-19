@@ -145,7 +145,6 @@ permissionset 50000 GeneratedPermission
         page "WDC-QA QC Registration Subform" = X,
         page "WDC-QA RegistrationCommentList" = X,
         page "WDC-QARegistrationCommentSheet" = X,
-        report "WDC  Délai des paiments" = X,
         report "WDC MM VAT Return" = X,
         report "WDC Purchase Rebate Entries" = X,
         codeunit "WDC Subscribers Accounting" = X,
@@ -157,11 +156,15 @@ permissionset 50000 GeneratedPermission
         table "WDC Forwarding Agent" = X,
         table "WDC Harbor" = X,
         table "WDC Notify Party" = X,
-        report "WDC Purchase - Invoice" = X,
         report "WDC Receipt Label" = X,
         report "WDC Sales Invoice" = X,
         report "WDC Sales Shipment" = X,
         page "WDC Forwarding Agent" = X,
         page "WDC Harbor" = X,
-        page "WDC Notify Party" = X;
+        page "WDC Notify Party" = X,
+        report "WDC Customer/Vendor Packaging" = X,
+        report "WDC Loading" = X,
+        report "WDC Packaging Movement" = X,
+        report "WDC Payments Deadline" = X,
+        report "WDC Purchase Invoice" = X;
 }

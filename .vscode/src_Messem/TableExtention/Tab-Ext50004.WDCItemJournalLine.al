@@ -34,7 +34,6 @@ tableextension 50004 "WDC Item Journal Line " extends "Item Journal Line"
                 IF ("Entry Type" = "Entry Type"::Output) THEN
                     IF ("Quantity Shipment Units" <> 0) AND ("Quantity Shipment Containers" <> 0) THEN
                         "Qty Shipm.Units per Shipm.Cont" := round("Quantity Shipment Units" / "Quantity Shipment Containers", 1, '>');
-
             end;
 
         }
@@ -68,30 +67,121 @@ tableextension 50004 "WDC Item Journal Line " extends "Item Journal Line"
         {
             CaptionML = ENU = 'Balance Registration Direction', FRA = 'Sens enregistrement solde';
             DataClassification = ToBeClassified;
-
         }
 
         field(50010; "Rebate Accrual Amount (LCY)"; Decimal)
         {
             CaptionML = ENU = 'Rebate Accrual Amount (LCY)', FRA = 'Montant ajustement bonus DS';
             DataClassification = ToBeClassified;
-
         }
         field(50011; "Source Subtype"; Enum "WDC Lot Attribute Src Subtype")
         {
             CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
         }
-
         modify("Source No.")
         {
             trigger OnAfterValidate()
             begin
                 GetBalanceRegistration();
             end;
-
         }
+        modify("Item No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                IF ItemJnlBatch.GET("Journal Template Name", "Journal Batch Name") THEN
+                    IF ItemJnlBatch."Entry Type".AsInteger() <> 0 THEN BEGIN
+                        CASE ItemJnlBatch."Entry Type".AsInteger() OF
+                            1:
+                                "Entry Type" := "Entry Type"::Purchase;
+                            2:
+                                "Entry Type" := "Entry Type"::Sale;
+                            3:
+                                "Entry Type" := "Entry Type"::"Positive Adjmt.";
+                            4:
+                                "Entry Type" := "Entry Type"::"Negative Adjmt.";
+                        END;
+                    END;
+            end;
+        }
+        modify("Source Type")
+        {
+            trigger OnAfterValidate()
+            begin
+                IF ItemJnlBatch.GET("Journal Template Name", "Journal Batch Name") THEN
+                    IF ItemJnlBatch."Entry Type".AsInteger() <> 0 THEN BEGIN
+                        CASE ItemJnlBatch."Entry Type".AsInteger() OF
+                            1:
+                                "Entry Type" := "Entry Type"::Purchase;
+                            2:
+                                "Entry Type" := "Entry Type"::Sale;
+                            3:
+                                "Entry Type" := "Entry Type"::"Positive Adjmt.";
+                            4:
+                                "Entry Type" := "Entry Type"::"Negative Adjmt.";
+                        END;
+                    END;
+            end;
+        }
+        modify("Entry Type")
+        {
+            trigger OnAfterValidate()
+            begin
+                //         // IF ("Journal Template Name" <> '') THEN BEGIN
+                //         //     ItemJnlTemplate.GET("Journal Template Name");
+                //         //     IF (ItemJnlTemplate.Type = ItemJnlTemplate.Type::Item) AND
+                //         //        ("Entry Type" IN ["Entry Type"::Purchase, "Entry Type"::Sale]) THEN
+                //         //         ERROR(Text01, FIELDCAPTION("Entry Type"), "Entry Type",
+                //         //               ItemJnlTemplate.TABLECAPTION, ItemJnlTemplate.FIELDCAPTION(Type), ItemJnlTemplate.Type)
+                //         // END;
 
+                ReserveItemJnlLine.VerifyChange(Rec, xRec);
+                CheckItemAvailable(FIELDNO("Entry Type"));
+
+                //         // IF ItemJnlBatch.GET("Journal Template Name", "Journal Batch Name") THEN
+                //         //     IF (ItemJnlBatch."Entry Type".AsInteger() <> 0) AND (ItemJnlBatch."Entry Type" <> "Entry Type") THEN
+                //         //         ERROR(TxtErrTypeEntry, ItemJnlBatch."Entry Type");
+            end;
+        }
     }
+    trigger OnAfterInsert()
+    begin
+        IF ItemJnlBatch.GET("Journal Template Name", "Journal Batch Name") THEN
+            IF ItemJnlBatch."Entry Type".AsInteger() <> 0 THEN BEGIN
+                CASE ItemJnlBatch."Entry Type".AsInteger() OF
+                    1:
+                        "Entry Type" := "Entry Type"::Purchase;
+                    2:
+                        "Entry Type" := "Entry Type"::Sale;
+                    3:
+                        "Entry Type" := "Entry Type"::"Positive Adjmt.";
+                    4:
+                        "Entry Type" := "Entry Type"::"Negative Adjmt.";
+
+                END;
+            END;
+    end;
+
+    trigger OnAfterModify()
+    begin
+        IF ItemJnlBatch.GET("Journal Template Name", "Journal Batch Name") THEN
+            IF ItemJnlBatch."Entry Type".AsInteger() <> 0 THEN BEGIN
+                CASE ItemJnlBatch."Entry Type".AsInteger() OF
+                    1:
+                        "Entry Type" := "Entry Type"::Purchase;
+                    2:
+                        "Entry Type" := "Entry Type"::Sale;
+                    3:
+                        "Entry Type" := "Entry Type"::"Positive Adjmt.";
+                    4:
+                        "Entry Type" := "Entry Type"::"Negative Adjmt.";
+
+                END;
+            END;
+    end;
+
+
+
     procedure GetBalanceRegistration(): Code[20]
     var
         Packaging: Record "WDC Packaging";
@@ -167,6 +257,16 @@ tableextension 50004 "WDC Item Journal Line " extends "Item Journal Line"
                 END;
         END;
     end;
+
+    var
+        ItemJnlBatch: record "Item Journal Batch";
+        ItemJnlTemplate: record "Item Journal Template";
+        ReserveItemJnlLine: codeunit "Item Jnl. Line-Reserve";
+        Text01: TextConst ENU = '%1 may not be %2, when %3.%4 is %5.', FRA = '%1 ne peut pas être %2, quand %3.%4 est %5.';
+        TxtErrTypeEntry: TextConst ENU = 'ENtry Type Must be %1', FRA = 'Type Ecriture doit être %1';
+
+
+
 
 
 

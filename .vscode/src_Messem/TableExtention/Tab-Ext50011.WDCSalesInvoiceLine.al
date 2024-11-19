@@ -38,6 +38,12 @@ tableextension 50011 "WDC Sales Invoice Line " extends "Sales Invoice Line"
             DataClassification = ToBeClassified;
 
         }
+        field(50030; "Harmonised Tariff Code"; code[20])
+        {
+            CaptionML = ENU = 'Harmonised Tariff Code', FRA = 'Code tarifaire harmonisé';
+            DataClassification = ToBeClassified;
+
+        }
 
 
     }

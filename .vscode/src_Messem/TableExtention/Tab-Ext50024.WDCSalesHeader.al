@@ -1,6 +1,8 @@
 namespace MessemMA.MessemMA;
 
 using Microsoft.Sales.Document;
+using Microsoft.Sales.Setup;
+using Microsoft.Sales.Customer;
 
 tableextension 50024 WDCSalesHeader extends "Sales Header"
 {
@@ -52,8 +54,5 @@ tableextension 50024 WDCSalesHeader extends "Sales Header"
             TableRelation = "WDC Transport Tariff Code";
 
         }
-
-
-
     }
 }

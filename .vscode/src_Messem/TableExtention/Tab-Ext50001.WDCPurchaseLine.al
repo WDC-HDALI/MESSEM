@@ -265,6 +265,38 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             CaptionML = ENU = 'Scale Weight', FRA = 'Poids balance';
             DataClassification = ToBeClassified;
         }
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if "Location Code" = '' then
+                    "Location Code" := InventoryPostingGroup."Location Code";
+                if ("Bin Code" = '') and ("Location Code" <> '') then
+                    if item.get("No.") then
+                        if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                            if InventoryPostingGroup."Location Code" = "Location Code" then
+                                "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+        modify("Location Code")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if "Bin Code" = '' then
+                    if item.get("No.") then
+                        if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                            if InventoryPostingGroup."Location Code" = "Location Code" then
+                                "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
 
     }
     procedure MaxShipUnitsToInvoice(): Decimal
@@ -321,5 +353,4 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
         Text001: TextConst ENU = 'Field %1 cannot be changed when the line has been received.', FRA = 'Champ %1 ne peut pas être modifié quand la ligne a été réceptionnée.';
         Text002: TextConst ENU = 'Must be greater than 0.', FRA = 'Doit être supérieur à 0.';
         Text003: TextConst ENU = 'must not be less than %1', FRA = 'ne doit pas être inférieur(e) à %1';
-
 }

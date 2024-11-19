@@ -1,4 +1,4 @@
-report 50008 "WDC Receipt Label"
+report 50006 "WDC Receipt Label"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/ReceiptLabel.rdlc';

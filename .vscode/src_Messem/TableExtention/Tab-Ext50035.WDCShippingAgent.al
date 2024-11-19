@@ -4,7 +4,7 @@ using Microsoft.Foundation.Shipping;
 using Microsoft.Sales.Customer;
 using Microsoft.Purchases.Vendor;
 
-tableextension 50035 "WDCShipping Agent" extends "Shipping Agent"
+tableextension 50035 "WDC Shipping Agent" extends "Shipping Agent"
 {
     fields
     {

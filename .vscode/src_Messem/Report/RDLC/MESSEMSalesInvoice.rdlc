@@ -3393,7 +3393,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                 <TablixMembers>
                                   <TablixMember>
                                     <TablixHeader>
-                                      <Size>0.34068cm</Size>
+                                      <Size>0.13413cm</Size>
                                       <CellContents>
                                         <Textbox Name="SalesInvLineNoCaption2">
                                           <CanGrow>true</CanGrow>
@@ -3457,7 +3457,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                           </SortExpression>
                                         </SortExpressions>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="SalesInvLineNo2">
                                               <KeepTogether>true</KeepTogether>
@@ -3566,7 +3566,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1005">
                                               <CanGrow>true</CanGrow>
@@ -3601,7 +3601,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1006">
                                               <CanGrow>true</CanGrow>
@@ -3634,7 +3634,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1007">
                                               <CanGrow>true</CanGrow>
@@ -3672,7 +3672,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1008">
                                               <CanGrow>true</CanGrow>
@@ -3710,7 +3710,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1009">
                                               <CanGrow>true</CanGrow>
@@ -3748,7 +3748,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1010">
                                               <CanGrow>true</CanGrow>
@@ -3786,7 +3786,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1011">
                                               <CanGrow>true</CanGrow>
@@ -3825,7 +3825,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1012">
                                               <CanGrow>true</CanGrow>
@@ -3864,7 +3864,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1013">
                                               <CanGrow>true</CanGrow>
@@ -3902,7 +3902,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1014">
                                               <CanGrow>true</CanGrow>
@@ -3940,7 +3940,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1015">
                                               <CanGrow>true</CanGrow>
@@ -3979,7 +3979,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1016">
                                               <CanGrow>true</CanGrow>
@@ -4019,7 +4019,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1017">
                                               <CanGrow>true</CanGrow>
@@ -4058,7 +4058,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1018">
                                               <CanGrow>true</CanGrow>
@@ -4097,7 +4097,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1019">
                                               <CanGrow>true</CanGrow>
@@ -4136,7 +4136,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1020">
                                               <CanGrow>true</CanGrow>
@@ -4175,7 +4175,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                                       </TablixMember>
                                       <TablixMember>
                                         <TablixHeader>
-                                          <Size>0.34068cm</Size>
+                                          <Size>0.13413cm</Size>
                                           <CellContents>
                                             <Textbox Name="Textbox1021">
                                               <CanGrow>true</CanGrow>
@@ -4227,7 +4227,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                               <Top>0.635cm</Top>
                               <Left>0.3175cm</Left>
                               <Height>8.12533cm</Height>
-                              <Width>6.87217in</Width>
+                              <Width>6.66562in</Width>
                               <ZIndex>2</ZIndex>
                               <Style />
                             </Tablix>
@@ -5430,7 +5430,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
             <PageBreak>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
-            <Left>0.02505cm</Left>
+            <Left>0.04468cm</Left>
             <Height>11.91532cm</Height>
             <Width>19.19153cm</Width>
             <Style>
@@ -5442,7 +5442,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
         <Height>12.0488cm</Height>
         <Style />
       </Body>
-      <Width>19.21658cm</Width>
+      <Width>19.23621cm</Width>
       <Page>
         <PageHeader>
           <Height>8.66165cm</Height>
@@ -5467,6 +5467,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.47919cm</Top>
+              <Left>0.01963cm</Left>
               <Height>11.74733pt</Height>
               <Width>1.1873in</Width>
               <Style>
@@ -5492,7 +5493,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.49331cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.37262cm</Width>
               <ZIndex>1</ZIndex>
@@ -5517,7 +5518,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>3.9226cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.3661cm</Width>
               <ZIndex>2</ZIndex>
@@ -5542,6 +5543,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>3.91731cm</Top>
+              <Left>0.01963cm</Left>
               <Height>11.0741pt</Height>
               <Width>2.97676cm</Width>
               <ZIndex>3</ZIndex>
@@ -5569,7 +5571,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>0.18996in</Top>
-              <Left>0.05153cm</Left>
+              <Left>0.07116cm</Left>
               <Height>14.92669pt</Height>
               <Width>10.53998cm</Width>
               <ZIndex>4</ZIndex>
@@ -5598,7 +5600,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>4.32207cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.36609cm</Width>
               <ZIndex>5</ZIndex>
@@ -5625,7 +5627,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>0.19132cm</Top>
-              <Left>0.1097in</Left>
+              <Left>0.11743in</Left>
               <Height>0.11479cm</Height>
               <Width>0.95238cm</Width>
               <ZIndex>6</ZIndex>
@@ -5658,6 +5660,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>4.35328cm</Top>
+              <Left>0.01963cm</Left>
               <Height>10pt</Height>
               <Width>1.1873in</Width>
               <ZIndex>7</ZIndex>
@@ -5681,6 +5684,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>1.85716in</Top>
+              <Left>0.01963cm</Left>
               <Height>10pt</Height>
               <Width>3.01573cm</Width>
               <ZIndex>8</ZIndex>
@@ -5709,7 +5713,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>1.86966in</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.36609cm</Width>
               <ZIndex>9</ZIndex>
@@ -5736,6 +5740,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.12643cm</Top>
+              <Left>0.01963cm</Left>
               <Height>10pt</Height>
               <Width>1.1873in</Width>
               <ZIndex>10</ZIndex>
@@ -5762,7 +5767,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.10524cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>2.50891in</Width>
               <ZIndex>11</ZIndex>
@@ -5777,7 +5782,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
               <Top>0.3175cm</Top>
-              <Left>11.60002cm</Left>
+              <Left>11.61965cm</Left>
               <Height>81.86436pt</Height>
               <Width>6.26964cm</Width>
               <ZIndex>12</ZIndex>
@@ -5805,6 +5810,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.87947cm</Top>
+              <Left>0.01963cm</Left>
               <Height>10pt</Height>
               <Width>1.1873in</Width>
               <ZIndex>13</ZIndex>
@@ -5831,7 +5837,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>5.89361cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.37262cm</Width>
               <ZIndex>14</ZIndex>
@@ -5858,6 +5864,7 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>6.23225cm</Top>
+              <Left>0.01963cm</Left>
               <Height>10pt</Height>
               <Width>1.1873in</Width>
               <ZIndex>15</ZIndex>
@@ -5884,63 +5891,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>6.24637cm</Top>
-              <Left>3.01573cm</Left>
+              <Left>3.03536cm</Left>
               <Height>10pt</Height>
               <Width>6.37262cm</Width>
               <ZIndex>16</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="SalesInvPricesInclVATCaption5">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(62,1)</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.65558cm</Top>
-              <Height>10pt</Height>
-              <Width>1.1873in</Width>
-              <ZIndex>17</ZIndex>
-              <Style>
-                <VerticalAlign>Top</VerticalAlign>
-              </Style>
-            </Textbox>
-            <Textbox Name="SalesInvPricesInclVAT5">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=Code.GetData(61,1)</Value>
-                      <Style>
-                        <FontFamily>Segoe UI</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.6697cm</Top>
-              <Left>3.01573cm</Left>
-              <Height>10pt</Height>
-              <Width>6.37262cm</Width>
-              <ZIndex>18</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -5963,11 +5917,11 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.41054cm</Top>
+              <Top>7.14948cm</Top>
               <Left>3.01573cm</Left>
               <Height>11.00006pt</Height>
               <Width>6.37262cm</Width>
-              <ZIndex>19</ZIndex>
+              <ZIndex>17</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -5991,10 +5945,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>1.15019cm</Top>
-              <Left>0.02505cm</Left>
+              <Left>0.04468cm</Left>
               <Height>13.27335pt</Height>
               <Width>1.25036in</Width>
-              <ZIndex>20</ZIndex>
+              <ZIndex>18</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6018,10 +5972,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>1.15278cm</Top>
-              <Left>3.29939cm</Left>
+              <Left>3.31902cm</Left>
               <Height>13.19994pt</Height>
               <Width>7.29212cm</Width>
-              <ZIndex>21</ZIndex>
+              <ZIndex>19</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6045,10 +5999,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>8.24308cm</Top>
-              <Left>9.57495cm</Left>
+              <Left>9.59458cm</Left>
               <Height>10pt</Height>
               <Width>1.29536in</Width>
-              <ZIndex>22</ZIndex>
+              <ZIndex>20</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6072,10 +6026,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>8.25721cm</Top>
-              <Left>12.90044cm</Left>
+              <Left>12.92007cm</Left>
               <Height>10pt</Height>
               <Width>5.9081cm</Width>
-              <ZIndex>23</ZIndex>
+              <ZIndex>21</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6098,10 +6052,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.04363cm</Top>
+              <Top>6.78257cm</Top>
               <Height>10pt</Height>
               <Width>1.18729in</Width>
-              <ZIndex>24</ZIndex>
+              <ZIndex>22</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6124,11 +6078,11 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.02248cm</Top>
+              <Top>6.76142cm</Top>
               <Left>3.01573cm</Left>
               <Height>10pt</Height>
               <Width>6.37262cm</Width>
-              <ZIndex>25</ZIndex>
+              <ZIndex>23</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6153,10 +6107,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>7.90443cm</Top>
-              <Left>12.86519cm</Left>
+              <Left>12.88482cm</Left>
               <Height>10pt</Height>
               <Width>5.87871cm</Width>
-              <ZIndex>26</ZIndex>
+              <ZIndex>24</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -6183,10 +6137,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>7.90443cm</Top>
-              <Left>9.57127cm</Left>
+              <Left>9.5909cm</Left>
               <Height>10pt</Height>
               <Width>3.29389cm</Width>
-              <ZIndex>27</ZIndex>
+              <ZIndex>25</ZIndex>
               <Style>
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
@@ -6344,10 +6298,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
               <Top>1.83744cm</Top>
-              <Left>0.09042cm</Left>
+              <Left>0.11005cm</Left>
               <Height>0.76329in</Height>
               <Width>3.5683in</Width>
-              <ZIndex>28</ZIndex>
+              <ZIndex>26</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -6373,10 +6327,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>7.43169cm</Top>
-              <Left>9.56472cm</Left>
+              <Left>9.58435cm</Left>
               <Height>10pt</Height>
               <Width>1.29536in</Width>
-              <ZIndex>29</ZIndex>
+              <ZIndex>27</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6400,10 +6354,10 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                 </Paragraph>
               </Paragraphs>
               <Top>7.44582cm</Top>
-              <Left>12.89021cm</Left>
+              <Left>12.90984cm</Left>
               <Height>10pt</Height>
               <Width>5.9081cm</Width>
-              <ZIndex>30</ZIndex>
+              <ZIndex>28</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6426,11 +6380,11 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>8.24308cm</Top>
+              <Top>7.98202cm</Top>
               <Left>3.01573cm</Left>
               <Height>10pt</Height>
               <Width>6.37262cm</Width>
-              <ZIndex>31</ZIndex>
+              <ZIndex>29</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6453,11 +6407,11 @@ Cstr(Fields!ShipAddress_Name.Value)</Value>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.83388cm</Top>
+              <Top>7.57282cm</Top>
               <Left>3.01573cm</Left>
               <Height>11.5pt</Height>
               <Width>6.38572cm</Width>
-              <ZIndex>32</ZIndex>
+              <ZIndex>30</ZIndex>
               <Style>
                 <VerticalAlign>Top</VerticalAlign>
               </Style>
@@ -6496,7 +6450,7 @@ IF : 04960023-N° DE CNSS 2338657-N° Tél : +212 539 510 412 -N° de Fax : +212
               </Paragraphs>
               <rd:DefaultName>Textbox2</rd:DefaultName>
               <Top>0.06576cm</Top>
-              <Left>0.29513cm</Left>
+              <Left>0.31476cm</Left>
               <Height>0.81166cm</Height>
               <Width>15.44862cm</Width>
               <Visibility>
@@ -7131,6 +7085,9 @@ End Function</Code>
         </Field>
         <Field Name="LotNo">
           <DataField>LotNo</DataField>
+        </Field>
+        <Field Name="HarmoTariffCode">
+          <DataField>HarmoTariffCode</DataField>
         </Field>
         <Field Name="TotalQty_SalesLine">
           <DataField>TotalQty_SalesLine</DataField>

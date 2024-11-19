@@ -1,6 +1,7 @@
-report 50086 "WDC  Délai des paiments"
+report 50009 "WDC Payments Deadline"
 {
     // WDC001  06.09.2023  WDC.IM  Create Report
+
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/Délaidespaiments.rdlc';
 
@@ -9,7 +10,7 @@ report 50086 "WDC  Délai des paiments"
     ApplicationArea = all;
     dataset
     {
-        dataitem(DataItem1000000000; 17)
+        dataitem("G/L Entry"; "G/L Entry")
         {
             DataItemTableView = ORDER(Ascending)
                                 WHERE("G/L Account No." = FILTER('4411*|4488*'),
@@ -293,35 +294,35 @@ report 50086 "WDC  Délai des paiments"
 
     var
         VendorName: Text[50];
-        Vendor: Record 23;
+        Vendor: Record Vendor;
         Patente: Boolean;
         convention: Boolean;
         MATF: Code[20];
         ICE: Code[20];
         VendorPayer: Code[20];
-        GlEntry: Record 17;
+        GlEntry: Record "G/L Entry";
         NomCompte: Code[50];
-        Glaccount: Record 15;
+        Glaccount: Record "G/L Account";
         DocumentDate: Date;
-        Purchase: Record 122;
-        CrMemo: Record 124;
+        Purchase: Record "Purch. Inv. Header";
+        CrMemo: Record "Purch. Cr. Memo Hdr.";
         DueDate: Date;
         DateReceipt: Date;
         MontantHT: Decimal;
         MontantTTC: Decimal;
-        PurchaseReceipt: Record 120;
-        PurchaseLine: Record 123;
+        PurchaseReceipt: Record "Purch. Rcpt. Header";
+        PurchaseLine: Record "Purch. Inv. Line";
         DateP: Date;
         MontantP: Decimal;
-        rec380: Record 380;
-        rec25: Record 25;
+        rec380: Record "Detailed Vendor Ledg. Entry";
+        rec25: Record "Vendor Ledger Entry";
         NewDueDate: Date;
         DateFilter: Text[20];
         TermeConv: Code[20];
         PaiemTerm: Record 3;
         Paye: Boolean;
         NombreJ: Integer;
-        Tressource: Record 156 temporary;
+        Tressource: Record Resource temporary;
         ETATdupaiement: Code[20];
         NPJOURSRETARD: Integer;
         ETATNP: Code[20];
@@ -331,7 +332,7 @@ report 50086 "WDC  Délai des paiments"
         ETATnonp: Label 'Non échus';
         ETATnonp1: Label 'Echus';
         CodeFour: Code[20];
-        ParamCompt: Record 98;
+        ParamCompt: Record "General Ledger Setup";
         NumRC: Code[20];
         Adresse: Text[50];
         City: Text[30];

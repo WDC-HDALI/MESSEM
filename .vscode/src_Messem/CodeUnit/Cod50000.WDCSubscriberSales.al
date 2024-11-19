@@ -72,7 +72,6 @@ codeunit 50000 "WDC Subscriber Sales"
     local procedure OnAfterUpdateWithWarehouseShip(SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line")
     var
         Location: Record "Location";
-        item: Record item;
     begin
         if Item.get(SalesLine."No.") then
             SalesLine."Packaging Item" := IsPackagingItem();
@@ -231,29 +230,16 @@ codeunit 50000 "WDC Subscriber Sales"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", 'OnPostUpdateOrderLineOnAfterCalcShouldCalcPrepmtAmounts', '', FALSE, FALSE)]
-    local procedure OnPostUpdateOrderLineOnAfterCalcShouldCalcPrepmtAmounts(var TempSalesLine: Record "Sales Line" temporary; var ShouldCalcPrepmtAmounts: Boolean)
+    [EventSubscriber(ObjectType::Table, database::"item journal line", 'OnAfterCopyItemJnlLineFromSalesLine', '', FALSE, FALSE)]
+    local procedure OnAfterCopyItemJnlLineFromSalesLine(var ItemJnlLine: Record "Item Journal Line"; SalesLine: Record "Sales Line")
     begin
-        if TempSalesLine."Document Type" = TempSalesLine."Document Type"::Order then begin
-            if Abs(TempSalesLine."Quantity Invoiced" + TempSalesLine."Qty. to Invoice") > Abs(TempSalesLine."Quantity Shipped") then begin
-                TempSalesLine.VALIDATE(TempSalesLine."Qty. S.Units to invoice", TempSalesLine."Qty. Shipped Shipment Units" - TempSalesLine."Qty. S.Units Invoiced");
-                TempSalesLine.VALIDATE(TempSalesLine."Qty. S.Cont. to invoice", TempSalesLine."Qty. Shipped Shipm. Containers" - TempSalesLine."Qty. S.Cont. Invoiced");
-            end;
-        end else
-            if Abs(TempSalesLine."Quantity Invoiced" + TempSalesLine."Qty. to Invoice") > Abs(TempSalesLine."Return Qty. Received") then begin
-                TempSalesLine.VALIDATE(TempSalesLine."Qty. S.Units to invoice", TempSalesLine."Return Qty. Received S.Units" - TempSalesLine."Qty. S.Units Invoiced");
-                TempSalesLine.VALIDATE(TempSalesLine."Qty. S.Cont. to invoice", TempSalesLine."Return Qty. Received S.Cont." - TempSalesLine."Qty. S.Cont. Invoiced");
-            end;
-        TempSalesLine."Qty. S.Units Invoiced" += TempSalesLine."Qty. S.Units to invoice";
-        TempSalesLine."Qty. S.Cont. Invoiced" += TempSalesLine."Qty. S.Cont. to invoice";
-
-    end;
-
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", 'OnPostUpdateOrderLineOnSetDefaultQtyBlank', '', FALSE, FALSE)]
-    local procedure OnPostUpdateOrderLineOnSetDefaultQtyBlank(var SalesHeader: Record "Sales Header"; var TempSalesLine: Record "Sales Line" temporary; SalesSetup: Record "Sales & Receivables Setup"; var SetDefaultQtyBlank: Boolean)
-    begin
-        TempSalesLine."Reserv Qty. to Post Ship.Unit" := 0;
-        TempSalesLine."Reserv Qty. to Post Ship.Cont." := 0;
+        ItemJnlLine."Shipment Unit" := SalesLine."Shipment Unit";
+        ItemJnlLine."Shipment Container" := SalesLine."Shipment Container";
+        ItemJnlLine."Quantity Shipment Units" := SalesLine."Reserv Qty. to Post Ship.Unit";
+        ItemJnlLine."Quantity Shipment Containers" := SalesLine."Reserv Qty. to Post Ship.Cont.";
+        ItemJnlLine."Qty Shipm.Units per Shipm.Cont" := SalesLine."Qty Shipm.Units per Shipm.Cont";
+        ItemJnlLine."Packaging Item" := SalesLine."Packaging Item";
+        ItemJnlLine."Balance Reg. Customer/Vend.No." := SalesLine.GetBalanceRegCustomerNo;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", 'OnPostItemJnlLinePrepareJournalLineOnBeforeCalcQuantities', '', FALSE, FALSE)]
@@ -295,7 +281,34 @@ codeunit 50000 "WDC Subscriber Sales"
         IF SalesLine."Shipment Container" <> '' THEN
             SalesLine.VALIDATE("Quantity Shipment Containers",
               ROUND((SalesShipmentLine.Quantity - SalesShipmentLine."Quantity Invoiced") / SalesLine."Qty. per Shipment Container", 1, '>'));
+
     end;
+    //ajouter lignes commentaire facture 
+    [EventSubscriber(ObjectType::Table, database::"Sales Shipment Line", 'OnAfterDescriptionSalesLineInsert', '', FALSE, FALSE)]
+    local procedure OnAfterDescriptionSalesLineInsert(var SalesLine: Record "Sales Line"; SalesShipmentLine: Record "Sales Shipment Line"; var NextLineNo: Integer)
+    var
+        PackagingShipmentText: Boolean;
+        SalesShipmentHeader: record "Sales Shipment Header";
+    begin
+        NextLineNo := NextLineNo + 10000;
+        if SalesShipmentHeader.get(SalesShipmentLine."Document No.") then
+            IF NOT PackagingShipmentText THEN BEGIN
+                SalesLine.INIT;
+                SalesLine."Line No." := NextLineNo;
+                SalesLine."Document Type" := SalesLine."Document Type";
+                SalesLine."Document No." := SalesLine."Document No.";
+                SalesLine.Description := STRSUBSTNO(Text002, SalesShipmentHeader."Order No.");
+                SalesLine."Sell-to Customer No." := SalesShipmentLine."Sell-to Customer No.";
+                SalesLine."Shipment No." := SalesShipmentLine."Document No.";
+                SalesLine.INSERT;
+            END;
+    end;
+    //
+
+    //retour
+
+    //
+    //avooir
     //
     procedure IsPackagingItem(): Boolean
     var
@@ -304,6 +317,7 @@ codeunit 50000 "WDC Subscriber Sales"
         Packaging.RESET;
         Packaging.SETCURRENTKEY("Item No.");
         Packaging.SETFILTER("Item No.", item."No.");
+
         EXIT(NOT Packaging.ISEMPTY);
     end;
 
@@ -563,6 +577,7 @@ codeunit 50000 "WDC Subscriber Sales"
             END;
         END;
 
+
         IF ShipmentUnit THEN BEGIN
             SalesLine."Reserv Qty. to Post Ship.Unit" := QtytoShip;
             SalesLine."Qty. to Ship Shipment Units" := 0;
@@ -578,6 +593,7 @@ codeunit 50000 "WDC Subscriber Sales"
         Item: Record 27;
         SalesSetup: record 311;
         Text001: TextConst ENU = '%1 %2 does not exist for %3 %4.', FRA = '%1 %2 n''existe pas pour %3 %4.';
+        Text002: TextConst ENU = 'Sales Order No.: %1', FRA = 'N° commande de vente : %1';
 
 
 

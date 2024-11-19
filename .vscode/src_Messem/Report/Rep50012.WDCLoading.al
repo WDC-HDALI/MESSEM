@@ -1,9 +1,9 @@
-report 50012 Loading
+report 50012 "WDC Loading"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Loading.rdlc';
+    RDLCLayout = './.vscode/src_Messem/Report/RDLC/Loading.rdlc';
 
-    Caption = 'Loading';
+    CaptionML = ENU = 'Loading', FRA = 'Chargement';
 
     dataset
     {

@@ -25,6 +25,7 @@ tableextension 50032 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
         {
             CaptionML = ENU = 'Forwarding Agent', FRA = 'Code transitaire';
             DataClassification = ToBeClassified;
+            TableRelation = "WDC Forwarding Agent";
         }
         field(50004; "Destination Port"; code[20])
         {
