@@ -2,7 +2,7 @@ namespace MESSEM.MESSEM;
 
 using Microsoft.Inventory.Tracking;
 
-tableextension 50023 "WDC Lot No. Information" extends "Lot No. Information"
+tableextension 50037 "WDC Reservation Entry" extends "Reservation Entry"
 {
     fields
     {

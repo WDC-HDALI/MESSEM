@@ -17,3 +17,4 @@ tableextension 50028 "WDC Value Entry" extends "Value Entry"
         }
     }
 }
+

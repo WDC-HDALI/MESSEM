@@ -21,6 +21,44 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         ItemJournalLine."Rebate Accrual Amount (LCY)" := ROUND(ItemJournalLine."Rebate Accrual Amount (LCY)");
     end;
 
+
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnInitValueEntryOnBeforeSetDocumentLineNo', '', FALSE, FALSE)]
+    local procedure OnInitValueEntryOnBeforeSetDocumentLineNo(ItemJournalLine: Record "Item Journal Line"; var ItemLedgerEntry: Record "Item Ledger Entry"; var ValueEntry: Record "Value Entry")
+    var
+    begin
+        ValueEntry."Source Subtype" := ItemJournalLine."Source Subtype";
+        CASE ValueEntry."Item Ledger Entry Type" OF
+            ValueEntry."Item Ledger Entry Type"::Purchase:
+                IF ValueEntry."Source Subtype" = ValueEntry."Source Subtype"::"2" THEN
+                    RebateSignFactor := 1
+                ELSE
+                    RebateSignFactor := -1;
+        END;
+        ValueEntry."Rebate Accrual Amount (LCY)" := RebateSignFactor * ItemJournalLine."Rebate Accrual Amount (LCY)";
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnInsertVarValueEntryOnAfterInitValueEntryFields', '', FALSE, FALSE)]
+    local procedure OnInsertVarValueEntryOnAfterInitValueEntryFields(var ValueEntry: record "Value Entry")
+    var
+    begin
+        ValueEntry."Rebate Accrual Amount (LCY)" := 0;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnAfterSetupTempSplitItemJnlLineSetQty', '', FALSE, FALSE)]
+    local procedure OnAfterSetupTempSplitItemJnlLineSetQty(var TempSplitItemJnlLine: Record "Item Journal Line" temporary; ItemJournalLine: Record "Item Journal Line"; SignFactor: Integer; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    var
+        lGLSetup: record "General Ledger Setup";
+    begin
+        lGLSetup.get;
+        if SignFactor < 1 then   //à vérifier FloatingFactor lors le test car il est remplacé par SignFactor 
+            TempSplitItemJnlLine."Rebate Accrual Amount (LCY)" := ROUND(ItemJournalLine."Rebate Accrual Amount (LCY)" * SignFactor, lGLSetup."Amount Rounding Precision")
+
+        else
+            TempSplitItemJnlLine."Rebate Accrual Amount (LCY)" := ItemJournalLine."Rebate Accrual Amount (LCY)";
+    end;
+
     local procedure CalcRebateValue(PurchHeader: Record 38; var PurchLine: Record 39; PostAccrual: Boolean)
     var
         Item2: Record 27;
@@ -203,5 +241,6 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         TextSI010: TextConst ENU = 'Invoice', FRA = 'Facture';
         PurchCrMemoHeader: Record 124;
         RemRebateAmountLCY: Decimal;
+        RebateSignFactor: Decimal;
 
 }

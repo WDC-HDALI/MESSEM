@@ -4531,9 +4531,6 @@ End Function
         <Field Name="USERID">
           <DataField>USERID</DataField>
         </Field>
-        <Field Name="Rebate_Entry__Posting_Type_">
-          <DataField>Rebate_Entry__Posting_Type_</DataField>
-        </Field>
         <Field Name="Rebate_Entry__Sell_to_Buy_from_No__">
           <DataField>Rebate_Entry__Sell_to_Buy_from_No__</DataField>
         </Field>

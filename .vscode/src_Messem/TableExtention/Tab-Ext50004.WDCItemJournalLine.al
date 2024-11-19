@@ -70,17 +70,42 @@ tableextension 50004 "WDC Item Journal Line " extends "Item Journal Line"
             DataClassification = ToBeClassified;
 
         }
-
         field(50010; "Rebate Accrual Amount (LCY)"; Decimal)
         {
             CaptionML = ENU = 'Rebate Accrual Amount (LCY)', FRA = 'Montant ajustement bonus DS';
             DataClassification = ToBeClassified;
-
         }
         field(50011; "Source Subtype"; Enum "WDC Lot Attribute Src Subtype")
         {
             CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
         }
+        field(50012; PFD; Code[20])
+        {
+            CaptionML = ENU = 'PFD', FRA = 'PFD';
+            DataClassification = ToBeClassified;
+        }
+        field(50013; Variety; Code[20])
+        {
+            CaptionML = ENU = 'Variety', FRA = 'Variété';
+            DataClassification = ToBeClassified;
+        }
+        field(50014; Brix; Code[20])
+        {
+            CaptionML = ENU = 'Brix', FRA = 'Brix';
+            DataClassification = ToBeClassified;
+        }
+        field(50015; "Package Number"; Integer)
+        {
+            CaptionML = ENU = 'Package Number', FRA = 'Nombre Palette';
+            DataClassification = ToBeClassified;
+        }
+        field(50016; Place; Code[20])
+        {
+            CaptionML = ENU = 'Place', FRA = 'Localisation';
+            DataClassification = ToBeClassified;
+
+        }
+
 
         modify("Source No.")
         {
