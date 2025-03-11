@@ -86,10 +86,12 @@ page 50535 "WDC-QA Closed QC Specification"
         {
             systempart(links; Links)
             {
+                ApplicationArea = RecordLinks;
                 Visible = true;
             }
             systempart(Notes; Notes)
             {
+                ApplicationArea = Notes;
                 Visible = true;
             }
         }

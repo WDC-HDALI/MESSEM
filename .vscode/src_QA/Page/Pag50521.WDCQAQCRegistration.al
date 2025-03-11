@@ -47,7 +47,6 @@ page 50521 "WDC-QA QC Registration"
                     begin
                         CheckPointCodeOnAfterValidate;
                     end;
-
                 }
                 field(Specific; Rec.Specific)
                 {
@@ -56,7 +55,6 @@ page 50521 "WDC-QA QC Registration"
                     begin
                         SpecificOnAfterValidate;
                     end;
-
                 }
                 field("Source No."; Rec."Source No.")
                 {
@@ -65,7 +63,6 @@ page 50521 "WDC-QA QC Registration"
                     begin
                         SourceNoOnAfterValidate;
                     end;
-
                 }
                 field(Name; Rec.Name)
                 {
@@ -95,6 +92,10 @@ page 50521 "WDC-QA QC Registration"
                 {
                     ApplicationArea = all;
                 }
+                field(Controller; Rec.Controller)
+                {
+                    ApplicationArea = ALL;
+                }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = all;
@@ -102,11 +103,6 @@ page 50521 "WDC-QA QC Registration"
                     begin
                         StatusOnAfterValidate;
                     end;
-
-                }
-                field("Production Line Code"; Rec."Production Line Code")
-                {
-                    ApplicationArea = all;
                 }
                 field("Control Reason"; Rec."Control Reason")
                 {
@@ -120,11 +116,15 @@ page 50521 "WDC-QA QC Registration"
                 {
                     ApplicationArea = all;
                 }
-                field("Source Document Line No."; Rec."Source Document Line No.")
+                field(Variety; Rec.Variety)
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = ALL;
                 }
-                field("Reference Source No."; Rec."Reference Source No.")
+                field(Size; Rec.Size)
+                {
+                    ApplicationArea = All;
+                }
+                field("Source Document Line No."; Rec."Source Document Line No.")
                 {
                     ApplicationArea = all;
                 }
@@ -168,23 +168,7 @@ page 50521 "WDC-QA QC Registration"
                     ApplicationArea = all;
                     Editable = true;
                 }
-                field("Warranty Date"; Rec."Warranty Date")
-                {
-                    ApplicationArea = all;
-                }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
-                {
-                    ApplicationArea = all;
-                }
-            }
-            group("Return Order")
-            {
-                CaptionML = ENU = 'Purchase Return', FRA = 'Retour achat';
-                field("Return Order Type"; Rec."Return Order Type")
-                {
-                    ApplicationArea = all;
-                }
-                field("Return Order No."; Rec."Return Order No.")
                 {
                     ApplicationArea = all;
                 }
@@ -194,10 +178,12 @@ page 50521 "WDC-QA QC Registration"
         {
             systempart(links; Links)
             {
+                ApplicationArea = RecordLinks;
                 Visible = true;
             }
             systempart(Notes; Notes)
             {
+                ApplicationArea = Notes;
                 Visible = true;
             }
         }
@@ -207,111 +193,55 @@ page 50521 "WDC-QA QC Registration"
     {
         area(Navigation)
         {
-            group("&Registration")
+            action("Co&mments")
             {
-                captionML = ENU = '&Registration', FRA = '&Enregistrement';
-                action("Co&mments")
-                {
-                    ApplicationArea = all;
-                    Image = ViewComments;
-                    CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
-                    RunObject = page "WDC-QA RegistrationCommentList";
-                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
-                }
-                action("Information &Lot No.s")
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Information &Lot No.s', FRA = 'Information N° &lot';
-                    Image = LotInfo;
-                    trigger OnAction()
-                    begin
-                        ActivateLotNoInfo;
-                    end;
-                }
+                ApplicationArea = all;
+                Image = ViewComments;
+                CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
+                RunObject = page "WDC-QA RegistrationCommentList";
+                RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
             }
         }
         area(Processing)
         {
-            group("Fonction&s")
+            action("Get Specification Lines")
             {
-                CaptionML = ENU = 'F&unctions', FRA = 'Fonction&s';
-                action("Get Specification Lines")
-                {
-                    CaptionML = ENU = 'Get Specification Lines', FRA = 'Extraire lignes spécification';
-                    Image = GetLines;
-                    Ellipsis = true;
-                    ShortcutKey = F9;
-                    trigger OnAction()
-                    begin
-                        QualityControlMgt.GetSpecificationLines(Rec);
-                    end;
-                }
-                action("&Change Lot No. Info")
-                {
-                    CaptionML = ENU = '&Change Lot No. Info', FRA = '&Modifier info N° lot';
-                    Image = Change;
-                    Ellipsis = true;
-                    trigger OnAction()
-                    var
-                        LotNoInformation: Record "Lot No. Information";
-                        LotInspection: Codeunit "WDC-QA Lot Inspection";
-                    begin
-                        LotNoInformation.GET(Rec."Item No.", Rec."Variant Code", Rec."Lot No.");
-                        LotInspection.SetSourceValues(1, Rec."Document Type".AsInteger(), Rec."No.");
-                        LotInspection.ModifyLotInfo(LotNoInformation, TRUE);
-                    end;
-                }
-                action("Create &Return Order")
-                {
-                    CaptionML = ENU = 'Create &Return Order', FRA = 'Créer &retour';
-                    Image = NewWarehouseShipment;
-                    Ellipsis = true;
-                    trigger OnAction()
-                    begin
-                        CLEAR(QualityControlMgt);
-                        QualityControlMgt.CheckExistingReturnOrder(Rec);
-
-                        CLEAR(CreateReturnOrder);
-                        CurrPage.SETSELECTIONFILTER(RegistrationHeader);
-                        CreateReturnOrder.SETTABLEVIEW(RegistrationHeader);
-                        CreateReturnOrder.SetItemNo(Rec."Item No.");
-                        CreateReturnOrder.RUNMODAL;
-                    end;
-                }
-                action("Calculate Result and Conclusion")
-                {
-                    CaptionML = ENU = 'Calculate Result and Conclusion', FRA = 'Calculer résultat et conclusion';
-                    Image = Calculate;
-                    Ellipsis = true;
-                    ShortcutKey = 'Ctrl+F11';
-                    trigger OnAction()
-                    begin
-                        QualityControlMgt.CalculateResult(Rec);
-                        CurrPage.UPDATE(FALSE);
-                    end;
-                }
-                action("&Release Warehouse Documents")
-                {
-                    CaptionML = ENU = '&Release Warehouse Documents', FRA = 'Lancer Document Entrepôt';
-                    Visible = ActionReleaseWhseDocAndCloseVisible;
-                    trigger OnAction()
-                    begin
-                        Rec.ReleaseWhseDocument;
-                    end;
-                }
-                action("&Release Warehouse Documents and Close")
-                {
-                    CaptionML = ENU = '&Release Warehouse Documents and Close', FRA = '&Lancer document entrepôt et Clôturer';
-                    Image = Close;
-                    Visible = ActionReleaseWhseDocAndCloseVisible;
-                    trigger OnAction()
-                    begin
-                        Rec.VALIDATE(Status, Rec.Status::Closed);
-                        Rec.MODIFY;
-                        Rec.ReleaseWhseDocument;
-                    end;
-                }
+                CaptionML = ENU = 'Get Specification Lines', FRA = 'Extraire lignes spécification';
+                Image = GetLines;
+                Ellipsis = true;
+                ShortcutKey = F9;
+                trigger OnAction()
+                begin
+                    QualityControlMgt.GetSpecificationLines(Rec);
+                end;
             }
+            action("Create &Second Sampling Old")
+            {
+                CaptionML = ENU = 'Create &Second Sampling Old', FRA = 'Ajouter mesure';
+                Image = CopyItem;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                trigger OnAction()
+                begin
+                    CurrPage.CalibraionLines.Page.CreateSecondSamplingOld();
+                end;
+            }
+            action("Calculate Result and Conclusion")
+            {
+                CaptionML = ENU = 'Calculate Result and Conclusion', FRA = 'Calculer résultat et conclusion';
+                Image = Calculate;
+                Ellipsis = true;
+                ShortcutKey = 'Ctrl+F11';
+                trigger OnAction()
+                begin
+                    QualityControlMgt.CalculateResult(Rec);
+                    CurrPage.UPDATE(FALSE);
+                end;
+            }
+        }
+        area(Reporting)
+        {
             action("&Print")
             {
                 CaptionML = ENU = '&Print', FRA = '&Imprimer';
@@ -319,8 +249,6 @@ page 50521 "WDC-QA QC Registration"
                 PromotedCategory = Process;
                 Promoted = true;
                 trigger OnAction()
-                var
-                    myInt: Integer;
                 begin
                     DocPrint.PrintQCRegistration(Rec);
                 end;
@@ -352,25 +280,6 @@ page 50521 "WDC-QA QC Registration"
         ActionReleaseWhseDocAndCloseVisible := Rec."Source Document No." <> '';
     end;
 
-    trigger OnAfterGetRecord()
-    begin
-        // GetAtrributes;
-    end;
-
-    procedure ActivateLotNoInfo()
-    var
-        LotNoInformationList2: Page "WDC-QA Lot No InformationList2";
-        LotNoInformation: Record "Lot No. Information";
-    begin
-        LotNoInformation.SETFILTER("Item No.", Rec."Item No.");
-        LotNoInformation.SETFILTER("Variant Code", Rec."Variant Code");
-        LotNoInformation.SETFILTER("Lot No.", Rec."Lot No.");
-        LotNoInformation.SETFILTER("Item Category Code", Rec."Item Category Code");
-        LotNoInformationList2.SETTABLEVIEW(LotNoInformation);
-        LotNoInformationList2.SetSourceValues(1, Rec."Document Type".AsInteger(), Rec."No.");
-        LotNoInformationList2.RUNMODAL;
-    end;
-
     local procedure StatusOnAfterValidate()
     begin
         CurrPage.UPDATE(TRUE);
@@ -396,45 +305,8 @@ page 50521 "WDC-QA QC Registration"
         CurrPage.UPDATE;
     end;
 
-    local procedure OnTimer()
-    begin
-        CurrPage.CalibraionLines.PAGE.GetCurrentRecord(RegistrationLine);
-        NewPosition := RegistrationLine.GETPOSITION;
-        NewMethod := RegistrationLine."Method No.";
-        IF (OldPosition <> NewPosition) OR (OldMethod <> NewMethod) THEN BEGIN
-            RegistrationStep.SETRANGE("Document Type", RegistrationLine."Document Type");
-            RegistrationStep.SETFILTER("Document No.", RegistrationLine."Document No.");
-            RegistrationStep.SETRANGE("Line No.", RegistrationLine."Line No.");
-            CurrPage.CalibrationSteps.PAGE.SETTABLEVIEW(RegistrationStep);
-            CurrPage.CalibrationSteps.PAGE.Update();
-            OldPosition := NewPosition;
-            OldMethod := NewMethod;
-        END;
-    end;
-
-    // local procedure GetAtrributes()
-    // var
-    //     LotAttributeManagement: Codeunit "WDC Lot Attribute Mngmt";
-    // begin
-    //     CLEAR(LotAttributes);
-    //     IF Rec."Lot No." <> '' THEN
-    //         LotAttributeManagement.GetLotAttributes(LotAttributes, Rec."Item No.", Rec."Variant Code", Rec."Lot No.", 0, 0, '', 0, '', 0);
-    // end;
-
     var
-        RegistrationHeader: Record "WDC-QA Registration Header";
-        RegistrationLine: Record "WDC-QA Registration Line";
-        RegistrationStep: Record "WDC-QA Registration Step";
-        WarehouseActivityHeader: Record "Warehouse Activity Header";
-        WarehouseActivityLine: Record "Warehouse Activity Line";
-        NewPosition: Text[250];
-        OldPosition: Text[250];
-        NewMethod: Text[30];
-        OldMethod: Text[30];
-        CreateReturnOrder: Report "WDC-QACreateRegistrReturnOrder";
-        LotAttributes: array[5] of Code[20];
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
-
         DocPrint: Codeunit "WDC-QA Document-Print";
         ActionReleaseWhseDocAndCloseVisible: Boolean;
 }

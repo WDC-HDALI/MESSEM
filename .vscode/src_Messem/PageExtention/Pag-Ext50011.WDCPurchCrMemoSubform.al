@@ -33,5 +33,10 @@ pageextension 50011 "WDC PurchCrMemoSubform" extends "Purch. Cr. Memo Subform"
                 ApplicationArea = all;
             }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 }

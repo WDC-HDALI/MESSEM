@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -11,102 +11,6 @@
       <rd:DataSourceID>e0b8a00a-a0c8-4c0d-872d-56e2418d6141</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="CompanyInfoPicture">
-          <DataField>CompanyInfoPicture</DataField>
-        </Field>
-        <Field Name="InvoiceNo">
-          <DataField>InvoiceNo</DataField>
-        </Field>
-        <Field Name="CustomerCode">
-          <DataField>CustomerCode</DataField>
-        </Field>
-        <Field Name="CustomerName">
-          <DataField>CustomerName</DataField>
-        </Field>
-        <Field Name="Port">
-          <DataField>Port</DataField>
-        </Field>
-        <Field Name="Container">
-          <DataField>Container</DataField>
-        </Field>
-        <Field Name="SO_No">
-          <DataField>SO_No</DataField>
-        </Field>
-        <Field Name="Transp">
-          <DataField>Transp</DataField>
-        </Field>
-        <Field Name="INCOTERM">
-          <DataField>INCOTERM</DataField>
-        </Field>
-        <Field Name="LoadigDate">
-          <DataField>LoadigDate</DataField>
-        </Field>
-        <Field Name="TransitAgentName">
-          <DataField>TransitAgentName</DataField>
-        </Field>
-        <Field Name="MaterialNbr">
-          <DataField>MaterialNbr</DataField>
-        </Field>
-        <Field Name="QuantityKG1">
-          <DataField>QuantityKG1</DataField>
-        </Field>
-        <Field Name="QuantityKG1Format">
-          <DataField>QuantityKG1Format</DataField>
-        </Field>
-        <Field Name="TotalEur">
-          <DataField>TotalEur</DataField>
-        </Field>
-        <Field Name="TotalEurFormat">
-          <DataField>TotalEurFormat</DataField>
-        </Field>
-        <Field Name="PriceEur">
-          <DataField>PriceEur</DataField>
-        </Field>
-        <Field Name="PriceEurFormat">
-          <DataField>PriceEurFormat</DataField>
-        </Field>
-        <Field Name="TotalMAD">
-          <DataField>TotalMAD</DataField>
-        </Field>
-        <Field Name="TotalMADFormat">
-          <DataField>TotalMADFormat</DataField>
-        </Field>
-        <Field Name="MontantLoadingMAD">
-          <DataField>MontantLoadingMAD</DataField>
-        </Field>
-        <Field Name="MontantLoadingMADFormat">
-          <DataField>MontantLoadingMADFormat</DataField>
-        </Field>
-        <Field Name="MontantLoadingEUR">
-          <DataField>MontantLoadingEUR</DataField>
-        </Field>
-        <Field Name="MontantLoadingEURFormat">
-          <DataField>MontantLoadingEURFormat</DataField>
-        </Field>
-        <Field Name="QuantityKG">
-          <DataField>QuantityKG</DataField>
-        </Field>
-        <Field Name="QuantityKGFormat">
-          <DataField>QuantityKGFormat</DataField>
-        </Field>
-        <Field Name="LotNo">
-          <DataField>LotNo</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -115,51 +19,51 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.87051in</Width>
+                  <Width>2.2111cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.11912in</Width>
+                  <Width>2.84256cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.696in</Width>
+                  <Width>1.76784cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.73241in</Width>
+                  <Width>1.86032cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.81058in</Width>
+                  <Width>2.05887cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.81059in</Width>
+                  <Width>2.0589cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.64392in</Width>
+                  <Width>1.63556cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.51892in</Width>
+                  <Width>1.31806cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.446in</Width>
+                  <Width>1.13284cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.67319in</Width>
+                  <Width>1.7099cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.00277in</Width>
+                  <Width>2.54704cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.30796in</Width>
+                  <Width>3.32222cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.71683in</Width>
+                  <Width>1.82075cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.77933in</Width>
+                  <Width>1.9795cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.21018in</Height>
+                  <Height>0.53386cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -640,7 +544,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.21018in</Height>
+                  <Height>0.53386cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -903,6 +807,7 @@
                                   <Value>=Fields!PriceEur.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Format>#,0.00;- #,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1116,8 +1021,8 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.10583cm</Top>
-            <Height>1.06771cm</Height>
-            <Width>28.26543cm</Width>
+            <Height>1.06772cm</Height>
+            <Width>28.26546cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1235,7 +1140,7 @@
           </Border>
         </Style>
       </Body>
-      <Width>28.26543cm</Width>
+      <Width>28.26546cm</Width>
       <Page>
         <PageHeader>
           <Height>4.52841cm</Height>
@@ -1341,4 +1246,95 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompanyInfoPicture">
+          <DataField>CompanyInfoPicture</DataField>
+        </Field>
+        <Field Name="InvoiceNo">
+          <DataField>InvoiceNo</DataField>
+        </Field>
+        <Field Name="CustomerCode">
+          <DataField>CustomerCode</DataField>
+        </Field>
+        <Field Name="CustomerName">
+          <DataField>CustomerName</DataField>
+        </Field>
+        <Field Name="Port">
+          <DataField>Port</DataField>
+        </Field>
+        <Field Name="Container">
+          <DataField>Container</DataField>
+        </Field>
+        <Field Name="SO_No">
+          <DataField>SO_No</DataField>
+        </Field>
+        <Field Name="Transp">
+          <DataField>Transp</DataField>
+        </Field>
+        <Field Name="INCOTERM">
+          <DataField>INCOTERM</DataField>
+        </Field>
+        <Field Name="LoadigDate">
+          <DataField>LoadigDate</DataField>
+        </Field>
+        <Field Name="TransitAgentName">
+          <DataField>TransitAgentName</DataField>
+        </Field>
+        <Field Name="MaterialNbr">
+          <DataField>MaterialNbr</DataField>
+        </Field>
+        <Field Name="QuantityKG1">
+          <DataField>QuantityKG1</DataField>
+        </Field>
+        <Field Name="QuantityKG1Format">
+          <DataField>QuantityKG1Format</DataField>
+        </Field>
+        <Field Name="TotalEur">
+          <DataField>TotalEur</DataField>
+        </Field>
+        <Field Name="TotalEurFormat">
+          <DataField>TotalEurFormat</DataField>
+        </Field>
+        <Field Name="PriceEur">
+          <DataField>PriceEur</DataField>
+        </Field>
+        <Field Name="PriceEurFormat">
+          <DataField>PriceEurFormat</DataField>
+        </Field>
+        <Field Name="TotalMAD">
+          <DataField>TotalMAD</DataField>
+        </Field>
+        <Field Name="TotalMADFormat">
+          <DataField>TotalMADFormat</DataField>
+        </Field>
+        <Field Name="MontantLoadingMAD">
+          <DataField>MontantLoadingMAD</DataField>
+        </Field>
+        <Field Name="MontantLoadingMADFormat">
+          <DataField>MontantLoadingMADFormat</DataField>
+        </Field>
+        <Field Name="MontantLoadingEUR">
+          <DataField>MontantLoadingEUR</DataField>
+        </Field>
+        <Field Name="MontantLoadingEURFormat">
+          <DataField>MontantLoadingEURFormat</DataField>
+        </Field>
+        <Field Name="QuantityKG">
+          <DataField>QuantityKG</DataField>
+        </Field>
+        <Field Name="QuantityKGFormat">
+          <DataField>QuantityKGFormat</DataField>
+        </Field>
+        <Field Name="LotNo">
+          <DataField>LotNo</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

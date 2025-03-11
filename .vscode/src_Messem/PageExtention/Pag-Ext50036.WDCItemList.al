@@ -4,6 +4,16 @@ using Microsoft.Inventory.Item;
 
 pageextension 50036 "WDC Item List" extends "Item List"
 {
+    layout
+    {
+        addbefore("Unit Cost")
+        {
+            field(" Purchases Item Rebate Group"; Rec." Purchases Item Rebate Group")
+            {
+                ApplicationArea = all;
+            }
+        }
+    }
 
     actions
     {

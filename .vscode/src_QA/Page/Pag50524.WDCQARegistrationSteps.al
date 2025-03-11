@@ -65,16 +65,6 @@ page 50524 "WDC-QA Registration Steps"
             }
         }
     }
-    actions
-    {
-        area(Processing)
-        {
-            action("Import Result")
-            {
-                RunObject = XMLport "WDC-QA Import Result Line CQ";
-            }
-        }
-    }
     trigger OnInit()
     begin
         "Option MeasuredEditable" := TRUE;
@@ -97,11 +87,6 @@ page 50524 "WDC-QA Registration Steps"
 
         "Value MeasuredEditable" := MakeValueEditable;
         "Option MeasuredEditable" := MakeOptionEditable;
-    end;
-
-    procedure UpdateForm()
-    begin
-        CurrPage.UPDATE;
     end;
 
     var

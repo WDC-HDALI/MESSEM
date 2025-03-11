@@ -71,17 +71,6 @@ page 50533 "WDC-QA Closed CoA Registration"
     }
     actions
     {
-        area(Processing)
-        {
-            action("Co&mments")
-            {
-                ApplicationArea = all;
-                CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
-                Image = ViewComments;
-                RunObject = Page "WDC-QARegistrationCommentSheet";
-                RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
-            }
-        }
         area(Reporting)
         {
             action("&Print")
@@ -92,8 +81,6 @@ page 50533 "WDC-QA Closed CoA Registration"
                 PromotedCategory = Process;
                 Ellipsis = true;
                 trigger OnAction()
-                var
-                    myInt: Integer;
                 begin
                     DocPrint.PrintCoAHeader(Rec);
                 end;

@@ -1,8 +1,8 @@
 table 50529 "WDC-QA Inspection Status"
 {
-    CaptionML = ENU = 'WDC-QA Inspection Status', FRA = 'statut d''inspection';
+    CaptionML = ENU = 'WDC-QA Inspection Status', FRA = 'Statut d''inspection';
     DataClassification = ToBeClassified;
-    //LookupPageId="WDC-QA Inspectation Statue";
+    LookupPageId = "WDC-QA Inspection Status";
 
     fields
     {
@@ -56,26 +56,4 @@ table 50529 "WDC-QA Inspection Status"
             Clustered = true;
         }
     }
-    procedure CreateInspectionStatusFilter(AvailableFor: Option Sales,Transfer,Consumption) InspectionStatusFilter2: Code[240]
-    var
-        InspectionStatus: Record "WDC-QA Inspection Status";
-    begin
-        InspectionStatus.RESET;
-        CASE AvailableFor OF
-            AvailableFor::Sales:
-                InspectionStatus.SETRANGE(Sales, InspectionStatus.Sales::" ");
-            AvailableFor::Transfer:
-                InspectionStatus.SETRANGE("Transfer From", InspectionStatus."Transfer From"::" ");
-            AvailableFor::Consumption:
-                InspectionStatus.SETRANGE(Consumption, InspectionStatus.Consumption::" ");
-        END;
-        InspectionStatusFilter2 := '''''';
-
-        IF InspectionStatus.FINDSET THEN
-            REPEAT
-                IF InspectionStatusFilter2 <> '' THEN
-                    InspectionStatusFilter2 := InspectionStatusFilter2 + '|';
-                InspectionStatusFilter2 := InspectionStatusFilter2 + InspectionStatus.Code;
-            UNTIL (InspectionStatus.NEXT = 0) OR (STRLEN(InspectionStatusFilter2) > 240);
-    end;
 }

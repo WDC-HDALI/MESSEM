@@ -60,6 +60,9 @@ table 50517 "WDC-QA Registration Header"
             CaptionML = ENU = 'Lot No.', FRA = 'N° lot';
             TableRelation = IF ("Item No." = FILTER(<> '')) "Lot No. Information"."Lot No." WHERE("Item No." = FIELD("Item No."));
             trigger OnValidate()
+            var
+                lItemLedgerEntry: Record "Item Ledger Entry";
+                lItem: Record Item;
             begin
                 IF "Lot No." <> '' THEN BEGIN
                     ConfirmDeleteLines(FIELDCAPTION("Lot No."));
@@ -78,16 +81,28 @@ table 50517 "WDC-QA Registration Header"
                     IF RegistrationHeader.FINDFIRST THEN BEGIN
                         "Expiration Date" := RegistrationHeader."Expiration Date";
                     END;
-                    "Warranty Date" := LotNoInformation."Warranty Date";
                     "Inspection Status" := LotNoInformation."Inspection Status";
                     "Buy-from Vendor No." := LotNoInformation."Buy-from Vendor No.";
-                    "Vendor Lot No." := LotNoInformation."Vendor Lot No.";
+                    lItem.Reset();
+                    if lItem.Get(LotNoInformation."Item No.") then begin
+                        lItem.SetFilter("Item Category Code", 'PF*');
+                        if lItem.FindSet() then begin
+                            lItemLedgerEntry.Reset();
+                            lItemLedgerEntry.SetRange("Item No.", LotNoInformation."Item No.");
+                            lItemLedgerEntry.SetRange("Lot No.", LotNoInformation."Lot No.");
+                            if lItemLedgerEntry.FindSet() then begin
+                                "Production Order No." := lItemLedgerEntry."Document No.";
+                                "Production Date" := lItemLedgerEntry."Posting Date";
+                            end;
+                        end;
+                    end;
                 END;
             end;
 
             trigger OnLookup()
             var
-                myInt: Integer;
+                lItemLedgerEntry: Record "Item Ledger Entry";
+                lItem: Record Item;
             begin
                 LotNoInformation.RESET;
                 IF "Item No." <> '' THEN
@@ -105,12 +120,22 @@ table 50517 "WDC-QA Registration Header"
                     "Variant Code" := LotNoInformation."Variant Code";
                     "Production Date" := LotNoInformation."Creation Date";
                     "Expiration Date" := LotNoInformation."Expiration Date";
-                    "Warranty Date" := LotNoInformation."Warranty Date";
                     "Inspection Status" := LotNoInformation."Inspection Status";
                     "Buy-from Vendor No." := LotNoInformation."Buy-from Vendor No.";
-                    "Vendor Lot No." := LotNoInformation."Vendor Lot No.";
-                END;
-            end;
+                    lItem.Reset();
+                    lItem.SetRange("No.", LotNoInformation."Item No.");
+                    lItem.SetFilter("Item Category Code", 'PF*');
+                    If lItem.FindSet() then begin
+                        lItemLedgerEntry.Reset();
+                        lItemLedgerEntry.SetRange("Item No.", LotNoInformation."Item No.");
+                        lItemLedgerEntry.SetRange("Lot No.", LotNoInformation."Lot No.");
+                        if lItemLedgerEntry.FindSet() then begin
+                            "Production Order No." := lItemLedgerEntry."Document No.";
+                            "Production Date" := lItemLedgerEntry."Posting Date";
+                        end;
+                    end;
+                end;
+            END;
         }
         field(10; "Serial/Container No."; Code[20])
         {
@@ -128,11 +153,9 @@ table 50517 "WDC-QA Registration Header"
                     ConfirmDeleteLines(FIELDCAPTION("Item No."));
 
                     "Item Description" := '';
-                    "Production Line Code" := '';
                     IF NOT Item.GET("Item No.") THEN
                         Item.INIT;
                     "Item Description" := Item.Description;
-                    //"Production Line Code" := Item."Production Line";
                     "Item Category Code" := Item."Item Category Code";
                     IF ("Lot No." <> '') AND ("Item No." <> '') THEN BEGIN
                         LotNoInformation.RESET;
@@ -226,11 +249,6 @@ table 50517 "WDC-QA Registration Header"
             CaptionML = ENU = 'Name', FRA = 'Nom';
             Editable = false;
         }
-        field(17; "Production Line Code"; Code[20])
-        {
-            CaptionML = ENU = 'Production Line Code', FRA = 'Code ligne de production';
-            //TableRelation = "WDC-QA Production Line";
-        }
         field(18; "Production Date"; Date)
         {
             CaptionML = ENU = 'Production Date', FRA = 'Date production';
@@ -238,11 +256,6 @@ table 50517 "WDC-QA Registration Header"
         field(19; "Expiration Date"; Date)
         {
             CaptionML = ENU = 'Expiration Date', FRA = 'Date d''expiration';
-        }
-        field(20; "Warranty Date"; Date)
-        {
-            CaptionML = ENU = 'Warranty Date', FRA = 'Date garantie';
-            Editable = false;
         }
         field(21; "Inspection Status"; Code[20])
         {
@@ -287,7 +300,7 @@ table 50517 "WDC-QA Registration Header"
         field(28; "Buy-from Vendor No."; Code[20])
         {
             CaptionML = ENU = 'Buy-from Vendor No.', FRA = 'N° fournisseur';
-            Editable = false;
+            //Editable = false;
             TableRelation = Vendor;
         }
         field(29; "Vendor Lot No."; Code[20])
@@ -298,18 +311,6 @@ table 50517 "WDC-QA Registration Header"
         {
             CaptionML = ENU = 'No. Series', FRA = 'Souche de N°';
             TableRelation = "No. Series";
-        }
-        field(31; "Return Order Type"; Enum "WDC-QA Return Order Type")
-        {
-            CaptionML = ENU = 'Return Order Type', FRA = 'Type ordre retour';
-            Editable = false;
-        }
-
-        field(32; "Return Order No."; Code[20])
-        {
-            CaptionML = ENU = 'Return Order No.', FRA = 'N° retour';
-            Editable = false;
-            TableRelation = IF ("Return Order Type" = CONST(Sales)) "Sales Header"."No." WHERE("Document Type" = CONST("Return Order")) ELSE IF ("Return Order Type" = CONST(Purchase)) "Purchase Header"."No." WHERE("Document Type" = CONST("Return Order"));
         }
         field(33; "Item Category Code"; Code[20])
         {
@@ -336,32 +337,21 @@ table 50517 "WDC-QA Registration Header"
             InitValue = Manual;
             Editable = false;
         }
-        field(36; "Item No. Filter"; Code[20])
-        {
-            CaptionML = ENU = 'Item No. Filter', FRA = 'Filtre n° article';
-            FieldClass = FlowFilter;
-            TableRelation = Item;
-        }
         field(37; "Source Document No."; Code[20])
         {
             CaptionML = ENU = 'Source Document No.', FRA = 'N° document entrepôt';
+            Editable = false;
             TableRelation = IF ("Source Document Type" = filter('Warehouse Shipment')) "Warehouse Shipment Header"."No." WHERE("No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Inventory Pick')) "Warehouse Activity Header"."No." WHERE(Type = CONST("Invt. Pick"), "No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Warehouse Receipt')) "Warehouse Receipt Header"."No." WHERE("No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Inventory Put-away')) "Warehouse Activity Header"."No." WHERE(Type = CONST("Invt. Put-away"), "No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Machine Center')) "Machine Center"."No." WHERE("No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Work Center')) "Work Center"."No." WHERE("No." = FIELD("Source Document No."))
-            //ELSE IF ("Source Document Type" = filter('Production Line')) "WDC-QA Production Line"."No." WHERE("No." = FIELD("Source Document No."))
             ELSE IF ("Source Document Type" = filter('Production Order')) "Production Order"."No." WHERE(Status = FILTER(< Finished), "No." = FIELD("Source Document No."));
         }
         field(38; "Source Document Line No."; Integer)
         {
             CaptionML = ENU = 'Source Document Line No.', FRA = 'N° ligne doc. entrepôt';
-            Editable = false;
-        }
-        field(39; "Reference Source No."; Code[20])
-        {
-            CaptionML = ENU = 'Reference Source No.', FRA = 'N° réf. origine';
             Editable = false;
         }
         field(40; "Item Description2"; text[100])
@@ -371,7 +361,21 @@ table 50517 "WDC-QA Registration Header"
             CalcFormula = Lookup(Item.Description WHERE("No." = FIELD("Item No.")));
             editable = False;
         }
-
+        field(41; Controller; Code[20])
+        {
+            CaptionML = ENU = 'Controller', FRA = 'Contrôleur';
+            TableRelation = "WDC-QA QC Controller";
+        }
+        field(42; Variety; Text[30])
+        {
+            CaptionML = ENU = 'Variety', FRA = 'Variété';
+            TableRelation = "WDC-QA Variety";
+        }
+        field(43; Size; Text[30])
+        {
+            CaptionML = ENU = 'Size', FRA = 'Calibre';
+            TableRelation = "WDC-QA Size";
+        }
     }
     keys
     {
@@ -382,8 +386,6 @@ table 50517 "WDC-QA Registration Header"
         key(Key1; "Item No.", "Check Point Code")
         { }
         key(Key2; "Lot No.", "Item No.", "Variant Code")
-        { }
-        key(Key3; "Return Order Type", "Return Order No.")
         { }
         key(Key4; Status, "Item No.", "Lot No.", "Check Point Code", "Buy-from Vendor No.")
         { }
@@ -396,7 +398,6 @@ table 50517 "WDC-QA Registration Header"
 
         IF "No." = '' THEN BEGIN
             TestNoSeries;
-            //NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."No. Series", 0D, "No.", "No. Series");
             "No." := NoSeriesMgt.GetNextNo(GetNoSeriesCode, 0D, true);
         END;
 
@@ -430,32 +431,7 @@ table 50517 "WDC-QA Registration Header"
         IF NOT RegistrationLine.ISEMPTY THEN
             RegistrationLine.DELETEALL(TRUE);
 
-        CASE "Return Order Type" OF
-            "Return Order Type"::Sales:
-                BEGIN
-                    SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    SalesHeader.SETRANGE("Registration Header Type", "Document Type");
-                    SalesHeader.SETRANGE("Registration Header No.", "No.");
-                    IF SalesHeader.FINDFIRST THEN BEGIN
-                        SalesHeader."Registration Header Type" := Enum::"WDC-QA Document Type".FromInteger(0);
-                        SalesHeader."Registration Header No." := '';
-                        SalesHeader.MODIFY;
-                    END;
-                END;
-            "Return Order Type"::Purchase:
-                BEGIN
-                    PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    PurchaseHeader.SETRANGE("Registration Header Type", "Document Type");
-                    PurchaseHeader.SETRANGE("Registration Header No.", "No.");
-                    IF PurchaseHeader.FINDFIRST THEN BEGIN
-                        PurchaseHeader."Registration Header Type" := Enum::"WDC-QA Document Type".FromInteger(0);
-                        PurchaseHeader."Registration Header No." := '';
-                        PurchaseHeader.MODIFY;
-                    END;
-                END;
-        END;
-
-        QualityControlMgt.DeletefromQCRegistration(Rec, KindOfQCRegistrationAction::Delete);
+        //QualityControlMgt.DeletefromQCRegistration(Rec, KindOfQCRegistrationAction::Delete);
         CLEAR(GRegistCommentLine);
         GRegistCommentLine.SETRANGE("Document Type", "Document Type");
         GRegistCommentLine.SETRANGE("No.", "No.");
@@ -515,12 +491,6 @@ table 50517 "WDC-QA Registration Header"
                 ERROR('');
 
             CopyDuplicataRegistrationCQ(Rec);
-
-            // IF "Document Type" = "Document Type"::Calibration THEN
-            //     IF Equipment.GET("Equipment No.") THEN BEGIN
-            //         Equipment.VALIDATE("Date Last Calibration", WORKDATE);
-            //         Equipment.MODIFY(TRUE);
-            //     END;
         END;
     end;
 
@@ -545,81 +515,53 @@ table 50517 "WDC-QA Registration Header"
 
     procedure CopyDuplicataRegistrationCQ(RegHeader: Record "WDC-QA Registration Header")
     var
-    //RegistrationHeadeCopy:Record RegistrationHeadeCopy;
-    //RegistrationHeadeLine:Record 
-    //RegistrationStep:Record Registration Step;
-
+        RegistrationHeadeCopy: Record "WDC-QARegistration Header Copy";
+        RegistrationLineCopy: Record "WDC-QARegistration Line Copy";
+        RegistrationStepCopy: Record "WDC-QA Registration Step Copy";
+        RegistrationLine: Record "WDC-QA Registration Line";
+        RegistrationStep: Record "WDC-QA Registration Step";
     begin
-        // RegistrationHeadeCopy.RESET;
-        // RegistrationHeadeCopy.SETRANGE("No.", RegHeader."No.");
-        // RegistrationHeadeCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        // RegistrationHeadeCopy.DELETEALL;
-        // //
+        RegistrationHeadeCopy.RESET;
+        RegistrationHeadeCopy.SETRANGE("No.", RegHeader."No.");
+        RegistrationHeadeCopy.SETRANGE("Document Type", RegHeader."Document Type");
+        RegistrationHeadeCopy.DELETEALL;
 
-        // RegistrationLineCopy.RESET;
-        // RegistrationLineCopy.SETRANGE("Document No.", RegHeader."No.");
-        // RegistrationLineCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        // RegistrationLineCopy.DELETEALL;
-        // //
-        // RegistrationStepCopy.RESET;
-        // RegistrationStepCopy.SETRANGE("Document No.", RegHeader."No.");
-        // RegistrationStepCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        // RegistrationStepCopy.DELETEALL;
-        // //
-        // RegistrationHeadeCopy.INIT;
-        // RegistrationHeadeCopy.TRANSFERFIELDS(RegHeader);
-        // IF RegistrationHeadeCopy.INSERT THEN;
+        RegistrationLineCopy.RESET;
+        RegistrationLineCopy.SETRANGE("Document No.", RegHeader."No.");
+        RegistrationLineCopy.SETRANGE("Document Type", RegHeader."Document Type");
+        RegistrationLineCopy.DELETEALL;
 
-        // RegistrationLine.RESET;
-        // RegistrationLine.SETRANGE("Document Type", RegHeader."Document Type");
-        // RegistrationLine.SETRANGE("Document No.", RegHeader."No.");
-        // IF RegistrationLine.FINDSET THEN
-        //     REPEAT
-        //         RegistrationLineCopy.INIT;
-        //         RegistrationLineCopy.TRANSFERFIELDS(RegistrationLine);
-        //         IF RegistrationLineCopy.INSERT THEN;
+        RegistrationStepCopy.RESET;
+        RegistrationStepCopy.SETRANGE("Document No.", RegHeader."No.");
+        RegistrationStepCopy.SETRANGE("Document Type", RegHeader."Document Type");
+        RegistrationStepCopy.DELETEALL;
 
-        //         RegistrationStep.RESET;
-        //         RegistrationStep.SETRANGE("Document Type", RegistrationLine."Document Type");
-        //         RegistrationStep.SETRANGE("Document No.", RegistrationLine."Document No.");
-        //         RegistrationStep.SETRANGE("Line No.", RegistrationLine."Line No.");
-        //         IF RegistrationStep.FINDSET THEN
-        //             REPEAT
-        //                 RegistrationStepCopy.INIT;
-        //                 RegistrationStepCopy.TRANSFERFIELDS(RegistrationStep);
-        //                 IF RegistrationStepCopy.INSERT THEN;
+        RegistrationHeadeCopy.INIT;
+        RegistrationHeadeCopy.TRANSFERFIELDS(RegHeader);
+        IF RegistrationHeadeCopy.INSERT THEN;
 
-        //             UNTIL RegistrationStep.NEXT = 0;
+        RegistrationLine.RESET;
+        RegistrationLine.SETRANGE("Document Type", RegHeader."Document Type");
+        RegistrationLine.SETRANGE("Document No.", RegHeader."No.");
+        IF RegistrationLine.FINDSET THEN
+            REPEAT
+                RegistrationLineCopy.INIT;
+                RegistrationLineCopy.TRANSFERFIELDS(RegistrationLine);
+                IF RegistrationLineCopy.INSERT THEN;
 
-        //     UNTIL RegistrationLine.NEXT = 0;
-    end;
+                RegistrationStep.RESET;
+                RegistrationStep.SETRANGE("Document Type", RegistrationLine."Document Type");
+                RegistrationStep.SETRANGE("Document No.", RegistrationLine."Document No.");
+                RegistrationStep.SETRANGE("Line No.", RegistrationLine."Line No.");
+                IF RegistrationStep.FINDSET THEN
+                    REPEAT
+                        RegistrationStepCopy.INIT;
+                        RegistrationStepCopy.TRANSFERFIELDS(RegistrationStep);
+                        IF RegistrationStepCopy.INSERT THEN;
 
-    procedure ReleaseWhseDocument()
-    var
-        Action: Option Release,Delete;
-    begin
-        CASE "Source Document Type" OF
-            "Source Document Type"::"Inventory Pick":
-                BEGIN
-                    QualityControlMgt.UpdateInvtPickHeader(Rec, Action::Release);
-                    QualityControlMgt.UpdateInvtPickLine(Rec, Action::Release);
-                END;
-            "Source Document Type"::"Warehouse Shipment":
-                BEGIN
-                    QualityControlMgt.UpdateWhseShipmentHeader(Rec, Action::Release);
-                    QualityControlMgt.UpdateWhseShipmentLine(Rec, Action::Release);
-                END;
-            "Source Document Type"::"Inventory Put-away":
-                BEGIN
-                    QualityControlMgt.UpdateInvtPutAwayHeader(Rec, Action::Release);
-                    QualityControlMgt.UpdateInvtPutAwayLine(Rec, Action::Release);
-                END;
-            "Source Document Type"::"Warehouse Receipt":
-                BEGIN
-                    QualityControlMgt.UpdateWhseReceiptHeader(Rec, Action::Release);
-                    QualityControlMgt.UpdateWhseReceiptLine(Rec, Action::Release);
-                END;
-        END;
+                    UNTIL RegistrationStep.NEXT = 0;
+
+            UNTIL RegistrationLine.NEXT = 0;
     end;
 
     procedure GetStepCounts(ModifiedStepCount: Integer; MaxStepCount: Integer)
@@ -635,42 +577,26 @@ table 50517 "WDC-QA Registration Header"
         ModifiedStepCount := RegistrationStep.COUNT;
     end;
 
-    procedure HasBeenCalculated(): Boolean
-    var
-        RegistrationLine: record "WDC-QA Registration Line";
-    begin
-        RegistrationLine.SETRANGE("Document Type", "Document Type");
-        RegistrationLine.SETRANGE("Document No.", "No.");
-        IF RegistrationLine.ISEMPTY THEN
-            EXIT(TRUE);
-
-        RegistrationLine.SETRANGE("Conclusion Result", RegistrationLine."Conclusion Result"::" ");
-        EXIT(RegistrationLine.ISEMPTY);
-    end;
-
     var
         Gline: Integer;
-        QualityControlSetup: Record "WDC-QA Quality Control Setup";
-        RegistrationHeader: Record "WDC-QA Registration Header";
+        Item: Record Item;
+        GCommentCOA: Record "WDC-QA Commentaire COA";
+        PurchaseHeader: Record "Purchase Header";
         RegistrationLine: Record "WDC-QA Registration Line";
         LotNoInformation: Record "Lot No. Information";
-        SalesHeader: Record "Sales Header";
-        PurchaseHeader: Record "Purchase Header";
-        GCommentCOA: Record "WDC-QA Commentaire COA";
+        RegistrationHeader: Record "WDC-QA Registration Header";
         GRegistCommentLine: Record "WDC-QA RegistrationCommentLine";
-
-        Item: Record Item;
+        QualityControlSetup: Record "WDC-QA Quality Control Setup";
         LotNoInformationList: Page "Lot No. Information List";
-        //NoSeriesMgt: Codeunit NoSeriesManagement;
         NoSeriesMgt: Codeunit "No. Series";
-        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
-        Text001: TextConst ENU = 'Status can not be closed, because there are no %1 Registration Lines.', FRA = 'Statut ne peut pas être terminé,parce qu''il n''y a pas %1 lignes d''enregistrement.';
-        Text002: TextConst ENU = 'Do you want to close this %1 Registration?', FRA = 'Voulez-vous clôturer cet enregistrement %1?';
-        Text003: TextConst ENU = 'Non Conformance', FRA = 'Non conformité';
-        Text004: TextConst ENU = 'has already been created for this item/lotnumber\Do you want to open this NC?', FRA = 'a déjà été créé pour cet article/numéro lot\Voulez-vous ouvrir cette NC ?';
-        Text005: TextConst ENU = '&Customer, &Vendor, &Internal', FRA = '&Client, &Fournisseur, &Interne';
-        Text006: TextConst ENU = 'If you change %1, the existing %2 lines will be deleted.\\', FRA = 'Si vous changez %1, les %2 lignes existantes seront supprimées.\\';
-        Text007: TextConst ENU = 'Do you want to change %1?', FRA = 'Souhaitez-vous modifier la valeur du champ %1 ?';
-        Text008: TextConst ENU = 'More than 1 record found. Please select by Lookup.', FRA = 'Plus qu''un enregistrement trouvé. Svp sélectionné en consultant la table.';
-        CannotReleaseErr: TextConst ENU = 'The document cannot be released, because not all results have been determined yet.', FRA = 'Le document ne peut pas être lancé, car tous les résultats n''ont pas encore été déterminés.';
+        Text001: TextConst ENU = 'Status can not be closed, because there are no %1 Registration Lines.',
+                           FRA = 'Statut ne peut pas être terminé,parce qu''il n''y a pas %1 lignes d''enregistrement.';
+        Text002: TextConst ENU = 'Do you want to close this %1 Registration?',
+                           FRA = 'Voulez-vous clôturer cet enregistrement %1?';
+        Text006: TextConst ENU = 'If you change %1, the existing %2 lines will be deleted.\\',
+                           FRA = 'Si vous changez %1, les %2 lignes existantes seront supprimées.\\';
+        Text007: TextConst ENU = 'Do you want to change %1?',
+                           FRA = 'Souhaitez-vous modifier la valeur du champ %1 ?';
+        Text008: TextConst ENU = 'More than 1 record found. Please select by Lookup.',
+                           FRA = 'Plus qu''un enregistrement trouvé. Svp sélectionné en consultant la table.';
 }

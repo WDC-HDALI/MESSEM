@@ -1,11 +1,11 @@
 report 50501 "WDC-QACreateSpecifiVersion"
 {
-    ApplicationArea = All;
     CaptionML = ENU = 'Create Specification Version', FRA = 'Créer version spécification';
-    UsageCategory = ReportsAndAnalysis;
-    ProcessingOnly = true;
     RDLCLayout = './.vscode/src_QA/Report/RDLC/CreateSpecificationVersion.rdl';
+    UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
+    ApplicationArea = All;
+    ProcessingOnly = true;
     dataset
     {
         dataitem(WDCQASpecificationHeader; "WDC-QA Specification Header")

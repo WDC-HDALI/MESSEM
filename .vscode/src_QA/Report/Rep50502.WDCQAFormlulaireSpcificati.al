@@ -1,10 +1,10 @@
 report 50502 "WDC-QA Formlulaire Spécificati"
 {
-    ApplicationArea = All;
     CaptionML = ENU = 'Formlulaire Spécification CQ', FRA = 'Formlulaire Spécification CQ';
-    UsageCategory = ReportsAndAnalysis;
     RDLCLayout = './.vscode/src_QA/Report/RDLC/FormlulaireSpécification.rdl.rdlc';
+    UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
+    ApplicationArea = All;
     dataset
     {
         dataitem(WDCQASpecificationHeader; "WDC-QA Specification Header")
@@ -78,7 +78,7 @@ report 50502 "WDC-QA Formlulaire Spécificati"
                     IF UnitofMeasure.GET(UnitMeas) THEN;
 
 
-                    IF (WDCQASpecificationLine."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(1)) THEN BEGIN
+                    IF (WDCQASpecificationLine."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(2)) THEN BEGIN
                         ResulLimit := 'OK';
 
                     END ELSE BEGIN
@@ -156,15 +156,11 @@ report 50502 "WDC-QA Formlulaire Spécificati"
         }
 
         trigger OnInit()
-        var
-            myInt: Integer;
         begin
             Frequence := Text001;
         end;
     }
     trigger OnInitReport()
-    var
-        myInt: Integer;
     begin
         Company.GET;
         Company.CALCFIELDS(Picture);
@@ -184,7 +180,10 @@ report 50502 "WDC-QA Formlulaire Spécificati"
         Packaging: Record "WDC Packaging";
         SH_frequency: Decimal;
         SH_frequencyText: Text;
-        Text001: TextConst ENU = '', FRA = 'Fréquence d''échantillonnage: (Soit un carton chaque 2 palette)';
-        Text002: TextConst ENU = '', FRA = '2kg chaque 30min';
-        Text003: TextConst ENU = '', FRA = '20kg chaque 2 palettes';
+        Text001: TextConst ENU = 'Sampling frequency: (Either one carton every 2 pallet)',
+                            FRA = 'Fréquence d''échantillonnage: (Soit un carton chaque 2 palette)';
+        Text002: TextConst ENU = '2kg every 30min',
+                            FRA = '2kg chaque 30min';
+        Text003: TextConst ENU = '20kg each 2 pallets',
+                            FRA = '20kg chaque 2 palettes';
 }

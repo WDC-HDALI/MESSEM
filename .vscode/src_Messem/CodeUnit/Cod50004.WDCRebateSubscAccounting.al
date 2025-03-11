@@ -13,12 +13,35 @@ using Microsoft.Inventory.Journal;
 
 codeunit 50004 "WDC Rebate Subsc Accounting"
 {
+
+
+    //********Champs à valider Feuille paiement
+    [EventSubscriber(ObjectType::Page, 256, 'OnBeforeActionEvent', 'Post', false, false)]
+    procedure OnBeforePostPaymentJournal(var Rec: Record 81)
+    var
+        ltext001: Label 'Please select the rows to post';
+    begin
+        Rec.SETRANGE("To Post", TRUE);
+        IF Rec.ISEMPTY THEN
+            ERROR(ltext001);
+    end;
+
+    [EventSubscriber(ObjectType::Page, 256, 'OnBeforeActionEvent', 'Post', false, false)]
+    procedure OnBeforePostAndPrinPaymentJournal(var Rec: Record 81)
+    var
+        ltext001: Label 'Please select the rows to post';
+    begin
+        Rec.SETRANGE("To Post", TRUE);
+        IF Rec.ISEMPTY THEN
+            ERROR(ltext001);
+    end;
+    /////************Feuille Paiement
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Gen. Jnl.-Post line", 'OnAfterInsertGLEntry', '', FALSE, FALSE)]
     local procedure OnAfterInsertGLEntry(GenJnlLine: Record "Gen. Journal Line"; CalcAddCurrResiduals: Boolean)
-
     begin
-        if GenJnlLine."Debit Amount" <> 0 Then
-            InsertRebateEntry(GenJnlLine);
+        // if GenJnlLine."Debit Amount" <> 0 Then
+        //     InsertRebateEntry(GenJnlLine);
     end;
     //Linked by the navigate entries page(Posted purchase invoice)
     [EventSubscriber(ObjectType::Page, Page::Navigate, 'OnAfterFindPostedDocuments', '', FALSE, FALSE)]
@@ -78,7 +101,6 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
         PurchaseLine."Accrual Amount (LCY)" := 0;
     end;
 
-
     procedure InsertRebateEntry(var GenJnlLine: Record 81)
     var
         RebateEntry: Record "WDC Rebate Entry";
@@ -134,7 +156,7 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
                 RebateEntry."Base Amount" := -PurchaseLine."VAT Base Amount";
                 RebateEntry."Base Quantity" := -RebateEntry."Base Quantity";
             END ELSE begin
-                RebateEntry."Accrual Amount (LCY)" := -GenJnlLine.Amount;
+                RebateEntry."Accrual Amount (LCY)" := GenJnlLine.Amount;
                 RebateEntry."Base Amount" := PurchaseLine."VAT Base Amount";
             end;
 
@@ -254,8 +276,6 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
         END;
 
         RebateEntry.INSERT;
-
-
     end;
 
 
@@ -299,6 +319,5 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
         PurchHeader: record 38;
         PurchaseLine: Record 39;
         PurchaseRebate: Record "WDC Purchase Rebate";
-
         PurchSetup: record "Purchases & Payables Setup";
 }

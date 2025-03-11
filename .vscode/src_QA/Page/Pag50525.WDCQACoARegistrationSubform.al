@@ -24,6 +24,8 @@ page 50525 "WDC-QA CoA RegistrationSubform"
                 field(Imprimable; Rec.Imprimable)
                 {
                     ApplicationArea = all;
+                    Style = Attention;
+                    StyleExpr = true;
                 }
                 field("Text Description"; Rec."Text Description")
                 {
@@ -100,6 +102,10 @@ page 50525 "WDC-QA CoA RegistrationSubform"
                 field("CoA Type Value"; Rec."CoA Type Value")
                 {
                     ApplicationArea = all;
+                }
+                field(MicroBio; Rec.MicroBio)
+                {
+                    ApplicationArea = All;
                 }
                 field("Result Value"; Rec."Result Value")
                 {
@@ -191,23 +197,6 @@ page 50525 "WDC-QA CoA RegistrationSubform"
         CalibrationRegistrationLine := Rec;
     end;
 
-    procedure CreateSecondSample()
-    begin
-        QualityControlMgt.CreateSecondSampling(Rec);
-    end;
-
-    procedure LineUp()
-    begin
-        IF Rec.NEXT(-1) >= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
-    procedure LineDown()
-    begin
-        IF Rec.NEXT <= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
     procedure UpdateFieldsVisible()
     begin
         "Conclusion ResultVisible" := TRUE;
@@ -216,7 +205,6 @@ page 50525 "WDC-QA CoA RegistrationSubform"
 
     var
         RegistrationHeader: Record "WDC-QA Registration Header";
-        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
         "Specification RemarkEditable": Boolean;
         "Lower LimitEditable": Boolean;
         "Lower Warning LimitEditable": Boolean;
@@ -226,5 +214,4 @@ page 50525 "WDC-QA CoA RegistrationSubform"
         "Target Result OptionEditable": Boolean;
         "Conclusion ResultVisible": Boolean;
         "ConclusionAverageResultVisible": Boolean;
-        RegistrationLine: Record "WDC-QA Registration Line";
 }

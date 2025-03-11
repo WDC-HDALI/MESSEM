@@ -34,6 +34,10 @@ pageextension 50034 "WDC Lot No. Information List" extends "Lot No. Information 
             {
                 ApplicationArea = all;
             }
+            field("Purch. Received Quantity"; Rec."Purch. Received Quantity")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }

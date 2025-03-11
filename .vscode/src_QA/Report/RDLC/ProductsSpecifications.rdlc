@@ -1115,7 +1115,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.3476cm</Top>
-            <Left>0.762cm</Left>
+            <Left>0.36689cm</Left>
             <Height>3.49416cm</Height>
             <Width>19.17849cm</Width>
             <Style>
@@ -1604,7 +1604,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>5.00103cm</Top>
-            <Left>0.762cm</Left>
+            <Left>0.36689cm</Left>
             <Height>0.63581cm</Height>
             <Width>18.14984cm</Width>
             <ZIndex>1</ZIndex>
@@ -1764,7 +1764,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>4.04728cm</Top>
-            <Left>0.762cm</Left>
+            <Left>0.36689cm</Left>
             <Height>0.80312cm</Height>
             <Width>18.14985cm</Width>
             <ZIndex>2</ZIndex>
@@ -1924,7 +1924,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>9.23138cm</Top>
-            <Left>0.762cm</Left>
+            <Left>0.36689cm</Left>
             <Height>0.72375cm</Height>
             <Width>18.14985cm</Width>
             <ZIndex>3</ZIndex>
@@ -2573,7 +2573,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>6.34277cm</Top>
-            <Left>0.79112cm</Left>
+            <Left>0.39601cm</Left>
             <Height>2.54166cm</Height>
             <Width>18.14985cm</Width>
             <ZIndex>4</ZIndex>
@@ -2601,7 +2601,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox48</rd:DefaultName>
             <Top>5.68596cm</Top>
-            <Left>0.79112cm</Left>
+            <Left>0.39601cm</Left>
             <Height>0.52063cm</Height>
             <Width>18.12073cm</Width>
             <ZIndex>5</ZIndex>
@@ -2617,9 +2617,18 @@
           </Textbox>
         </ReportItems>
         <Height>10.38377cm</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundImage>
+            <Source>Database</Source>
+            <Value>=First(Fields!Background.Value, "DataSet_Result")</Value>
+            <MIMEType>image/jpeg</MIMEType>
+          </BackgroundImage>
+        </Style>
       </Body>
-      <Width>19.94049cm</Width>
+      <Width>19.54538cm</Width>
       <Page>
         <PageHeader>
           <Height>3.21133cm</Height>
@@ -2631,7 +2640,7 @@
               <Value>=First(Fields!Picture.Value, "DataSet_Result")</Value>
               <MIMEType>image/bmp</MIMEType>
               <Sizing>Fit</Sizing>
-              <Left>13.07859cm</Left>
+              <Left>12.76109cm</Left>
               <Height>80.43394pt</Height>
               <Width>6.54766cm</Width>
               <DataElementOutput>NoOutput</DataElementOutput>
@@ -2658,7 +2667,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>0.20847in</Top>
-              <Left>0.3in</Left>
+              <Left>0.175in</Left>
               <Height>0.25in</Height>
               <Width>4.27292in</Width>
               <ZIndex>1</ZIndex>
@@ -2714,7 +2723,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox3</rd:DefaultName>
               <Top>0.49872cm</Top>
-              <Left>0.79112cm</Left>
+              <Left>0.47362cm</Left>
               <Height>0.6cm</Height>
               <Width>18.14985cm</Width>
               <Style>
@@ -2789,6 +2798,9 @@ End Function
       <Fields>
         <Field Name="Picture">
           <DataField>Picture</DataField>
+        </Field>
+        <Field Name="Background">
+          <DataField>Background</DataField>
         </Field>
         <Field Name="Type">
           <DataField>Type</DataField>

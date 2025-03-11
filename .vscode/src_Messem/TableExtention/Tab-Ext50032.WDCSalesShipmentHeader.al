@@ -13,7 +13,7 @@ tableextension 50032 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
         }
         field(50001; "Scelle No."; code[20])
         {
-            CaptionML = ENU = 'Scelle No.', FRA = 'Nombre de points maximum';
+            CaptionML = ENU = 'Scelle No.', FRA = 'N° Scellé';
             DataClassification = ToBeClassified;
         }
         field(50002; "Container No."; code[20])
@@ -25,6 +25,7 @@ tableextension 50032 "WDC SalesShipmentHeader" extends "Sales Shipment Header"
         {
             CaptionML = ENU = 'Forwarding Agent', FRA = 'Code transitaire';
             DataClassification = ToBeClassified;
+            TableRelation = "WDC Forwarding Agent";
         }
         field(50004; "Destination Port"; code[20])
         {

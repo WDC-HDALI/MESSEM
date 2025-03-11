@@ -5,6 +5,7 @@ page 50001 "WDC Packaging"
     PopulateAllFields = true;
     SourceTable = "WDC Packaging";
     UsageCategory = lists;
+    ApplicationArea = all;
 
     layout
     {

@@ -103,7 +103,6 @@ tableextension 50000 "WDC Item" extends Item
             TableRelation = "WDC Item Rebate Group".Code;
         }
 
-
     }
     procedure IsPackagingItem(): Boolean
     var
@@ -113,6 +112,22 @@ tableextension 50000 "WDC Item" extends Item
         Packaging.SETCURRENTKEY("Item No.");
         Packaging.SETFILTER("Item No.", "No.");
         EXIT(NOT Packaging.ISEMPTY);
+    end;
+
+    trigger OnInsert()
+    var
+        lUserSetup: Record "User Setup";
+    begin
+        lUserSetup.get(UserId);
+        lUserSetup.TestField("Item Added", true);
+    end;
+
+    trigger OnModify()
+    var
+        lUserSetup: Record "User Setup";
+    begin
+        lUserSetup.get(UserId);
+        lUserSetup.TestField("Item Added", true);
     end;
 
     var

@@ -36,6 +36,13 @@ tableextension 50034 "WDC SalesCrMemoLine" extends "Sales Cr.Memo Line"
             DataClassification = ToBeClassified;
 
         }
+        field(50030; "Harmonised Tariff Code"; code[20])
+        {
+            CaptionML = ENU = 'Harmonised Tariff Code', FRA = 'Code tarifaire harmonisé';
+            DataClassification = ToBeClassified;
+
+        }
+
 
     }
 

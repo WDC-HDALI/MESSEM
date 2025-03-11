@@ -35,7 +35,7 @@ report 50002 "WDC Rebate Payment"
 
             trigger OnPostDataItem()
             begin
-                CreateOrders;
+                CreatePurchaseInvoice();
             end;
 
             trigger OnPreDataItem()
@@ -99,7 +99,7 @@ report 50002 "WDC Rebate Payment"
         Text007: TextConst ENU = 'Succesfully added one or more credit memo''s.',
                            FRA = 'Un ou plusieurs avoirs ont bien été ajouté.';
 
-    procedure CreateOrders()
+    procedure CreatePurchaseInvoice()
     var
         RebateCode: Record "WDC Rebate Code";
         RebateScale: Record "WDC Rebate Scale";
@@ -107,13 +107,10 @@ report 50002 "WDC Rebate Payment"
         RebatePayment: Decimal;
         MinimumAmount: Decimal;
         RebateValue: Decimal;
-        SalesHeader: Record 36;
-        SalesLine: Record 37;
         PurchaseHeader: Record 38;
         PurchaseLine: Record 39;
         LineNumber: Integer;
-        CreditMemoAdded: Boolean;
-        GeneralPostingSetup: Record 252;
+        InvoiceAdded: Boolean;
         Item: Record 27;
     begin
         PreviousSelltoBuyFromNo := '';
@@ -132,8 +129,7 @@ report 50002 "WDC Rebate Payment"
                 END;
                 IF LineNumber = 10000 THEN BEGIN
                     PurchaseHeader.INIT;
-                    //PurchaseHeader.VALIDATE("Document Type",SalesHeader."Document Type"::"Credit Memo");//okh
-                    PurchaseHeader.VALIDATE("Document Type", SalesHeader."Document Type"::Invoice);
+                    PurchaseHeader.VALIDATE("Document Type", PurchaseHeader."Document Type"::Invoice);
                     PurchaseHeader."No." := '';
                     PurchaseHeader.INSERT(TRUE);
 
@@ -181,7 +177,6 @@ report 50002 "WDC Rebate Payment"
 
                 IF RebatePayment = 0 THEN
                     ERROR(Text003, TempRebateEntry."Buy-from No.", TempRebateEntry."Rebate Code");
-                //
                 PurchaseLine.INIT;
                 PurchaseLine.VALIDATE("System-Created Entry", TRUE);
                 PurchaseLine.VALIDATE("Document Type", PurchaseLine."Document Type"::Invoice);
@@ -197,14 +192,11 @@ report 50002 "WDC Rebate Payment"
                 PurchaseLine.VALIDATE("Direct Unit Cost", RebatePayment);
                 PurchaseLine.VALIDATE("Rebate Code", TempRebateEntry."Rebate Code");
                 PurchaseLine.INSERT(TRUE);
-                //>>HD01
 
-
-
-                CreditMemoAdded := TRUE;
+                InvoiceAdded := TRUE;
             UNTIL TempRebateEntry.NEXT = 0;
 
-        IF CreditMemoAdded THEN
+        IF InvoiceAdded THEN
             MESSAGE(Text007)
         ELSE
             MESSAGE(Text005);

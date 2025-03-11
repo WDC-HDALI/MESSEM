@@ -27,6 +27,16 @@ pageextension 50033 WDCVendorList extends "Vendor List"
 
             }
         }
+        addlast(reporting)
+        {
+            action(VendorItemPurchase)
+            {
+                CaptionML = ENU = 'Vendor/Item Purchases', FRA = 'Achats d''articles par fournisseur';
+                Image = Purchasing;
+                ApplicationArea = all;
+                RunObject = report "WDC Purch. By Vendor";
+            }
+        }
     }
 
 }

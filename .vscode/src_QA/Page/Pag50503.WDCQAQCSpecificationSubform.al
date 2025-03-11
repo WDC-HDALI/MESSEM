@@ -39,6 +39,10 @@ page 50503 "WDC-QA QCSpecification Subform"
                 {
                     ApplicationArea = all;
                 }
+                field("Method Description"; Rec."Method Description")
+                {
+                    ApplicationArea = All;
+                }
                 field("Sample Quantity"; Rec."Sample Quantity")
                 {
                     ApplicationArea = all;

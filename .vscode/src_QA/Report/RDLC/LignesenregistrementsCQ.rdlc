@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -19,7 +19,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>20.16574cm</Width>
+                  <Width>19.90116cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -80,7 +80,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">N° contrôle</Value>
+                                                    <Value>N° contrôle</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -121,7 +121,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">N° Mesure</Value>
+                                                    <Value>N° Mesure</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -162,7 +162,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Description paramétre</Value>
+                                                    <Value>Description paramétre</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -201,7 +201,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Limite inférieur</Value>
+                                                    <Value>Limite inférieur</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -240,7 +240,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Limite supérieur</Value>
+                                                    <Value>Limite supérieur</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -279,7 +279,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Valeur résultat cible</Value>
+                                                    <Value>Valeur résultat cible</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -318,7 +318,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Valeur résultat</Value>
+                                                    <Value>Valeur résultat</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -357,7 +357,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Valeur résultat moyen</Value>
+                                                    <Value>Valeur résultat moyen</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -396,7 +396,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Unité valeur résultat</Value>
+                                                    <Value>Unité valeur résultat</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -435,7 +435,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Code controlleur</Value>
+                                                    <Value>Code controlleur</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -474,7 +474,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Date CQ</Value>
+                                                    <Value>Date CQ</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                       <FontWeight>Bold</FontWeight>
@@ -518,7 +518,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!PalletNo_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!PalletNo_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -552,7 +552,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!MeasureNo_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!MeasureNo_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -586,7 +586,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!ParameterDescription_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!ParameterDescription_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -618,7 +618,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!LowerLimit_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!LowerLimit_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -650,7 +650,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!UpperLimit_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!UpperLimit_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -682,7 +682,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!TargetResultvalue_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!TargetResultvalue_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -714,7 +714,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=iif(Fields!OptionChifApreVirgu.Value="1",ROUND(Fields!ResultValue_RegistrationLine.Value,1),ROUND(Fields!ResultValue_RegistrationLine.Value,1))</Value>
+                                                    <Value>=iif(Fields!OptionChifApreVirgu.Value="1",ROUND(Fields!ResultValue_RegistrationLine.Value,1),ROUND(Fields!ResultValue_RegistrationLine.Value,1))</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -746,7 +746,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=iif(Fields!OptionChifApreVirgu.Value="1",ROUND(Fields!AverageResultValue_RegistrationLine.Value ,1),ROUND(Fields!AverageResultValue_RegistrationLine.Value ,1))</Value>
+                                                    <Value>=iif(Fields!OptionChifApreVirgu.Value="1",ROUND(Fields!AverageResultValue_RegistrationLine.Value ,1),ROUND(Fields!AverageResultValue_RegistrationLine.Value ,1))</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -778,7 +778,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!ResultValueUOM_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!ResultValueUOM_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
@@ -810,7 +810,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!Codeutilisateur_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!Codeutilisateur_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>7pt</FontSize>
                                                     </Style>
@@ -842,7 +842,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!ControlDate_RegistrationLine.Value</Value>
+                                                    <Value>=Fields!ControlDate_RegistrationLine.Value</Value>
                                                     <Style>
                                                       <FontSize>7pt</FontSize>
                                                       <Format>g</Format>
@@ -924,19 +924,19 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Article :   </Value>
+                                      <Value>Article :   </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Article.Value</Value>
+                                      <Value>=Fields!Article.Value</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                      <Value xml:space="preserve"> </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -968,13 +968,13 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">N° Lot :   </Value>
+                                      <Value>N° Lot :   </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!LotNo.Value</Value>
+                                      <Value>=Fields!LotNo.Value</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -1006,19 +1006,19 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Point de contrôle :   </Value>
+                                      <Value>Point de contrôle :   </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Article.Value</Value>
+                                      <Value>=Fields!Article.Value</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                      <Value xml:space="preserve"> </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -1050,13 +1050,13 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Date  de production:   </Value>
+                                      <Value>Date  de production:   </Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!DateProduction.Value</Value>
+                                      <Value>=Fields!DateProduction.Value</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                         <Format>dd/MM/yyyy</Format>
@@ -1115,7 +1115,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.3937cm</Top>
             <Height>2.79105cm</Height>
-            <Width>20.16574cm</Width>
+            <Width>19.90116cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1126,7 +1126,7 @@
         <Height>3.43958cm</Height>
         <Style />
       </Body>
-      <Width>20.16574cm</Width>
+      <Width>19.90116cm</Width>
       <Page>
         <PageHeader>
           <Height>5.63563cm</Height>
@@ -1140,7 +1140,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">Etat contrôle qualité </Value>
+                      <Value>Etat contrôle qualité </Value>
                       <Style>
                         <FontSize>18pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1154,7 +1154,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=First(Fields!DocumentNo_RegistrationLine.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!DocumentNo_RegistrationLine.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontSize>18pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1189,7 +1189,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Globals!ExecutionTime</Value>
+                      <Value>=Globals!ExecutionTime</Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                         <Format>D</Format>
@@ -1224,7 +1224,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=User!UserID</Value>
+                      <Value>=User!UserID</Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                       </Style>
