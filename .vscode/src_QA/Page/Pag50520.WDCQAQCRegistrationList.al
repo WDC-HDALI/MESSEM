@@ -1,14 +1,14 @@
 page 50520 "WDC-QA QC Registration List"
 {
     ApplicationArea = All;
-    CaptionML = ENU = 'QC Registration', FRA = 'Enregistrement CQ';
+    CaptionML = ENU = 'QC Registration', FRA = 'Enregistrements CQ';
     PageType = List;
     SourceTable = "WDC-QA Registration Header";
     SourceTableView = SORTING("Document Type", "No.") WHERE("Document Type" = FILTER(QC), Status = FILTER(<> Closed));
     UsageCategory = Lists;
     Editable = false;
     CardPageId = "WDC-QA QC Registration";
-    DataCaptionFields = "Document Type";
+    //DataCaptionFields = "Document Type";
 
     layout
     {
@@ -57,10 +57,6 @@ page 50520 "WDC-QA QC Registration List"
                     ApplicationArea = all;
                 }
                 field("Source Document No."; Rec."Source Document No.")
-                {
-                    ApplicationArea = all;
-                }
-                field("Reference Source No."; Rec."Reference Source No.")
                 {
                     ApplicationArea = all;
                 }

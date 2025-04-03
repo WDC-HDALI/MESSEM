@@ -1,14 +1,25 @@
 codeunit 50005 "WDC Rebate Subsc. Purchase"
 {
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterUpdatePurchLineBeforePost', '', FALSE, FALSE)]
+    // local procedure OnAfterUpdatePurchLineBeforePost_Bonus(var PurchaseLine: Record "Purchase Line"; WhseShip: Boolean; WhseReceive: Boolean; PurchaseHeader: Record "Purchase Header"; RoundingLineInserted: Boolean)
+    // var
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterPostInvoice', '', FALSE, FALSE)]
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterUpdatePurchLineBeforePost', '', FALSE, FALSE)]
-    local procedure OnAfterUpdatePurchLineBeforePost_Bonus(var PurchaseLine: Record "Purchase Line"; WhseShip: Boolean; WhseReceive: Boolean; PurchaseHeader: Record "Purchase Header"; RoundingLineInserted: Boolean)
+    local procedure OnAfterPostInvoice(var PurchHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; TotalPurchLine: Record "Purchase Line"; TotalPurchLineLCY: Record "Purchase Line"; CommitIsSupressed: Boolean; var VendorLedgerEntry: Record "Vendor Ledger Entry")
     var
+        lPurchaseLine: record "Purchase Line";
     begin
-        IF PurchaseLine."Document Type" IN [PurchaseLine."Document Type"::"Credit Memo", PurchaseLine."Document Type"::Invoice] THEN
-            CalcRebateValue(PurchaseHeader, PurchaseLine, TRUE);
-        IF PurchaseLine."Document Type" = PurchaseLine."Document Type"::"Credit Memo" THEN
-            CreateRebatePayment(PurchaseHeader, PurchaseLine);
+        lPurchaseLine.Reset();
+        lPurchaseLine.SetRange("Document Type", PurchHeader."Document Type");
+        lPurchaseLine.SetRange("Document No.", PurchHeader."No.");
+        lPurchaseLine.SetRange(Type, lPurchaseLine.Type::Item);
+        if lPurchaseLine.FindFirst() then
+            repeat
+                IF lPurchaseLine."Document Type" IN [lPurchaseLine."Document Type"::"Credit Memo", lPurchaseLine."Document Type"::Invoice] THEN
+                    CalcRebateValue(PurchHeader, lPurchaseLine, true);
+                IF lPurchaseLine."Document Type" = lPurchaseLine."Document Type"::"Credit Memo" THEN
+                    CreateRebatePayment(PurchHeader, lPurchaseLine);
+            until lPurchaseLine.Next() = 0;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnPostItemJnlLineOnAfterSetFactor', '', FALSE, FALSE)]
@@ -21,7 +32,79 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         ItemJournalLine."Rebate Accrual Amount (LCY)" := ROUND(ItemJournalLine."Rebate Accrual Amount (LCY)");
     end;
 
-    local procedure CalcRebateValue(PurchHeader: Record 38; var PurchLine: Record 39; PostAccrual: Boolean)
+    [EventSubscriber(ObjectType::Table, DataBase::"Item Journal Line", 'OnAfterCopyItemJnlLineFromPurchHeader', '', FALSE, FALSE)]
+    local procedure OnAfterCopyItemJnlLineFromPurchHeader(var ItemJnlLine: Record "Item Journal Line"; PurchHeader: Record "Purchase Header")
+    var
+    begin
+        case PurchHeader."Document Type" of
+            PurchHeader."Document Type"::Quote:
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"0";
+            PurchHeader."Document Type"::Order:
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"1";
+            PurchHeader."Document Type"::Invoice:
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"2";
+            PurchHeader."Document Type"::"Credit Memo":
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"3";
+            PurchHeader."Document Type"::"Blanket Order":
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"4";
+            PurchHeader."Document Type"::"Return Order":
+                ItemJnlLine."Source Subtype" := ItemJnlLine."Source Subtype"::"5";
+        end;
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnAfterInitItemLedgEntry', '', FALSE, FALSE)]
+    local procedure OnAfterInitItemLedgEntry(var NewItemLedgEntry: Record "Item Ledger Entry"; var ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer)
+    var
+    begin
+        NewItemLedgEntry."Source Subtype" := ItemJournalLine."Source Subtype";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnInitValueEntryOnBeforeSetDocumentLineNo', '', FALSE, FALSE)]
+    local procedure OnInitValueEntryOnBeforeSetDocumentLineNo(ItemJournalLine: Record "Item Journal Line"; var ItemLedgerEntry: Record "Item Ledger Entry"; var ValueEntry: Record "Value Entry")
+    var
+    begin
+
+        if ValueEntry."Item Ledger Entry Type" = ValueEntry."Item Ledger Entry Type"::Purchase then begin
+            ValueEntry."Source Subtype" := ItemJournalLine."Source Subtype";
+            //<<HD12032025
+            // IF ValueEntry."Source Subtype" = ValueEntry."Source Subtype"::"2" THEN
+            //     RebateSignFactor := 1
+            // ELSE
+            //     RebateSignFactor := -1;
+        end;
+        // ValueEntry."Rebate Accrual Amount (LCY)" := RebateSignFactor * ItemJournalLine."Rebate Accrual Amount (LCY)";
+
+        ValueEntry."Rebate Accrual Amount (LCY)" := ItemJournalLine."Rebate Accrual Amount (LCY)";
+        //>>HD12032025
+
+
+
+
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnInsertVarValueEntryOnAfterInitValueEntryFields', '', FALSE, FALSE)]
+    local procedure OnInsertVarValueEntryOnAfterInitValueEntryFields(var ValueEntry: record "Value Entry")
+    var
+    begin
+        ValueEntry."Rebate Accrual Amount (LCY)" := 0;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnAfterSetupTempSplitItemJnlLineSetQty', '', FALSE, FALSE)]
+    local procedure OnAfterSetupTempSplitItemJnlLineSetQty(var TempSplitItemJnlLine: Record "Item Journal Line" temporary; ItemJournalLine: Record "Item Journal Line"; SignFactor: Integer; var TempTrackingSpecification: Record "Tracking Specification" temporary)
+    var
+        lGLSetup: record "General Ledger Setup";
+    begin
+        lGLSetup.get;
+        if SignFactor < 1 then   //à vérifier FloatingFactor lors le test car il est remplacé par SignFactor 
+            TempSplitItemJnlLine."Rebate Accrual Amount (LCY)" := ROUND(ItemJournalLine."Rebate Accrual Amount (LCY)" * SignFactor, lGLSetup."Amount Rounding Precision")
+
+        else
+            TempSplitItemJnlLine."Rebate Accrual Amount (LCY)" := ItemJournalLine."Rebate Accrual Amount (LCY)";
+    end;
+
+    procedure CalcRebateValue(PurchHeader: Record 38; var PurchLine: Record 39; PostAccrual: Boolean)
     var
         Item2: Record 27;
         Vendor2: Record 23;
@@ -36,8 +119,8 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
 
         LineAmountLCY += AddRebateValues(PurchHeader, PurchLine, Vendor2."No.", Item2." Purchases Item Rebate Group", PostAccrual);
 
-        IF NOT PostAccrual THEN
-            PurchLine."Accrual Amount (LCY)" := LineAmountLCY;
+        //IF NOT PostAccrual THEN
+        PurchLine."Accrual Amount (LCY)" := LineAmountLCY;
     end;
 
     local procedure AddRebateValues(PurchHeader: Record 38; PurchLine: Record 39; PurchaseCode: Code[20]; "Code": Code[20]; PostAccrual: Boolean) TotalRebateAmountLCY: Decimal
@@ -82,10 +165,9 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
                     IF RebateLineAmountLCY <> 0 THEN begin
                         CreateRebateGenJnlLine(PurchHeader, PurchLine, PurchaseRebate, RebateLineAmountLCY);
                     end;
-
-            ///////////ici
             UNTIL PurchaseRebate.NEXT <= 0;
     end;
+
 
     local procedure CreateRebateGenJnlLine(PurchHeader: Record 38; PurchLine: Record 39; PurchaseRebate: Record "WDC Purchase Rebate"; RebateLineAmountLCY: Decimal)
     var
@@ -109,16 +191,14 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         GenJournalBatch.SETRANGE("Journal Template Name", GenJournalTemplate.Name);
         GenJournalBatch.FINDFIRST;
         LineNo := PurchLine."Line No.";
-
         GenJnlLine.INIT;
         GenJnlLine.VALIDATE("Journal Template Name", GenJournalTemplate.Name);
         GenJnlLine.VALIDATE("Journal Batch Name", GenJournalBatch.Name);
         GenJnlLine."Line No." := LineNo;
-        LineNo := LineNo + 10000;
         GetPostedDocInformations(PurchHeader."No.", PurchHeader."Document Type");
         GenJnlLine.VALIDATE("Posting Date", PurchHeader."Posting Date");
         GenJnlLine.VALIDATE("Document Type", PurchHeader."Document Type");
-        GenJnlLine.VALIDATE("Document No.", GenJnlLineDocNo); //PurchHeader."No."); //GenJnlLineDocNo);//HD10112024
+        GenJnlLine.VALIDATE("Document No.", GenJnlLineDocNo);
         GenJnlLine."Rebate Purchase Doc No." := PurchHeader."No.";
         GenJnlLine.VALIDATE("Account Type", GenJnlLine."Account Type"::"G/L Account");
         GenJnlLine.VALIDATE("Account No.", RebateCode."Rebate GL-Acc. No.");
@@ -128,7 +208,6 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
             GenJnlLine.VALIDATE("Credit Amount", -RebateLineAmountLCY)
         ELSE
             GenJnlLine.VALIDATE("Debit Amount", -RebateLineAmountLCY);
-        // FW-22703-WGKK
         IF GenJnlLine.Amount = 0 THEN
             EXIT;
         GenJnlLine.VALIDATE("Bal. Account Type", GenJnlLine."Bal. Account Type"::"G/L Account");
@@ -141,11 +220,21 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         GenJnlLine."Shortcut Dimension 2 Code" := PurchLine."Shortcut Dimension 2 Code";
         GenJnlLine."Dimension Set ID" := PurchLine."Dimension Set ID";
         GenJnlLine."Rebate Document Type" := GenJnlLine."Rebate Document Type"::Accrual;
-        GenJnlLine.PurchaseRebateSet := true; //HD01 Replace Variable set by filed in the table
+        GenJnlLine.PurchaseRebateSet := true;
+        GenJnlLine."Rebate Code" := PurchaseRebate.Code;
         GenJnlLine."Rebate Posted Doc Type" := PurchLine."Document Type";
         CODEUNIT.RUN(CODEUNIT::"Adjust Gen. Journal Balance", GenJnlLine);
+        //<<HD12032025
+        if PurchLine."Document Type" = PurchLine."Document Type"::Invoice then begin
+            if GenJnlLine."Credit Amount" <> 0 Then
+                SubscriberAccounting.InsertRebateEntry(GenJnlLine);
+        end else if PurchLine."Document Type" = PurchLine."Document Type"::"Credit Memo" then begin
+            if GenJnlLine."Debit Amount" <> 0 Then
+                SubscriberAccounting.InsertRebateEntry(GenJnlLine);
+        end;
+        //HD12032025>>
         GenJnlPostLine.RunWithCheck(GenJnlLine);
-        //
+
     end;
 
     procedure CreateRebatePayment(PurchHeader: Record 38; PurchLine: Record 39)
@@ -172,7 +261,6 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
 
     procedure GetPostedDocInformations(pDocNoToPost: code[20]; pDocumentType: enum "Purchase Document Type")
     var
-
     begin
         If pDocumentType = pDocumentType::Invoice then Begin
             PurchInvheader.reset;
@@ -189,19 +277,31 @@ codeunit 50005 "WDC Rebate Subsc. Purchase"
         end;
     end;
 
-    var
 
+    local procedure GetNextLineNo(JournalTemplateName: Code[10]; JournalBatchName: Code[10]): Integer
+    var
+        GenJnlLine: Record 81;
+    begin
+        GenJnlLine.SETRANGE("Journal Template Name", JournalTemplateName);
+        GenJnlLine.SETRANGE("Journal Batch Name", JournalBatchName);
+        IF GenJnlLine.FINDLAST THEN
+            EXIT(GenJnlLine."Line No." + 10000)
+        ELSE
+            EXIT(10000);
+    end;
+
+    var
         PurchSetup: Record "Purchases & Payables Setup";
         PurchInvheader: record 122;
         PurchCredMemHeader: record 124;
         GenJnlPostLine: Codeunit 12;
         WDCAccountingSubscribers: Codeunit "WDC Rebate Subsc Accounting";
-
         GenJnlLineDocNo: Code[20];
         GenJnlLineExtDocNo: Code[35];
         TextSI009: TextConst ENU = 'Vendor', FRA = 'Fournisseur';
         TextSI010: TextConst ENU = 'Invoice', FRA = 'Facture';
         PurchCrMemoHeader: Record 124;
         RemRebateAmountLCY: Decimal;
-
+        RebateSignFactor: Decimal;
+        SubscriberAccounting: Codeunit 50004;
 }

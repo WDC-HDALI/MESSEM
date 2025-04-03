@@ -6,13 +6,6 @@ pageextension 50028 "WDCSalesCreditMemo" extends "Sales Credit Memo"
 {
     layout
     {
-        addlast("Credit Memo Details")
-        {
-            field("Transport Tariff Code"; Rec."Transport Tariff Code")
-            {
-                ApplicationArea = all;
-            }
-        }
         addlast("Foreign Trade")
         {
             field("Destination Port"; Rec."Destination Port")

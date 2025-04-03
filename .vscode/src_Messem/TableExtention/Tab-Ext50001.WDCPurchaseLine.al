@@ -192,6 +192,13 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             trigger
             OnValidate()
             begin
+                IF ("Return Qty. to Ship S.Cont." * "Quantity Shipment Containers" < 0) OR
+   (ABS("Return Qty. to Ship S.Cont.") > ABS("Quantity Shipment Containers" - "Return Qty. Shipped S.Cont.")) OR
+   ("Quantity Shipment Containers" * ("Quantity Shipment Containers" - "Return Qty. Shipped S.Cont.") < 0)
+THEN
+                    ERROR(
+                      Text004,
+                      "Quantity Shipment Containers" - "Return Qty. Shipped S.Cont.");
                 "Qty. S.Cont. to invoice" := MaxShipContToInvoice;
 
             end;
@@ -203,6 +210,14 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             trigger
             OnValidate()
             begin
+
+                IF ("Return Qty. to Ship S.Units" * "Quantity Shipment Units" < 0) OR
+   (ABS("Return Qty. to Ship S.Units") > ABS("Quantity Shipment Units" - "Return Qty. Shipped S.Units")) OR
+   ("Quantity Shipment Units" * ("Quantity Shipment Units" - "Return Qty. Shipped S.Units") < 0)
+    THEN
+                    ERROR(
+                      Text004,
+                      "Quantity Shipment Units" - "Return Qty. Shipped S.Units");
                 "Qty. S.Units to invoice" := MaxShipUnitsToInvoice;
             end;
         }
@@ -265,7 +280,55 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
             CaptionML = ENU = 'Scale Weight', FRA = 'Poids balance';
             DataClassification = ToBeClassified;
         }
+        // modify("No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         InventoryPostingGroup: record "Inventory Posting Group";
+        //         item: record item;
+        //     begin
+        //         if "Location Code" = '' then
+        //             "Location Code" := InventoryPostingGroup."Location Code";
+        //         if ("Bin Code" = '') and ("Location Code" <> '') then
+        //             if item.get("No.") then
+        //                 if InventoryPostingGroup.get(item."Inventory Posting Group") then
+        //                     if InventoryPostingGroup."Location Code" = "Location Code" then
+        //                         "Bin Code" := InventoryPostingGroup."Bin Code";
+        //     end;
 
+        // }
+        modify("Location Code")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if (rec."Location Code" <> xRec."Location Code") and (rec."Location Code" <> '') then
+                    if "Bin Code" = '' then
+                        if item.get("No.") then
+                            if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                                if InventoryPostingGroup."Location Code" = "Location Code" then
+                                    "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            var
+                lUserSetup: Record "User Setup";
+                err: TextConst ENU = 'You are not authorized to use this Account.', FRA = 'Vous n''êtes pas autorisé à utiliser ce compte comptable.';
+            begin
+                IF Type = Type::"G/L Account" THEN BEGIN
+                    IF lUserSetup.GET(USERID) THEN BEGIN
+                        IF lUserSetup."G/L Account 2/6" AND NOT lUserSetup."Check Accounting" THEN
+                            IF (STRPOS("No.", '2') <> 1) AND (STRPOS("No.", '6') <> 1) THEN
+                                ERROR(Err);
+                    END;
+                END;
+            end;
+        }
     }
     procedure MaxShipUnitsToInvoice(): Decimal
     begin
@@ -317,9 +380,64 @@ tableextension 50001 "WDC PurchaseLine " extends "Purchase Line"
         "Qty. S.Cont. to invoice" := MaxShipContToInvoice();
     END;
 
+    procedure CalcPackagingQuantityToReceive()
+    begin
+        IF ("Shipment Unit" <> '') THEN BEGIN
+            IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN BEGIN
+                IF (CurrFieldNo <> FIELDNO("Return Qty. to Ship")) THEN
+                    EXIT;
+                "Return Qty. to Ship S.Units" := ROUND("Return Qty. to Ship" / "Qty. per Shipment Unit", 1, '>') -
+                                                   "Reserv Qty. to Post Ship.Unit";
+                IF ("Return Qty. to Ship S.Units" * "Quantity Shipment Units" < 0) OR
+                  (ABS("Return Qty. to Ship S.Units") > ABS("Quantity Shipment Units" - "Return Qty. Shipped S.Units")) OR
+                  ("Quantity Shipment Units" * ("Quantity Shipment Units" - "Return Qty. Shipped S.Units") < 0)
+                THEN
+                    "Return Qty. to Ship S.Units" := "Quantity Shipment Units" -
+                      ("Return Qty. Shipped S.Units" + "Reserv Qty. to Post Ship.Unit");
+            END ELSE BEGIN
+                IF (CurrFieldNo <> FIELDNO("Qty. to Receive")) THEN
+                    EXIT;
+                "Qty. to Receive Shipment Units" := ROUND("Qty. to Receive" / "Qty. per Shipment Unit", 1, '>') -
+                                                      "Reserv Qty. to Post Ship.Unit";
+                IF ("Qty. to Receive Shipment Units" * "Quantity Shipment Units" < 0) OR
+                  (ABS("Qty. to Receive Shipment Units") > ABS("Quantity Shipment Units" - "Qty. Received Shipment Units")) OR
+                  ("Quantity Shipment Units" * ("Quantity Shipment Units" - "Qty. Received Shipment Units") < 0)
+                THEN
+                    "Qty. to Receive Shipment Units" := "Quantity Shipment Units" - "Qty. Received Shipment Units";
+            END;
+        END;
+
+        IF ("Shipment Container" <> '') THEN BEGIN
+            IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN BEGIN
+                IF (CurrFieldNo <> FIELDNO("Return Qty. to Ship")) THEN
+                    EXIT;
+                "Return Qty. to Ship S.Cont." := ROUND("Return Qty. to Ship" / "Qty. per Shipment Container", 1, '>') -
+                                                   "Reserv Qty. to Post Ship.Cont.";
+                IF ("Return Qty. to Ship S.Cont." * "Quantity Shipment Containers" < 0) OR
+                  (ABS("Return Qty. to Ship S.Cont.") > ABS("Quantity Shipment Containers" - "Return Qty. Shipped S.Cont.")) OR
+                  ("Quantity Shipment Containers" * ("Quantity Shipment Containers" - "Return Qty. Shipped S.Cont.") < 0)
+                THEN
+                    "Return Qty. to Ship S.Cont." := "Quantity Shipment Containers" -
+                      ("Return Qty. Shipped S.Cont." + "Reserv Qty. to Post Ship.Cont.");
+            END ELSE BEGIN
+                IF (CurrFieldNo <> FIELDNO("Qty. to Receive")) THEN
+                    EXIT;
+                "Qty. to Rec. Shipm. Containers" := ROUND("Qty. to Receive" / "Qty. per Shipment Container", 1, '>') -
+                                                      "Reserv Qty. to Post Ship.Cont.";
+                IF ("Qty. to Rec. Shipm. Containers" * "Quantity Shipment Containers" < 0) OR
+                  (ABS("Qty. to Rec. Shipm. Containers") > ABS("Quantity Shipment Containers" - "Qty. Received Shipm.Containers")) OR
+                  ("Quantity Shipment Containers" * ("Quantity Shipment Containers" - "Qty. Received Shipm.Containers") < 0)
+                THEN
+                    "Qty. to Rec. Shipm. Containers" := "Quantity Shipment Containers" -
+                      ("Qty. Received Shipm.Containers" - "Reserv Qty. to Post Ship.Cont.");
+            END;
+        END;
+    end;
+
+
     var
         Text001: TextConst ENU = 'Field %1 cannot be changed when the line has been received.', FRA = 'Champ %1 ne peut pas être modifié quand la ligne a été réceptionnée.';
         Text002: TextConst ENU = 'Must be greater than 0.', FRA = 'Doit être supérieur à 0.';
         Text003: TextConst ENU = 'must not be less than %1', FRA = 'ne doit pas être inférieur(e) à %1';
-
+        Text004: TextConst ENU = 'You cannot return more than %1 units.', FRA = 'Vous ne pouvez pas retourner plus de %1 unité(s).';
 }

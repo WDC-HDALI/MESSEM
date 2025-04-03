@@ -104,7 +104,6 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
                    (CurrFieldNo <> 0) AND
                    (("Shipment No." <> '') OR ("Return Receipt No." <> '')) THEN
                     FIELDERROR("Quantity Shipment Units", STRSUBSTNO(Text001, FIELDCAPTION("Quantity Shipment Units")));
-                //IF NOT SuspendedFromGetShipmentLines THEN BEGIN
                 IF "Quantity Shipment Units" <> 0 THEN begin
                     IF ("Quantity Shipment Units" <> 0) AND (Quantity <> 0) THEN
                         "Qty. per Shipment Unit" := Quantity / "Quantity Shipment Units"
@@ -115,7 +114,6 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
                    ((ABS("Quantity Shipment Units") < ABS("Qty. Shipped Shipment Units")))
                 THEN
                     FIELDERROR("Quantity Shipment Units", STRSUBSTNO(Text002, FIELDCAPTION("Qty. Shipped Shipment Units")));
-                //IF NOT ValidationFromWhseSuspended THEN BEGIN
                 IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN
                     "Return Qty. to Receive S.Units" := "Quantity Shipment Units" -
                       ("Return Qty. Received S.Units" + "Reserv Qty. to Post Ship.Unit")
@@ -130,7 +128,7 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
 
         field(50009; "Quantity Shipment Containers"; Decimal)
         {
-            CaptionML = ENU = 'Qté de support logistique', FRA = 'Quantity Shipment Containers';
+            CaptionML = ENU = 'Quantity Shipment Containers', FRA = 'Qté de support logistique';
             DataClassification = ToBeClassified;
             BlankZero = true;
             DecimalPlaces = 0 : 0;
@@ -139,20 +137,6 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             var
             //AllCustSalesCostTypeL: Record "11018427";//verif
             begin
-
-                // IF NOT ValidationFromWhseSuspended THEN
-                //   TestStatusOpen;
-                // IF (CurrFieldNo = FIELDNO("Quantity Shipment Containers")) AND ("Quantity Shipment Containers" = 0) THEN BEGIN
-                //     IF AllSalesCostsExistsCategory(AllCustSalesCostTypeL.Category::Transport) THEN // transport
-                //       BEGIN
-                //         AllCustSalesCostTypeL.Category := AllCustSalesCostTypeL.Category::Transport;
-                //         IF NOT CONFIRM(STRSUBSTNO(Text003, AllCustSalesCostTypeL.Category, TABLECAPTION) + '\' +
-                //                        STRSUBSTNO(Text004, FIELDCAPTION("Quantity Shipment Containers"), xRec."Quantity Shipment Containers",
-                //                        "Quantity Shipment Containers"))
-                //         THEN
-                //             ERROR('');
-                //     END;
-                // END;
                 IF "Quantity Shipment Containers" <> 0 THEN
                     TESTFIELD("Shipment Container")
                 ELSE
@@ -163,31 +147,25 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
                    (("Shipment No." <> '') OR ("Return Receipt No." <> '')) THEN
                     FIELDERROR("Quantity Shipment Containers", STRSUBSTNO(Text001, FIELDCAPTION("Quantity Shipment Containers")));
 
-                //IF NOT SuspendedFromGetShipmentLines THEN BEGIN
                 IF "Quantity Shipment Containers" <> 0 THEN
                     IF ("Quantity Shipment Containers" <> 0) AND (Quantity <> 0) THEN
                         "Qty. per Shipment Container" := Quantity / "Quantity Shipment Containers"
                     ELSE
                         "Qty. per Shipment Container" := 1;
-                //END;
 
                 IF ("Quantity Shipment Containers" * "Qty. Shipped Shipm. Containers" < 0) OR
                    ((ABS("Quantity Shipment Containers") < ABS("Qty. Shipped Shipm. Containers")))
                 THEN
                     FIELDERROR("Quantity Shipment Containers", STRSUBSTNO(Text003, FIELDCAPTION("Qty. Shipped Shipm. Containers")));
 
-                //IF NOT ValidationFromWhseSuspended THEN BEGIN
                 IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN
                     "Return Qty. to Receive S.Cont." := "Quantity Shipment Containers" -
                       ("Return Qty. Received S.Cont." + "Reserv Qty. to Post Ship.Cont.")
                 ELSE
                     "Qty. to Ship Shipm. Containers" := "Quantity Shipment Containers" -
                       ("Qty. Shipped Shipm. Containers" + "Reserv Qty. to Post Ship.Cont.");
-                //
                 "Qty. S.Cont. to invoice" := MaxShipContToInvoice;
-                //END;
 
-                // CheckAvailUnitPriceCalculation(FIELDNO("Quantity Shipment Containers"));//verif
             end;
         }
         field(50010; "Packaging Item"; Boolean)
@@ -226,6 +204,7 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
             Editable = false;
             BlankZero = true;
+            DecimalPlaces = 5;
 
         }
         field(50013; "Qty. Shipped Shipment Units"; Decimal)
@@ -345,6 +324,7 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
             BlankZero = true;
             Editable = false;
+            DecimalPlaces = 5;
 
         }
 
@@ -354,6 +334,45 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             DataClassification = ToBeClassified;
 
         }
+        field(50030; "Harmonised Tariff Code"; Code[20])
+        {
+            Captionml = ENU = 'Harmonised Tariff Code', FRA = 'Nombre de points';
+        }
+
+        modify("No.")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if "Location Code" = '' then
+                    "Location Code" := InventoryPostingGroup."Location Code";
+                if ("Bin Code" = '') and ("Location Code" <> '') then
+                    if item.get("No.") then
+                        if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                            if InventoryPostingGroup."Location Code" = "Location Code" then
+                                "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+        modify("Location Code")
+        {
+            trigger OnAfterValidate()
+            var
+                InventoryPostingGroup: record "Inventory Posting Group";
+                item: record item;
+            begin
+                if (rec."Location Code" <> xRec."Location Code") and (rec."Location Code" <> '') then
+                    if "Bin Code" = '' then
+                        if item.get("No.") then
+                            if InventoryPostingGroup.get(item."Inventory Posting Group") then
+                                if InventoryPostingGroup."Location Code" = "Location Code" then
+                                    "Bin Code" := InventoryPostingGroup."Bin Code";
+            end;
+
+        }
+
     }
 
     procedure MaxShipUnitsToInvoice(): Decimal
@@ -372,9 +391,120 @@ tableextension 50003 "WDC Sales Line" extends "Sales Line"
             EXIT("Qty. Shipped Shipm. Containers" + "Qty. to Ship Shipm. Containers" - "Qty. S.Cont. Invoiced");
     end;
 
+    procedure GetBalanceRegCustomerNo(): Code[20]
+    var
+        Packaging: Record "WDC Packaging";
+        CustomerVendorPackaging: Record "WDC Customer/Vendor Packaging";
+        ShippingAgent: Record "Shipping Agent";
+    begin
+        IF Type <> Type::Item THEN
+            EXIT;
+
+        GetSalesHeader;
+        IF NOT (("Document Type" IN ["Document Type"::Order, "Document Type"::"Return Order"]) OR
+                (SalesHeader.Ship AND ("Document Type" = "Document Type"::Invoice)) OR
+                (SalesHeader.Receive AND ("Document Type" = "Document Type"::"Credit Memo"))) THEN
+            EXIT;
+
+        Packaging.SETCURRENTKEY("Item No.");
+        Packaging.SETRANGE("Item No.", "No.");
+        IF NOT Packaging.FINDFIRST THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging.GET(DATABASE::Customer, "Sell-to Customer No.", Packaging.Code) THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging."Register Balance" THEN
+            EXIT;
+
+        IF NOT CustomerVendorPackaging."Balance Reg. Shipping Agent" THEN
+            EXIT("Sell-to Customer No.");
+
+        SalesHeader.TESTFIELD("Shipping Agent Code");
+        ShippingAgent.GET(SalesHeader."Shipping Agent Code");
+        ShippingAgent.TESTFIELD("Customer No.");
+
+        EXIT(ShippingAgent."Customer No.");
+    end;
+
+    // procedure GetSalesHeader()
+    // begin
+    //     TESTFIELD("Document No.");
+    //     IF ("Document Type" <> SalesHeader."Document Type") OR ("Document No." <> SalesHeader."No.") THEN BEGIN
+    //         SalesHeader.GET("Document Type", "Document No.");
+    //         IF SalesHeader."Currency Code" = '' THEN
+    //             Currency.InitRoundingPrecision
+    //         ELSE BEGIN
+    //             SalesHeader.TESTFIELD("Currency Factor");
+    //             Currency.GET(SalesHeader."Currency Code");
+    //             Currency.TESTFIELD("Amount Rounding Precision");
+    //         END;
+    //     END;
+    // end;
+
+    procedure CalcPackagingQuantityToShip()
+    begin
+        IF ("Shipment Unit" <> '') THEN BEGIN
+            IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN BEGIN
+                IF (CurrFieldNo <> FIELDNO("Return Qty. to Receive")) THEN
+                    EXIT;
+                "Return Qty. to Receive S.Units" := ROUND("Return Qty. to Receive" / "Qty. per Shipment Unit", 1, '>') -
+                                                    "Reserv Qty. to Post Ship.Unit";
+
+                IF ("Return Qty. to Receive S.Units" * "Quantity Shipment Units" < 0) OR
+                  (ABS("Return Qty. to Receive S.Units") > ABS("Quantity Shipment Units" - "Return Qty. Received S.Units")) OR
+                  ("Quantity Shipment Units" * ("Quantity Shipment Units" - "Return Qty. Received S.Units") < 0)
+                THEN
+                    "Return Qty. to Receive S.Units" := "Quantity Shipment Units" -
+                      ("Return Qty. Received S.Units" + "Reserv Qty. to Post Ship.Unit");
+            END ELSE BEGIN
+                IF (CurrFieldNo <> FIELDNO("Qty. to Ship")) THEN
+                    EXIT;
+                "Qty. to Ship Shipment Units" := ROUND("Qty. to Ship" / "Qty. per Shipment Unit", 1, '>') -
+                                                 "Reserv Qty. to Post Ship.Unit";
+                IF ("Qty. to Ship Shipment Units" * "Quantity Shipment Units" < 0) OR
+                  (ABS("Qty. to Ship Shipment Units") > ABS("Quantity Shipment Units" - "Qty. Shipped Shipment Units")) OR
+                  ("Quantity Shipment Units" * ("Quantity Shipment Units" - "Qty. Shipped Shipment Units") < 0)
+                THEN
+                    "Qty. to Ship Shipment Units" := "Quantity Shipment Units" -
+                      ("Qty. Shipped Shipment Units" + "Reserv Qty. to Post Ship.Unit");
+            END;
+        END;
+
+        IF ("Shipment Container" <> '') THEN BEGIN
+            IF "Document Type" IN ["Document Type"::"Return Order", "Document Type"::"Credit Memo"] THEN BEGIN
+                IF (CurrFieldNo <> FIELDNO("Return Qty. to Receive")) THEN
+                    EXIT;
+                "Return Qty. to Receive S.Cont." := ROUND("Return Qty. to Receive" / "Qty. per Shipment Container", 1, '>') -
+                                                    "Reserv Qty. to Post Ship.Cont.";
+
+                IF ("Return Qty. to Receive S.Cont." * "Quantity Shipment Containers" < 0) OR
+                  (ABS("Return Qty. to Receive S.Cont.") > ABS("Quantity Shipment Containers" - "Return Qty. Received S.Cont.")) OR
+                  ("Quantity Shipment Containers" * ("Quantity Shipment Containers" - "Return Qty. Received S.Cont.") < 0)
+                THEN
+                    "Return Qty. to Receive S.Cont." := "Quantity Shipment Containers" -
+                      ("Return Qty. Received S.Cont." + "Reserv Qty. to Post Ship.Cont.");
+            END ELSE BEGIN
+                IF (CurrFieldNo <> FIELDNO("Qty. to Ship")) THEN
+                    EXIT;
+                "Qty. to Ship Shipm. Containers" := ROUND("Qty. to Ship" / "Qty. per Shipment Container", 1, '>') -
+                                                    "Reserv Qty. to Post Ship.Cont.";
+                IF ("Qty. to Ship Shipm. Containers" * "Quantity Shipment Containers" < 0) OR
+                  (ABS("Qty. to Ship Shipm. Containers") > ABS("Quantity Shipment Containers" - "Qty. Shipped Shipm. Containers")) OR
+                  ("Quantity Shipment Containers" * ("Quantity Shipment Containers" - "Qty. Shipped Shipm. Containers") < 0)
+                THEN
+                    "Qty. to Ship Shipm. Containers" := "Quantity Shipment Containers" -
+                      ("Qty. Shipped Shipm. Containers" + "Reserv Qty. to Post Ship.Cont.");
+            END;
+        END;
+    end;
+
+
+
 
     var
-
+        SalesHeader: record "Sales Header";
+        Currency: record Currency;
         Text001: TextConst ENU = 'Field %1 cannot be changed when the line has been shipped.', FRA = 'Champ %1 ne peut pas être modifié quand la ligne a été expédiée.';
         Text002: TextConst ENU = 'must not be less than %1', FRA = 'ne doit pas être inférieur(e) à %1';
         text003: TextConst ENU = 'Sales Cost for category %1 are linked to this %2.', FRA = 'Coût de vente catégorie %1 est lié à %2.';

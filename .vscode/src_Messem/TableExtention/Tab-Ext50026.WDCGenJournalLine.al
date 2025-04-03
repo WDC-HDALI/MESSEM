@@ -2,7 +2,7 @@ tableextension 50026 "WDC Gen. Journal Line" extends "Gen. Journal Line"
 {
     fields
     {
-        field(50000; "Rebate Code"; Code[10])
+        field(50000; "Rebate Code"; Code[20])
         {
             CaptionML = ENU = 'Rebate Code', FRA = 'Code bonus';
             TableRelation = "WDC Rebate Code".Code;
@@ -45,6 +45,29 @@ tableextension 50026 "WDC Gen. Journal Line" extends "Gen. Journal Line"
         {
             CaptionML = ENU = 'Rebate Purchase Doc No.', FRA = 'N° document achat bonus';
             DataClassification = ToBeClassified;
+        }
+        field(50009; RIB; Text[30])
+        {
+            CaptionML = ENU = 'RIB', FRA = 'RIB';
+            DataClassification = ToBeClassified;
+        }
+        field(50010; "Vendor Name"; Text[100])
+        {
+            CalcFormula = Lookup(Vendor.Name WHERE("No." = FIELD("Account No.")));
+            CaptionML = ENU = 'Vendor Name', FRA = 'Nom fournisseur';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(50011; "Bank Name"; Text[100])
+        {
+            CalcFormula = Lookup("Bank Account".Name WHERE("No." = FIELD("Bal. Account No.")));
+            CaptionML = ENU = 'Bank Name', FRA = 'Nom  banque';
+            FieldClass = FlowField;
+        }
+
+        field(50012; "To Post"; Boolean)
+        {
+            CaptionML = ENU = 'To Post', FRA = 'A valider';
         }
     }
 }

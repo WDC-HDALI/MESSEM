@@ -48,7 +48,49 @@ tableextension 50002 "WDC Item Ledger Entry " extends "Item Ledger Entry"
         {
             CaptionML = ENU = 'Packaging Item', FRA = 'Article d''emballage';
         }
+        field(50010; PFD; Code[20])
+        {
+            CaptionML = ENU = 'PFD', FRA = 'PFD';
+            DataClassification = ToBeClassified;
+        }
+        field(50011; Variety; Code[20])
+        {
+            CaptionML = ENU = 'Variety', FRA = 'Variété';
+            DataClassification = ToBeClassified;
+        }
+        field(50012; Brix; Code[20])
+        {
+            CaptionML = ENU = 'Brix', FRA = 'Brix';
+            DataClassification = ToBeClassified;
+        }
+        field(50013; "Package Number"; Integer)
+        {
+            CaptionML = ENU = 'Package Number', FRA = 'Nombre Palette';
+            DataClassification = ToBeClassified;
+        }
+        field(50014; Place; Code[20])
+        {
+            CaptionML = ENU = 'Place', FRA = 'Localisation';
+            DataClassification = ToBeClassified;
 
+        }
+        field(50015; "Rebate Accrual Amount (LCY)"; Decimal)
+        {
+            CaptionML = ENU = 'Rebate Accrual Amount (LCY)', FRA = 'Montant ajustement bonus DS';
+            FieldClass = FlowField;
+            CalcFormula = Sum("Value Entry"."Rebate Accrual Amount (LCY)" WHERE("Item Ledger Entry No." = FIELD("Entry No.")));
+            Editable = false;
+        }
+        field(50016; "Purchase Order No."; Code[20])
+        {
+            CaptionML = ENU = 'Purchase Order No.', FRA = 'N° commande achat';
+            DataClassification = ToBeClassified;
+
+        }
+        field(50017; "Source Subtype"; Enum "WDC Lot Attribute Src Subtype")
+        {
+            CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
+        }
     }
 
 

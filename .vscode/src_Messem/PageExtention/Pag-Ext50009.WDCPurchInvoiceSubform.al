@@ -39,5 +39,10 @@ pageextension 50009 "WDC Purch Invoice Subform" extends "Purch. Invoice Subform"
                 ApplicationArea = all;
             }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 }

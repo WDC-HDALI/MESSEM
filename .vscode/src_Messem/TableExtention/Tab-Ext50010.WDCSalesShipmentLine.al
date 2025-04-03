@@ -26,16 +26,18 @@ tableextension 50010 "WDC Sales Shipment Line " extends "Sales Shipment Line"
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(50009; "Quantity Shipment Containers"; Decimal)
-        {
-            CaptionML = ENU = 'Qté de support logistique', FRA = 'Quantity Shipment Containers';
-            DataClassification = ToBeClassified;
-            Editable = false;
-        }
+
         field(50008; "Quantity Shipment Units"; Decimal)
         {
             DataClassification = ToBeClassified;
             CaptionML = ENU = 'Quantity Shipment Units', FRA = 'Nombre d''unités d''expédition';
+            DecimalPlaces = 0 : 0;
+            Editable = false;
+        }
+        field(50009; "Quantity Shipment Containers"; Decimal)
+        {
+            CaptionML = ENU = 'Qté de support logistique', FRA = 'Quantity Shipment Containers';
+            DataClassification = ToBeClassified;
             DecimalPlaces = 0 : 0;
             Editable = false;
         }
@@ -45,6 +47,14 @@ tableextension 50010 "WDC Sales Shipment Line " extends "Sales Shipment Line"
             DataClassification = ToBeClassified;
 
         }
+        field(50030; "Harmonised Tariff Code"; code[20])
+        {
+            CaptionML = ENU = 'Harmonised Tariff Code', FRA = 'Code tarifaire harmonisé';
+            DataClassification = ToBeClassified;
+        }
+
+
+
 
     }
 }

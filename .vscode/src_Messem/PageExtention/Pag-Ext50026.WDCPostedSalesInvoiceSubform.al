@@ -25,6 +25,20 @@ pageextension 50026 "WDC PostedSalesInvoiceSubform" extends "Posted Sales Invoic
             {
                 ApplicationArea = all;
             }
+            field("Harmonised Tariff Code"; Rec."Harmonised Tariff Code")
+            {
+                ApplicationArea = all;
+
+            }
+            // field("Unit Price per Sales Price UOM"; Rec."Unit Price per Sales Price UOM")
+            // {
+            //     ApplicationArea = all;
+            // }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 }

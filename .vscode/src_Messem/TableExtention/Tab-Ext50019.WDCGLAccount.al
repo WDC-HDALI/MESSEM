@@ -4,7 +4,7 @@ tableextension 50019 "WDC GL Account" extends "G/L Account"
     {
         field(50000; "Purchase GL account"; Text[50])
         {
-            CaptionML = ENU = 'Purchase GL account', FRA = 'N° compte général achat';
+            CaptionML = ENU = 'Name 2', FRA = 'N° compte général achat', NLD = 'Naam 2';
             DataClassification = ToBeClassified;
         }
         field(50001; "G/L Entry Type Filter"; Enum "WDC GL Entry Type")
@@ -19,4 +19,11 @@ tableextension 50019 "WDC GL Account" extends "G/L Account"
 
         }
     }
+    trigger OnInsert()
+    var
+        lUserSetup: Record "User Setup";
+    begin
+        lUserSetup.get(UserId);
+        lUserSetup.TestField("Check Accounting", true);
+    end;
 }

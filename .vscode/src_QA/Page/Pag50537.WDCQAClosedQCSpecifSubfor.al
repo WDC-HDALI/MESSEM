@@ -83,6 +83,7 @@ page 50537 "WDC-QA Closed QC Specif Subfor"
             action("Specification Steps")
             {
                 ApplicationArea = ALL;
+                Visible = false;
                 CaptionML = ENU = 'Specification Steps', FRA = 'Etapes de spécification';
                 trigger OnAction()
                 begin

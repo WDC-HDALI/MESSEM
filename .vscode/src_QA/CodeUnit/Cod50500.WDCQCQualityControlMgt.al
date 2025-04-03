@@ -14,387 +14,6 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
         CreateSpecificationversion.RUNMODAL;
     end;
 
-    procedure UpdateInvtPickHeader(RegistrationHeader: Record "WDC-QA Registration Header"; Action: option Release,Delete)
-    var
-        WhseActivHeader: Record "Warehouse Activity Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." <> 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Inventory Pick" THEN
-            EXIT;
-
-        WhseActivHeader.SETRANGE(Type, WhseActivHeader.Type::"Invt. Pick");
-        WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
-        WhseActivHeader.SETRANGE("QC Status", WhseActivHeader."QC Status"::"QC Created");
-        IF WhseActivHeader.FINDFIRST THEN BEGIN
-            CASE Action OF
-                Action::Delete:
-                    BEGIN
-                        WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"QC Required";
-                        WhseActivHeader."QC Registration No." := '';
-                    END;
-                Action::Release:
-                    WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"Released For Posting";
-            END;
-            WhseActivHeader.MODIFY;
-        END;
-    end;
-
-    procedure UpdateInvtPickLine(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseActLine: Record "Warehouse Activity Line";
-    begin
-        IF RegistrationHeader."Source Document Line No." = 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Inventory Pick" THEN
-            EXIT;
-
-        WhseActLine.SETRANGE("Activity Type", WhseActLine."Activity Type"::"Invt. Pick");
-        WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
-        WhseActLine.SETRANGE("QC Status", WhseActLine."QC Status"::"QC Created");
-        IF WhseActLine.FINDSET(TRUE) THEN
-            REPEAT
-                CASE Action OF
-                    Action::Delete:
-                        BEGIN
-                            WhseActLine."QC Status" := WhseActLine."QC Status"::"QC Required";
-                            WhseActLine."QC Registration No." := '';
-                        END;
-                    Action::Release:
-                        WhseActLine."QC Status" := WhseActLine."QC Status"::"Released For Posting";
-                END;
-                WhseActLine.MODIFY;
-            UNTIL WhseActLine.NEXT = 0;
-    end;
-
-    procedure UpdateWhseShipmentHeader(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseShptHeader: Record "Warehouse Shipment Header";
-        RegistrationHeader2: Record "WDC-QA Registration Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." <> 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Warehouse Shipment" THEN
-            EXIT;
-
-        WhseShptHeader.SETRANGE("No.", RegistrationHeader."Source Document No.");
-        IF WhseShptHeader.FINDSET(TRUE) THEN BEGIN
-            RegistrationHeader2.RESET;
-            RegistrationHeader2.SETRANGE("Document Type", RegistrationHeader."Document Type"::QC);
-            RegistrationHeader2.SETRANGE("Source Document No.", RegistrationHeader."Source Document No.");
-            RegistrationHeader2.SETFILTER("Source Document Line No.", '%1', 0);
-            RegistrationHeader2.SETRANGE(Status, RegistrationHeader.Status::Open);
-            CASE Action OF
-                Action::Delete:
-                    IF RegistrationHeader2.COUNT = 1 THEN
-                        WhseShptHeader."QC Status" := WhseShptHeader."QC Status"::"QC Required";
-                Action::Release:
-                    IF RegistrationHeader2.ISEMPTY THEN
-                        WhseShptHeader."QC Status" := WhseShptHeader."QC Status"::"Released For Posting";
-            END;
-            WhseShptHeader.MODIFY;
-        END;
-    end;
-
-    procedure UpdateWhseShipmentLine(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseShptLine: Record "Warehouse Shipment Line";
-        RegistrationHeader2: Record "WDC-QA Registration Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." = 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Warehouse Shipment" THEN
-            EXIT;
-
-        WhseShptLine.SETRANGE(WhseShptLine."No.", RegistrationHeader."Source Document No.");
-        WhseShptLine.SETRANGE(WhseShptLine."Line No.", RegistrationHeader."Source Document Line No.");
-        WhseShptLine.SETRANGE("QC Status", WhseShptLine."QC Status"::"QC Created");
-        IF WhseShptLine.FINDSET(TRUE) THEN BEGIN
-            RegistrationHeader2.RESET;
-            RegistrationHeader2.SETRANGE("Document Type", RegistrationHeader."Document Type"::QC);
-            RegistrationHeader2.SETRANGE("Source Document No.", RegistrationHeader."Source Document No.");
-            RegistrationHeader2.SETRANGE("Source Document Line No.", RegistrationHeader."Source Document Line No.");
-            RegistrationHeader2.SETRANGE(Status, RegistrationHeader.Status::Open);
-            CASE Action OF
-                Action::Delete:
-                    IF RegistrationHeader2.COUNT = 1 THEN
-                        WhseShptLine."QC Status" := WhseShptLine."QC Status"::"QC Required";
-                Action::Release:
-                    IF RegistrationHeader2.ISEMPTY THEN
-                        WhseShptLine."QC Status" := WhseShptLine."QC Status"::"Released For Posting";
-            END;
-            WhseShptLine.MODIFY;
-        END;
-    end;
-
-    procedure UpdateInvtPutAwayHeader(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseActivHeader: Record "Warehouse Activity Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." <> 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Inventory Put-away" THEN
-            EXIT;
-
-        WhseActivHeader.SETRANGE(Type, WhseActivHeader.Type::"Invt. Put-away");
-        WhseActivHeader.SETRANGE("QC Registration No.", RegistrationHeader."No.");
-        WhseActivHeader.SETRANGE("QC Status", WhseActivHeader."QC Status"::"QC Created");
-        IF WhseActivHeader.FINDFIRST THEN BEGIN
-            CASE Action OF
-                Action::Delete:
-                    BEGIN
-                        WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"QC Required";
-                        WhseActivHeader."QC Registration No." := '';
-                    END;
-                Action::Release:
-                    WhseActivHeader."QC Status" := WhseActivHeader."QC Status"::"Released For Posting";
-            END;
-            WhseActivHeader.MODIFY;
-        END;
-    end;
-
-    procedure UpdateInvtPutAwayLine(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseActLine: Record "Warehouse Activity Line";
-    begin
-        IF RegistrationHeader."Source Document Line No." = 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Inventory Put-away" THEN
-            EXIT;
-
-        WhseActLine.SETRANGE("Activity Type", WhseActLine."Activity Type"::"Invt. Put-away");
-        WhseActLine.SETRANGE("QC Registration No.", RegistrationHeader."No.");
-        WhseActLine.SETRANGE("QC Status", WhseActLine."QC Status"::"QC Created");
-        IF WhseActLine.FINDSET(TRUE) THEN
-            REPEAT
-                CASE Action OF
-                    Action::Delete:
-                        BEGIN
-                            WhseActLine."QC Status" := WhseActLine."QC Status"::"QC Required";
-                            WhseActLine."QC Registration No." := '';
-                        END;
-                    Action::Release:
-                        WhseActLine."QC Status" := WhseActLine."QC Status"::"Released For Posting";
-                END;
-                WhseActLine.MODIFY;
-            UNTIL WhseActLine.NEXT = 0;
-    end;
-
-    procedure UpdateWhseReceiptHeader(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseRcptHeader: Record "Warehouse Receipt Header";
-        RegistrationHeader2: Record "WDC-QA Registration Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." <> 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Warehouse Receipt" THEN
-            EXIT;
-
-        WhseRcptHeader.SETRANGE("No.", RegistrationHeader."Source Document No.");
-        IF WhseRcptHeader.FINDSET(TRUE) THEN BEGIN
-            RegistrationHeader2.RESET;
-            RegistrationHeader2.SETRANGE("Document Type", RegistrationHeader."Document Type"::QC);
-            RegistrationHeader2.SETRANGE("Source Document No.", RegistrationHeader."Source Document No.");
-            RegistrationHeader2.SETRANGE("Source Document Line No.", 0);
-            RegistrationHeader2.SETRANGE(Status, RegistrationHeader.Status::Open);
-            CASE Action OF
-                Action::Delete:
-                    IF RegistrationHeader2.COUNT = 1 THEN
-                        WhseRcptHeader."QC Status" := WhseRcptHeader."QC Status"::"QC Required";
-                Action::Release:
-                    IF RegistrationHeader2.ISEMPTY THEN
-                        WhseRcptHeader."QC Status" := WhseRcptHeader."QC Status"::"Released For Posting";
-            END;
-            WhseRcptHeader.MODIFY;
-        END;
-    end;
-
-    procedure UpdateWhseReceiptLine(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    var
-        WhseRcptLine: Record "Warehouse Receipt Line";
-        RegistrationHeader2: Record "WDC-QA Registration Header";
-    begin
-        IF RegistrationHeader."Source Document Line No." = 0 THEN
-            EXIT;
-
-        IF RegistrationHeader."Source Document Type" <> RegistrationHeader."Source Document Type"::"Warehouse Receipt" THEN
-            EXIT;
-
-        WhseRcptLine.SETRANGE(WhseRcptLine."No.", RegistrationHeader."Source Document No.");
-        WhseRcptLine.SETRANGE(WhseRcptLine."Line No.", RegistrationHeader."Source Document Line No.");
-        WhseRcptLine.SETRANGE("QC Status", WhseRcptLine."QC Status"::"QC Created");
-        IF WhseRcptLine.FINDSET(TRUE) THEN BEGIN
-            RegistrationHeader2.RESET;
-            RegistrationHeader2.SETRANGE("Document Type", RegistrationHeader."Document Type"::QC);
-            RegistrationHeader2.SETRANGE("Source Document No.", RegistrationHeader."Source Document No.");
-            RegistrationHeader2.SETRANGE("Source Document Line No.", RegistrationHeader."Source Document Line No.");
-            RegistrationHeader2.SETRANGE(Status, RegistrationHeader.Status::Open);
-            CASE Action OF
-                Action::Delete:
-                    IF RegistrationHeader2.COUNT = 1 THEN
-                        WhseRcptLine."QC Status" := WhseRcptLine."QC Status"::"QC Required";
-                Action::Release:
-                    IF RegistrationHeader2.ISEMPTY THEN
-                        WhseRcptLine."QC Status" := WhseRcptLine."QC Status"::"Released For Posting";
-            END;
-            WhseRcptLine.MODIFY;
-        END;
-    end;
-
-    procedure DeletefromQCRegistration(RegistrationHeader: Record "WDC-QA Registration Header"; Action: Option Release,Delete)
-    begin
-        CASE RegistrationHeader."Source Document Type" OF
-            RegistrationHeader."Source Document Type"::"Inventory Pick":
-                BEGIN
-                    UpdateInvtPickHeader(RegistrationHeader, Action);
-                    UpdateInvtPickLine(RegistrationHeader, Action);
-                END;
-            RegistrationHeader."Source Document Type"::"Warehouse Shipment":
-                BEGIN
-                    UpdateWhseShipmentHeader(RegistrationHeader, Action);
-                    UpdateWhseShipmentLine(RegistrationHeader, Action);
-                END;
-            RegistrationHeader."Source Document Type"::"Inventory Put-away":
-                BEGIN
-                    UpdateInvtPutAwayHeader(RegistrationHeader, Action);
-                    UpdateInvtPutAwayLine(RegistrationHeader, Action);
-                END;
-            RegistrationHeader."Source Document Type"::"Warehouse Receipt":
-                BEGIN
-                    UpdateWhseReceiptHeader(RegistrationHeader, Action);
-                    UpdateWhseReceiptLine(RegistrationHeader, Action);
-                END;
-        END;
-    end;
-
-    procedure CreateSecondSampling(VAR Rec: Record "WDC-QA Registration Line")
-    var
-        RegistrationLine: Record "WDC-QA Registration Line";
-        RegistrationLine2: Record "WDC-QA Registration Line";
-        LineNumber: Integer;
-        MeasureNo: Integer;
-        lRegistrationLineLineNo: Record "WDC-QA Registration Line";
-        lRegistrationStep: Record "WDC-QA Registration Step";
-    begin
-        RegistrationLine.COPY(Rec);
-
-        RegistrationLine2.SETCURRENTKEY("Parameter Code");
-        RegistrationLine2.SETRANGE("Document Type", RegistrationLine."Document Type");
-        RegistrationLine2.SETFILTER("Document No.", RegistrationLine."Document No.");
-        RegistrationLine2.SETRANGE("Parameter Code", RegistrationLine."Parameter Code");
-        RegistrationLine2.SETRANGE("Line No.", RegistrationLine."Line No.");
-        RegistrationLine2.FINDFIRST;
-
-        RegistrationLine.SETCURRENTKEY(RegistrationLine."Line No.");
-        RegistrationLine.FINDLAST;
-        LineNumber := RegistrationLine."Line No." + 10000;
-
-        RegistrationLine.SETCURRENTKEY(RegistrationLine."Measure No.");
-        RegistrationLine.FINDLAST;
-        MeasureNo := RegistrationLine2."Measure No.";
-        RegistrationLine2."Measure No." := FindLastMeasureNumber(RegistrationLine."Document Type", RegistrationLine."Document No.") + 1;
-        RegistrationLine2."Is Second Sampling" := TRUE;
-        RegistrationLine2.MODIFY;
-
-        lRegistrationStep.RESET;
-        lRegistrationStep.SETRANGE("Document Type", RegistrationLine2."Document Type");
-        lRegistrationStep.SETFILTER("Document No.", RegistrationLine2."Document No.");
-        lRegistrationStep.SETRANGE("Line No.", RegistrationLine2."Line No.");
-        IF lRegistrationStep.FINDFIRST THEN BEGIN
-            lRegistrationStep."Measure No." := RegistrationLine2."Measure No.";
-            lRegistrationStep.Modified := FALSE;
-
-            lRegistrationStep.MODIFY;
-        END;
-
-        REPEAT
-            RegistrationLine.INIT;
-            RegistrationLine.TRANSFERFIELDS(RegistrationLine2);
-            RegistrationLine."Line No." := LineNumber;
-            RegistrationLine."Measure No." := MeasureNo;
-            RegistrationLine."Result Option" := RegistrationLine."Result Option"::" ";
-            RegistrationLine."Average Result Option" := RegistrationLine."Average Result Option"::" ";
-            RegistrationLine."Result Value" := 0;
-            RegistrationLine."Average Result Value" := 0;
-            RegistrationLine."Conclusion Result" := RegistrationLine."Conclusion Result"::" ";
-            RegistrationLine."Conclusion Average Result" := RegistrationLine."Conclusion Average Result"::" ";
-            RegistrationLine."Is Second Sampling" := FALSE;
-            RegistrationLine.INSERT;
-
-            RegistrationLine.InsertRegistrationSteps;
-
-            LineNumber += 10000;
-
-        UNTIL RegistrationLine2.NEXT <= 0;
-
-    end;
-
-    LOCAL procedure FindLastMeasureNumber(DocType: Enum "WDC-QA Document Type"; DocNo: Code[20]): Integer
-    var
-        RegistrationLine: Record "WDC-QA Registration Line";
-    begin
-        RegistrationLine.RESET;
-        RegistrationLine.SETCURRENTKEY("Measure No.");
-        RegistrationLine.SETRANGE("Document Type", DocType);
-        RegistrationLine.SETRANGE("Document No.", DocNo);
-        IF RegistrationLine.FINDLAST THEN
-            EXIT(RegistrationLine."Measure No.");
-    end;
-
-    procedure CreateSecondSamplingOKH(VAR Rec: Record "WDC-QA Registration Line")
-    var
-        RegistrationLine: Record "WDC-QA Registration Line";
-        RegistrationLine2: Record "WDC-QA Registration Line";
-        LineNumber: Integer;
-        MeasureNo: Integer;
-        lRegistrationLineLineNo: Record "WDC-QA Registration Line";
-        PaletNo: Decimal;
-    begin
-        RegistrationLine.COPY(Rec);
-
-        RegistrationLine2.SETCURRENTKEY("Parameter Code");
-        RegistrationLine2.SETRANGE("Document Type", RegistrationLine."Document Type");
-        RegistrationLine2.SETFILTER("Document No.", RegistrationLine."Document No.");
-        RegistrationLine2.SETRANGE("Parameter Code", RegistrationLine."Parameter Code");
-        RegistrationLine2.SETRANGE("Measure No.", RegistrationLine."Measure No.");
-        RegistrationLine2.FINDFIRST;
-
-        RegistrationLine.FINDLAST;
-        LineNumber := RegistrationLine."Line No." + 10000;
-
-        RegistrationLine.SETCURRENTKEY(RegistrationLine."Measure No.");
-        RegistrationLine.FINDLAST;
-        MeasureNo := RegistrationLine."Measure No." + 1;
-
-
-        REPEAT
-            RegistrationLine.INIT;
-            RegistrationLine.TRANSFERFIELDS(RegistrationLine2);
-            RegistrationLine."Line No." := LineNumber;
-            RegistrationLine."Measure No." := MeasureNo;
-            RegistrationLine."Result Option" := RegistrationLine."Result Option"::" ";
-            RegistrationLine."Average Result Option" := RegistrationLine."Average Result Option"::" ";
-            RegistrationLine."Result Value" := 0;
-            RegistrationLine."Average Result Value" := 0;
-            RegistrationLine."Conclusion Result" := RegistrationLine."Conclusion Result"::" ";
-            RegistrationLine."Conclusion Average Result" := RegistrationLine."Conclusion Average Result"::" ";
-            RegistrationLine."Is Second Sampling" := TRUE;
-            RegistrationLine.INSERT;
-
-            RegistrationLine.InsertRegistrationSteps;
-
-            LineNumber += 10000;
-
-        UNTIL RegistrationLine2.NEXT <= 0;
-    end;
-
     procedure GetSpecificationLines(VAR RegistrationHeader: Record "WDC-QA Registration Header")
     var
         SpecificationHeader: Record "WDC-QA Specification Header";
@@ -427,7 +46,6 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
             RegistrationHeader."Document Type"::Calibration:
                 BEGIN
                     SpecificationHeader.SETCURRENTKEY(Status);
-                    //SpecificationHeader.SETRANGE("Equipment No.", RegistrationHeader."Equipment No.");
                     SpecificationHeader.SETRANGE(Status, SpecificationHeader.Status::Certified);
                     SpecificationHeader.SETRANGE("Document Type", SpecificationHeader."Document Type"::Calibration);
                 END;
@@ -442,13 +60,6 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                     SpecificationHeader.SETRANGE("Source No.", RegistrationHeader."Source No.");
                     SpecificationHeader.SETRANGE(Status, SpecificationHeader.Status::Certified);
                     SpecificationHeader.SETRANGE("Document Type", SpecificationHeader."Document Type"::QC);
-                    //  IF NOT (RegistrationHeader."Source Document Type" IN
-                    //    [RegistrationHeader."Source Document Type"::Manual, RegistrationHeader."Source Document Type"::"Production Order"])
-                    //  THEN
-                    //      SpecificationHeader.SETRANGE("Basic Specification", TRUE)
-                    //  ELSE
-                    //      SpecificationHeader.SETRANGE("Basic Specification", FALSE);
-
                 END;
         END;
 
@@ -497,11 +108,12 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                         RegistrationLine."QC Date" := RegistrationHeader."QC Date";
                         RegistrationLine."QC Time" := RegistrationHeader."QC Time";
                         RegistrationLine."Sample Temperature" := RegistrationHeader."Sample Temperature";
-                        //RegistrationLine.Controller := RegistrationHeader.Controller;
-                        RegistrationLine."Target Result Option" := SpecificationLine."Target Result Option";
+                        RegistrationLine.Controller := RegistrationHeader.Controller;
+                        RegistrationLine."Target Result Option" := Enum::"WDC-QA Result Option".FromInteger(SpecificationLine."Target Result Option".AsInteger());
                         lCpt := lCpt + SpecificationHeader."Pallet Control Frequency 1/";
                         RegistrationLine."Pallet No." := lCpt;
                         RegistrationLine."Is Second Sampling" := FALSE;
+                        RegistrationLine.Imprimable := SpecificationLine.Imprimable;
                         RegistrationLine.INSERT;
 
                         RegistrationLine.InsertRegistrationSteps;
@@ -515,63 +127,6 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                 UNTIL SpecificationLine.NEXT = 0;
 
         UNTIL SpecificationHeader.NEXT = 0;
-    end;
-
-    procedure CheckExistingReturnOrder(RegistrationHeader: Record "WDC-QA Registration Header")
-    var
-        SalesHeader: Record "Sales Header";
-        PurchaseHeader: Record "Purchase Header";
-        LText0001: TextConst ENU = '%1 %2 %3 is already linked to Sales %4 %5.', FRA = '%1 %2 %3 est déjà lié au ventes %4 %5.';
-        LText0002: textConst ENU = '%1 %2 %3 is already linked to Purchase %4 %5.', FRA = '%1 %2 %3 est déjà lié au achats %4 %5.';
-    begin
-        CASE RegistrationHeader."Return Order Type" OF
-            RegistrationHeader."Return Order Type"::Sales:
-                BEGIN
-                    SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    SalesHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-                    SalesHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-                    IF SalesHeader.FINDFIRST THEN
-                        ERROR(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                            SalesHeader."Document Type", SalesHeader."No.");
-                END;
-            RegistrationHeader."Return Order Type"::Purchase:
-                BEGIN
-                    PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-                    PurchaseHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-                    PurchaseHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-                    IF PurchaseHeader.FINDFIRST THEN
-                        ERROR(LText0002, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                            PurchaseHeader."Document Type", PurchaseHeader."No.");
-                END;
-        END;
-    end;
-
-    LOCAL procedure CreateItemTrkgLine(RegistrationHeader: Record "WDC-QA Registration Header"; Type: Option Customer,Vendor; SourceSubtype: Option "0","1","2","3","4","5","6","7","8","9","10"; SourceNo: Code[20]; SourceLineNo: Integer; QuantityBase: Decimal; LocationCode: Code[20])
-    var
-        LotNoInformation: Record "Lot No. Information";
-        SalesLine: Record "Sales Line";
-        PurchLine: Record "Purchase Line";
-        CreateItemTrackingLines: Codeunit "WDC-QACreate ItemTrackingLines";
-    begin
-        RegistrationHeader.TESTFIELD("Lot No.");
-        LotNoInformation.GET(RegistrationHeader."Item No.", RegistrationHeader."Variant Code", RegistrationHeader."Lot No.");
-
-        CASE Type OF
-            Type::Customer:
-                BEGIN
-                    SalesLine.GET(SourceSubtype, SourceNo, SourceLineNo);
-                    CreateItemTrackingLines.InsertResEntrySalesLine(SalesLine, '', LotNoInformation."Lot No.",
-                     SalesLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
-                     LotNoInformation."Vendor Lot No.");
-                END;
-            Type::Vendor:
-                BEGIN
-                    PurchLine.GET(SourceSubtype, SourceNo, SourceLineNo);
-                    CreateItemTrackingLines.InsertResEntryPurchLine(PurchLine, '', LotNoInformation."Lot No.",
-                    PurchLine."Quantity (Base)", LotNoInformation."Expiration Date", LotNoInformation."Warranty Date",
-                    LotNoInformation."Vendor Lot No.");
-                END;
-        END;
     end;
 
     procedure CalculateResult(RegistrationHeader: Record "WDC-QA Registration Header")
@@ -593,7 +148,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                 RegistrationStep.SETRANGE("Type of Measure", RegistrationLine."Type of Result");
                 IF RegistrationLine."Type of Result" = RegistrationLine."Type of Result"::Option THEN
                     RegistrationStep.SETRANGE(RegistrationStep."Result Option", TRUE);
-                IF RegistrationStep.FINDFIRST THEN BEGIN
+                IF RegistrationStep.FindLast() THEN BEGIN
 
                     IF RegistrationLine."Type of Result" = RegistrationLine."Type of Result"::Value THEN BEGIN
                         ResultValue := EvaluateExpression(RegistrationLine.Formula, RegistrationLine, RegistrationStep);
@@ -623,7 +178,7 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                         RegistrationLine."Result Value" := ResultValue;
 
                     END ELSE BEGIN
-                        RegistrationLine."Result Option" := RegistrationStep."Option Measured";
+                        RegistrationLine."Result Option" := Enum::"WDC-QA Result Option".FromInteger(RegistrationStep."Option Measured".AsInteger());
 
                         IF (RegistrationLine."Result Option" <> RegistrationLine."Result Option"::" ") AND
                            (RegistrationLine."Target Result Option" <> RegistrationLine."Target Result Option"::" ")
@@ -893,11 +448,11 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
                             ParameterFilter := '@' + CoATemplate."Parameter Code";
                             QCRegistrationLine.RESET;
                             QCRegistrationLine.SETFILTER("Document No.", QCRegistrationHeader."No.");
-                            QCRegistrationLine.SETFILTER("Parameter Code", '%1', ParameterFilter);  // DELTA 01 MSI
+                            QCRegistrationLine.SETFILTER("Parameter Code", '%1', ParameterFilter);
 
                             IF Selection = 2 THEN BEGIN
                                 QCRegistrationLine2.SETFILTER("Document No.", QCRegistrationHeader."No.");
-                                QCRegistrationLine2.SETFILTER("Parameter Code", '%1', ParameterFilter); // DELTA 01 MSI
+                                QCRegistrationLine2.SETFILTER("Parameter Code", '%1', ParameterFilter);
 
                                 IF QCRegistrationLine2.FINDLAST THEN
                                     QCRegistrationLine.SETRANGE("Measure No.", QCRegistrationLine2."Measure No.");
@@ -963,280 +518,83 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
         END;
     end;
 
-    procedure CreateSalesReturnOrder(VAR RegistrationHeader: Record "WDC-QA Registration Header"; CustNoIN: Code[20]; QtyIN: Decimal; UOMIN: Code[20]; ShowOutputIN: Boolean)
+    procedure CreateSecondSamplingOKH1(VAR Rec: Record "WDC-QA Registration Line")
     var
-        SalesHeader: Record "Sales Header";
-        SalesLine: Record "Sales Line";
-        SalesReturnOrder: Page "Sales Return Order";
-        OpenReturnHeader: Boolean;
-        ItemTrackingCode: Record "Item Tracking Code";
-        ItemTrackingManagement: Codeunit "Item tracking Management";
-        EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output;
-        Inbound: Boolean;
-        SNRequired: Boolean;
-        LotRequired: Boolean;
-        SNInfoRequired: Boolean;
-        LotInfoReguired: Boolean;
-        LText0001: TextConst ENU = '%1 %2 %3 is already linked to %4 %5.', FRA = '%1 %2 %3 est déjà lié à %4 %5.';
+        RegistrationLine: Record "WDC-QA Registration Line";
+        RegistrationLine2: Record "WDC-QA Registration Line";
+        LineNumber: Integer;
+        MeasureNo: Integer;
+        lRegistrationLineLineNo: Record "WDC-QA Registration Line";
+        lRegistrationStep: Record "WDC-QA Registration step";
+        PaletNo: Decimal;
+        RegistrationLine3: Record "WDC-QA Registration Line";
+        RegistrationLine1: Record "WDC-QA Registration Line";
+        RegistrationLine4: Record "WDC-QA Registration Line";
     begin
-        OpenReturnHeader := FALSE;
+        RegistrationLine.COPY(Rec);
 
-        SalesHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-        SalesHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-        SalesHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-        IF SalesHeader.FINDFIRST THEN BEGIN
-            OpenReturnHeader := TRUE;
-            IF ShowOutputIN THEN
-                MESSAGE(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                  SalesHeader."Document Type", SalesHeader."No.");
-        END ELSE BEGIN
-            SalesHeader.INIT;
-            SalesHeader."Document Type" := SalesHeader."Document Type"::"Return Order";
-            SalesHeader."No." := '';
+        RegistrationLine2.SETCURRENTKEY("Parameter Code");
+        RegistrationLine2.SETRANGE("Document Type", RegistrationLine."Document Type");
+        RegistrationLine2.SETFILTER("Document No.", RegistrationLine."Document No.");
+        RegistrationLine2.SETRANGE("Parameter Code", RegistrationLine."Parameter Code");
+        RegistrationLine2.SETRANGE("Measure No.", RegistrationLine."Measure No.");
+        RegistrationLine2.FINDFIRST;
 
-            SalesHeader.INSERT(TRUE);
-            SalesHeader.VALIDATE("Sell-to Customer No.", CustNoIN);
-            SalesHeader."Registration Header Type" := RegistrationHeader."Document Type";
-            SalesHeader."Registration Header No." := RegistrationHeader."No.";
-            SalesHeader."Shipment Date" := WORKDATE;
-            SalesHeader.MODIFY(TRUE);
+        RegistrationLine3.RESET;
+        RegistrationLine3.SETRANGE("Document Type", RegistrationLine."Document Type");
+        RegistrationLine3.SETRANGE("Document No.", RegistrationLine."Document No.");
+        IF RegistrationLine3.FINDLAST THEN;
+        LineNumber := RegistrationLine3."Line No." + 10000;
 
-            SalesLine.INIT;
-            SalesLine."Document Type" := SalesLine."Document Type"::"Return Order";
-            SalesLine."Document No." := SalesHeader."No.";
-            SalesLine."Line No." := 10000;
-            SalesLine.INSERT(TRUE);
-            SalesLine.VALIDATE(Type, SalesLine.Type::Item);
-            SalesLine.VALIDATE("No.", RegistrationHeader."Item No.");
-            IF UOMIN <> '' THEN
-                SalesLine.VALIDATE("Unit of Measure Code", UOMIN);
-            //SalesLine.SetOverruleCalcPackagingCheck(TRUE);
-            SalesLine.VALIDATE(Quantity, QtyIN);
-            IF SalesLine."Shipment Date" = 0D THEN
-                SalesLine."Shipment Date" := WORKDATE;
-            SalesLine.MODIFY(TRUE);
+        RegistrationLine4.RESET;
+        RegistrationLine4.SETCURRENTKEY("Measure No.");
+        RegistrationLine4.SETRANGE("Document Type", RegistrationLine."Document Type");
+        RegistrationLine4.SETFILTER("Document No.", RegistrationLine."Document No.");
+        RegistrationLine4.SETRANGE("Parameter Code", RegistrationLine."Parameter Code");
 
-            //TransportPlanningMgt.CheckTPSourceLineFromSales(SalesLine, SalesLine, 0);
+        RegistrationLine4.FINDLAST;
+        RegistrationLine4.RESET;
+        RegistrationLine4.SETCURRENTKEY("Pallet No.");
+        RegistrationLine4.SETRANGE("Document Type", RegistrationLine."Document Type");
+        RegistrationLine4.SETFILTER("Document No.", RegistrationLine."Document No.");
+        RegistrationLine4.SETRANGE("Parameter Code", RegistrationLine."Parameter Code");
 
-            Item.GET(SalesLine."No.");
-            IF Item."Item Tracking Code" <> '' THEN BEGIN
-                Inbound := TRUE;
-                ItemTrackingCode.Code := Item."Item Tracking Code";
-                //ItemTrackingManagement.GetItemTrackingSettings(ItemTrackingCode,
-                GetItemTrackingSettings(ItemTrackingCode, EntryType::Purchase, Inbound, SNRequired, LotRequired, SNInfoRequired, LotInfoReguired);
-                IF LotRequired THEN
-                    CreateItemTrkgLine(RegistrationHeader, 0, SalesLine."Document Type".AsInteger(),  // 0 = Customer 1 = Vendor
-                      SalesLine."Document No.", SalesLine."Line No.", SalesLine."Quantity (Base)", SalesLine."Location Code");
-            END;
+        RegistrationLine4.FINDLAST;
+        PaletNo := RegistrationLine4."Pallet No." + 1;
 
-            OpenReturnHeader := TRUE;
-            RegistrationHeader."Return Order Type" := RegistrationHeader."Return Order Type"::Sales;
-            RegistrationHeader."Return Order No." := SalesHeader."No.";
-            RegistrationHeader.MODIFY;
-        END;
+        RegistrationLine.INIT;
+        RegistrationLine.TRANSFERFIELDS(RegistrationLine2);
+        RegistrationLine."Line No." := LineNumber;
+        RegistrationLine."Measure No." := RegistrationLine2."Measure No.";
+        RegistrationLine."Result Option" := RegistrationLine."Result Option"::" ";
+        RegistrationLine."Average Result Option" := RegistrationLine."Average Result Option"::" ";
+        RegistrationLine."Result Value" := 0;
+        RegistrationLine."Average Result Value" := 0;
+        RegistrationLine."Conclusion Result" := RegistrationLine."Conclusion Result"::" ";
+        RegistrationLine."Conclusion Average Result" := RegistrationLine."Conclusion Average Result"::" ";
+        RegistrationLine."Is Second Sampling" := FALSE;
+        RegistrationLine."Pallet No." := PaletNo;
+        RegistrationLine.INSERT;
 
-        IF ShowOutputIN AND OpenReturnHeader THEN BEGIN
-            COMMIT;
-            SalesHeader.SETRECFILTER;
-            CLEAR(SalesReturnOrder);
-            SalesReturnOrder.SETTABLEVIEW(SalesHeader);
-            SalesReturnOrder.RUNMODAL;
-        END;
-    end;
+        RegistrationLine.InsertRegistrationSteps;
 
-    procedure CreatePurchaseReturnOrder(VAR RegistrationHeader: Record "WDC-QA Registration Header"; VendNoIN: Code[20]; QtyIN: Decimal; UOMIN: Code[20]; ShowOutputIN: Boolean)
-    var
-        PurchaseHeader: Record "Purchase Header";
-        PurchaseLine: Record "Purchase Line";
-        PurchaseReturnOrder: Page "Purchase Return Order";
-        OpenReturnHeader: Boolean;
-        ItemTrackingCode: Record "Item Tracking Code";
-        ItemTrackingManagement: Codeunit "Item tracking Management";
-        EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output;
-        Inbound: Boolean;
-        SNRequired: Boolean;
-        LotRequired: Boolean;
-        SNInfoRequired: Boolean;
-        LotInfoReguired: Boolean;
-        LText0001: TextConst ENU = '%1 %2 %3 is already linked to %4 %5.', FRA = '%1 %2 %3 est déjà lié à %4 %5.';
-    begin
-        OpenReturnHeader := FALSE;
-        PurchaseHeader.SETCURRENTKEY("Registration Header Type", "Registration Header No.");
-        PurchaseHeader.SETRANGE("Registration Header Type", RegistrationHeader."Document Type");
-        PurchaseHeader.SETRANGE("Registration Header No.", RegistrationHeader."No.");
-        IF PurchaseHeader.FINDFIRST THEN BEGIN
-            OpenReturnHeader := TRUE;
-            IF ShowOutputIN THEN
-                MESSAGE(LText0001, RegistrationHeader.TABLECAPTION, RegistrationHeader."Document Type", RegistrationHeader."No.",
-                  PurchaseHeader."Document Type", PurchaseHeader."No.");
-        END ELSE BEGIN
-            PurchaseHeader.INIT;
-            PurchaseHeader."Document Type" := PurchaseHeader."Document Type"::"Return Order";
-            PurchaseHeader."No." := '';
-            PurchaseHeader.INSERT(TRUE);
-            PurchaseHeader.VALIDATE("Buy-from Vendor No.", VendNoIN);
-            PurchaseHeader."Registration Header Type" := RegistrationHeader."Document Type";
-            PurchaseHeader."Registration Header No." := RegistrationHeader."No.";
-            PurchaseHeader.MODIFY(TRUE);
-
-            PurchaseLine.INIT;
-            PurchaseLine."Document Type" := PurchaseLine."Document Type"::"Return Order";
-            PurchaseLine."Document No." := PurchaseHeader."No.";
-            PurchaseLine."Line No." := 10000;
-            PurchaseLine.INSERT(TRUE);
-            PurchaseLine.VALIDATE(Type, PurchaseLine.Type::Item);
-            PurchaseLine.VALIDATE("No.", RegistrationHeader."Item No.");
-            IF UOMIN <> '' THEN
-                PurchaseLine.VALIDATE("Unit of Measure Code", UOMIN);
-            //PurchaseLine.SuspendCalcPackagingQuantity(TRUE);
-            PurchaseLine.VALIDATE(Quantity, QtyIN);
-            PurchaseLine.MODIFY(TRUE);
-
-            //TransportPlanningMgt.CheckTPSourceLineFromPurchase(PurchaseLine, PurchaseLine, 0);
-
-            Item.GET(PurchaseLine."No.");
-            IF Item."Item Tracking Code" <> '' THEN BEGIN
-                Inbound := FALSE;
-                ItemTrackingCode.Code := Item."Item Tracking Code";
-                //ItemTrackingManagement.GetItemTrackingSettings(ItemTrackingCode,
-                GetItemTrackingSettings(ItemTrackingCode, EntryType::Purchase, Inbound, SNRequired, LotRequired, SNInfoRequired, LotInfoReguired);
-                IF LotRequired THEN
-                    CreateItemTrkgLine(RegistrationHeader, 1, PurchaseLine."Document Type".AsInteger(),  // 0 = Customer 1 = Vendor
-                      PurchaseLine."Document No.", PurchaseLine."Line No.", PurchaseLine."Quantity (Base)", PurchaseLine."Location Code");
-            END;
-
-            OpenReturnHeader := TRUE;
-            RegistrationHeader."Return Order Type" := RegistrationHeader."Return Order Type"::Purchase;
-            RegistrationHeader."Return Order No." := PurchaseHeader."No.";
-            RegistrationHeader.MODIFY;
-        END;
-
-        IF ShowOutputIN AND OpenReturnHeader THEN BEGIN
-            COMMIT;
-            PurchaseHeader.SETRECFILTER;
-            CLEAR(PurchaseReturnOrder);
-            PurchaseReturnOrder.SETTABLEVIEW(PurchaseHeader);
-            PurchaseReturnOrder.RUNMODAL;
-        END;
-    end;
-
-    procedure GetItemTrackingSettings(VAR ItemTrackingCode: Record "Item Tracking Code"; EntryType: Option Purchase,Sale,"Positive Adjmt.","Negative Adjmt.",Transfer,Consumption,Output,,"Assembly Consumption","Assembly Output"; Inbound: Boolean; VAR SNRequired: Boolean; VAR LotRequired: Boolean; var SNInfoRequired: Boolean; var LotInfoRequired: Boolean)
-    var
-
-    begin
-        SNRequired := FALSE;
-        LotRequired := FALSE;
-        SNInfoRequired := FALSE;
-        LotInfoRequired := FALSE;
-
-        IF ItemTrackingCode.Code = '' THEN BEGIN
-            CLEAR(ItemTrackingCode);
-            EXIT;
-        END;
-        ItemTrackingCode.GET(ItemTrackingCode.Code);
-
-        IF EntryType = EntryType::Transfer THEN BEGIN
-            LotInfoRequired := ItemTrackingCode."Lot Info. Outbound Must Exist" OR ItemTrackingCode."Lot Info. Inbound Must Exist";
-            SNInfoRequired := ItemTrackingCode."SN Info. Outbound Must Exist" OR ItemTrackingCode."SN Info. Inbound Must Exist";
-        END ELSE BEGIN
-            SNInfoRequired := (Inbound AND ItemTrackingCode."SN Info. Inbound Must Exist") OR
-              (NOT Inbound AND ItemTrackingCode."SN Info. Outbound Must Exist");
-
-            LotInfoRequired := (Inbound AND ItemTrackingCode."Lot Info. Inbound Must Exist") OR
-              (NOT Inbound AND ItemTrackingCode."Lot Info. Outbound Must Exist");
-        END;
-
-        IF ItemTrackingCode."SN Specific Tracking" THEN BEGIN
-            SNRequired := TRUE;
-        END ELSE
-            CASE EntryType OF
-                EntryType::Purchase:
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Purchase Inbound Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Purchase Outbound Tracking";
-                EntryType::Sale:
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Sales Inbound Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Sales Outbound Tracking";
-                EntryType::"Positive Adjmt.":
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Pos. Adjmt. Inb. Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Pos. Adjmt. Outb. Tracking";
-                EntryType::"Negative Adjmt.":
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Neg. Adjmt. Inb. Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Neg. Adjmt. Outb. Tracking";
-                EntryType::Transfer:
-                    SNRequired := ItemTrackingCode."SN Transfer Tracking";
-                EntryType::Consumption, EntryType::Output:
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Manuf. Inbound Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Manuf. Outbound Tracking";
-                EntryType::"Assembly Consumption", EntryType::"Assembly Output":
-                    IF Inbound THEN
-                        SNRequired := ItemTrackingCode."SN Assembly Inbound Tracking"
-                    ELSE
-                        SNRequired := ItemTrackingCode."SN Assembly Outbound Tracking";
-            END;
-
-        IF ItemTrackingCode."Lot Specific Tracking" THEN BEGIN
-            LotRequired := TRUE;
-        END ELSE
-            CASE EntryType OF
-                EntryType::Purchase:
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Purchase Inbound Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Purchase Outbound Tracking";
-                EntryType::Sale:
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Sales Inbound Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Sales Outbound Tracking";
-                EntryType::"Positive Adjmt.":
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Pos. Adjmt. Inb. Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Pos. Adjmt. Outb. Tracking";
-                EntryType::"Negative Adjmt.":
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Neg. Adjmt. Inb. Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Neg. Adjmt. Outb. Tracking";
-                EntryType::Transfer:
-                    LotRequired := ItemTrackingCode."Lot Transfer Tracking";
-                EntryType::Consumption, EntryType::Output:
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Manuf. Inbound Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Manuf. Outbound Tracking";
-                EntryType::"Assembly Consumption", EntryType::"Assembly Output":
-                    IF Inbound THEN
-                        LotRequired := ItemTrackingCode."Lot Assembly Inbound Tracking"
-                    ELSE
-                        LotRequired := ItemTrackingCode."Lot Assembly Outbound Tracking";
-            END;
+        LineNumber += 10000;
     end;
 
     var
-        I: Integer;
         SpecificationNo: Code[20];
         AutoCreateQC: Boolean;
         DivisionError: Boolean;
-        Item: Record Item;
-        RegistrationLine3: Record "WDC-QA Registration Line";
-        //TransportPlanningMgt:Codeunit "Transport Planning Management";
-        CustomerFilter: Text[100];
         ParameterFilter: Text[50];
-        Text001: TextConst ENU = '&All Lines,&Second Sampling if there', FRA = '&Toutes les lignes,&Deuxièmes analyses si présentes';
-        Text002: TextConst ENU = 'This Registration already contain lines. If you continue\the present lines will be deleted. Do you want to continue?', FRA = 'Cette enregistrement contient déjà des lignes. Si vous continuer\les lignes actuelles seront supprimées. Voulez-vous continuer?';
-        Text003: TextConst ENU = 'Process is interrupped.', FRA = 'Process interrompu.';
-        Text004: TextConst ENU = 'No valid Specification lines are found.', FRA = 'Aucune ligne de spécification valide.';
-        Text013: TextConst ENU = 'You have entered an illegal value or a nonexistent column number.', FRA = 'Vous avez saisi une valeur incorrecte ou un numéro de colonne inexistant.';
+        Text001: TextConst ENU = '&All Lines,&Second Sampling if there',
+                           FRA = '&Toutes les lignes,&Deuxièmes analyses si présentes';
+        Text002: TextConst ENU = 'This Registration already contain lines. If you continue\the present lines will be deleted. Do you want to continue?',
+                           FRA = 'Cette enregistrement contient déjà des lignes. Si vous continuer\les lignes actuelles seront supprimées. Voulez-vous continuer?';
+        Text003: TextConst ENU = 'Process is interrupped.',
+                           FRA = 'Process interrompu.';
+        Text004: TextConst ENU = 'No valid Specification lines are found.',
+                           FRA = 'Aucune ligne de spécification valide.';
+        Text013: TextConst ENU = 'You have entered an illegal value or a nonexistent column number.',
+                           FRA = 'Vous avez saisi une valeur incorrecte ou un numéro de colonne inexistant.';
 }
 

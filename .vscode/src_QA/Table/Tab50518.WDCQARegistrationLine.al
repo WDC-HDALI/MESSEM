@@ -152,10 +152,9 @@ table 50518 "WDC-QA Registration Line"
             CaptionML = ENU = 'Upper Limit', FRA = 'Limite supérieure';
             DecimalPlaces = 0 : 5;
         }
-        field(18; "Result Option"; Enum "WDC-QA RegistratResultOption")
+        field(18; "Result Option"; Enum "WDC-QA Result Option")
         {
             CaptionML = ENU = 'Result Option', FRA = 'Option résultat';
-            //ValuesAllowed=1,2;
             trigger OnValidate()
             var
                 lRegistrationStep: Record "WDC-QA Registration Step";
@@ -166,6 +165,8 @@ table 50518 "WDC-QA Registration Line"
                 lRegistrationStep.SETRANGE("Document No.", "Document No.");
                 lRegistrationStep.SETRANGE("Line No.", "Line No.");
                 IF lRegistrationStep.FINDFIRST THEN BEGIN
+                    //lRegistrationStep."Value Measured" := "Result Value";
+                    lRegistrationStep."Option Measured" := Enum::"WDC-QA RegistratResultOption".FromInteger(Rec."Result Option".AsInteger());
                     lRegistrationStep.Modified := TRUE;
                     lRegistrationStep.MODIFY;
                 END;
@@ -190,12 +191,21 @@ table 50518 "WDC-QA Registration Line"
                 lRegistrationStep.SETRANGE("Document No.", "Document No.");
                 lRegistrationStep.SETRANGE("Line No.", "Line No.");
                 IF lRegistrationStep.FINDFIRST THEN BEGIN
+                    lRegistrationStep."Value Measured" := "Result Value";
                     lRegistrationStep.Modified := TRUE;
                     lRegistrationStep.MODIFY;
                 END;
                 IF xRec."Average Result Option" <> Rec."Average Result Option" THEN BEGIN
                     "Control Date Average result" := CURRENTDATETIME;
                 END;
+                if ("Parameter Code" = 'SALMONELLA') or ("Parameter Code" = 'LISTERIA') then begin
+                    if "Result Value" = 0 then
+                        Microbio := 'Not detected'
+                end
+                else if "Parameter Code" = 'TVC' then
+                    Microbio := ''
+                else
+                    Microbio := '<';
             end;
         }
         field(21; "Result Value UOM"; Code[20])
@@ -240,7 +250,7 @@ table 50518 "WDC-QA Registration Line"
         field(28; "Controller"; Code[20])
         {
             CaptionML = ENU = 'Controller', FRA = 'Controleur';
-            //TableRelation="QC Controller";
+            TableRelation = "WDC-QA QC Controller";
         }
         field(29; "Specification Line No."; Integer)
         {
@@ -256,7 +266,7 @@ table 50518 "WDC-QA Registration Line"
             CaptionML = ENU = 'Specification Version No.', FRA = 'N° version spécification';
             Editable = false;
         }
-        field(32; "Target Result Option"; Enum "WDC-QA RegistratResultOption")
+        field(32; "Target Result Option"; Enum "WDC-QA Result Option")
         {
             CaptionML = ENU = 'Target Result Option', FRA = 'Option résultat cible';
         }
@@ -320,9 +330,21 @@ table 50518 "WDC-QA Registration Line"
             FieldClass = FlowField;
             CalcFormula = Lookup("WDC-QA Registration Header"."QC Date" WHERE("Document Type" = FIELD("Document Type"), "No." = FIELD("Document No.")));
         }
-        field(47; "Imprimable"; Boolean)
+        field(45; Variety; Text[30])
         {
-            CaptionML = ENU = 'Imprimable', FRA = 'Imprimable';
+            CaptionML = ENU = 'Variety', FRA = 'Variété';
+            TableRelation = "WDC-QA Variety";
+        }
+        field(46; Size; Text[30])
+        {
+            CaptionML = ENU = 'Size', FRA = 'Calibre';
+            TableRelation = "WDC-QA Size";
+        }
+        field(47; "Imprimable"; Option)
+        {
+            CaptionML = ENU = 'Print', FRA = 'Imprimable';
+            OptionMembers = Oui,Non;
+            OptionCaptionML = ENU = 'Yes,No', FRA = 'Oui,Non';
         }
         field(48; "Pallet No."; Integer)
         {
@@ -345,6 +367,10 @@ table 50518 "WDC-QA Registration Line"
         {
             CaptionML = ENU = 'Control Date Average result', FRA = 'Date résultat moyen';
             Editable = false;
+        }
+        field(55; MicroBio; Text[30])
+        {
+            CaptionML = ENU = 'MicroBIO', FRA = 'MicroBIO';
         }
     }
     keys
@@ -386,7 +412,6 @@ table 50518 "WDC-QA Registration Line"
     procedure InsertRegistrationSteps()
     var
         LineNumber: Integer;
-    //Equipment: Record "WDC-QA Equipment";
     begin
         IF "Method No." = '' THEN
             EXIT;
@@ -414,16 +439,6 @@ table 50518 "WDC-QA Registration Line"
                     RegistrationStep."Method Line No." := SpecificationStep."Method Line No.";
                     RegistrationStep."Column No." := SpecificationStep."Column No.";
                     RegistrationStep."Equipment Group Code" := SpecificationStep."Equipment Group";
-                    //RegistrationStep."Equipment No." := SpecificationStep."Equipment No.";
-                    // IF Equipment.GET(SpecificationStep."Equipment No.") THEN BEGIN
-                    //     IF (Equipment.Blocked) THEN BEGIN
-                    //         MESSAGE(Text0001, Equipment."No.");
-                    //         RegistrationStep."Equipment No." := '';
-                    //     END ELSE BEGIN
-                    //         IF Equipment.CalibrationRequired(FALSE) THEN
-                    //             MESSAGE(Text0002, Equipment."No.");
-                    //     END;
-                    // END;
                     RegistrationStep."Type of Measure" := SpecificationStep."Type of Measure";
                     RegistrationStep."Value UOM" := SpecificationStep."Value UOM";
                     RegistrationStep.Sample := SpecificationStep.Sample;
@@ -486,7 +501,7 @@ table 50518 "WDC-QA Registration Line"
             EXIT(1);
     end;
 
-    procedure GetStepCounts(ModifiedStepCountLine: Integer; MaxStepCountLine: Integer; ModifiedStepCountHeader: Integer; MaxStepCountHeader: Integer)
+    procedure GetStepCounts(var ModifiedStepCountLine: Integer; var MaxStepCountLine: Integer; var ModifiedStepCountHeader: Integer; var MaxStepCountHeader: Integer)
     var
         RegistrationStep: Record "WDC-QA Registration Step";
         RegistrationHeader: Record "WDC-QA Registration Header";
@@ -509,7 +524,4 @@ table 50518 "WDC-QA Registration Line"
         RegistrationStep: Record "WDC-QA Registration Step";
         SpecificationStep: Record "WDC-QA Specification Step";
         MethodLine: Record "WDC-QA Method Line";
-        Text0001: TextConst ENU = 'Equipment %1 is blocked.', FRA = 'Equipement %1 est bloqué.';
-        Text0002: TextConst ENU = 'Equipment %1 requires calibration.', FRA = 'Equipement %1 nécessite une calibration.';
-        Text0003: TextConst ENU = 'Are you sure you want to delete the QC record lines %1', FRA = 'Etes vous sûr de vouloir supprimer les lignes d''enregistrement CQ %1';
 }

@@ -8,12 +8,12 @@ tableextension 50033 "WDC SalesInvoiceHeader" extends "Sales Invoice Header"
     {
         field(50000; "Pallet Quantity"; Integer)
         {
-            CaptionML = ENU = 'Pallet Quantity', FRA = 'par pallet';
+            CaptionML = ENU = 'Pallet Quantity', FRA = 'Pallet';
             DataClassification = ToBeClassified;
         }
         field(50001; "Scelle No."; code[20])
         {
-            CaptionML = ENU = 'Scelle No.', FRA = 'Nombre de points maximum';
+            CaptionML = ENU = 'Scelle No.', FRA = 'N° Scellé';
             DataClassification = ToBeClassified;
         }
         field(50002; "Container No."; code[20])
@@ -44,12 +44,6 @@ tableextension 50033 "WDC SalesInvoiceHeader" extends "Sales Invoice Header"
             CaptionML = ENU = 'Notify Party 2', FRA = 'Partie à informer 2';
             DataClassification = ToBeClassified;
             TableRelation = "WDC Notify Party".Code WHERE(harbor = FIELD("Destination Port"));
-        }
-        field(50007; "Transport Tariff Code"; code[20])
-        {
-            CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
-            DataClassification = ToBeClassified;
-            TableRelation = "WDC Transport Tariff Code";
         }
 
     }

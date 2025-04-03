@@ -5,7 +5,7 @@ page 50515 "WDC-QA Registration List"
     DataCaptionFields = "Document Type";
     PageType = List;
     SourceTable = "WDC-QA Registration Header";
-    UsageCategory = Lists;
+    //UsageCategory = Lists;
     Editable = false;
 
     layout

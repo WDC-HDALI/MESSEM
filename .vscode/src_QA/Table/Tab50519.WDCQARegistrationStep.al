@@ -7,7 +7,7 @@ table 50519 "WDC-QA Registration Step"
     {
         field(1; "Document Type"; Enum "WDC-QA Document Type")
         {
-            CaptionML = ENU = 'Document Type', FRA = '';
+            CaptionML = ENU = 'Document Type', FRA = 'Type document';
         }
         field(2; "Document No."; Code[20])
         {
@@ -72,6 +72,7 @@ table 50519 "WDC-QA Registration Step"
         field(15; "Value Measured"; Decimal)
         {
             CaptionML = ENU = 'Value Measured', FRA = 'Valeur mesuré';
+            DecimalPlaces = 0 : 5;
             trigger OnValidate()
             begin
                 Modified := TRUE;

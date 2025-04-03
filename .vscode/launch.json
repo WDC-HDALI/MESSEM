@@ -6,13 +6,12 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "Sandbox_Preprod",
+            "environmentName": "Sandbox_210325",
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "schemaUpdateMode": "ForceSync"
-            
         }
     ]
 }

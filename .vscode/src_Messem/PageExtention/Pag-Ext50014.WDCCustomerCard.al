@@ -8,10 +8,6 @@ pageextension 50014 "WDC Customer Card " extends "Customer Card"
             {
                 ApplicationArea = all;
             }
-            field("Transport Tariff Code"; Rec."Transport Tariff Code")
-            {
-                ApplicationArea = all;
-            }
         }
     }
     actions

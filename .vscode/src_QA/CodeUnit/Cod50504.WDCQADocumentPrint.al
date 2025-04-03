@@ -2,13 +2,12 @@ codeunit 50504 "WDC-QA Document-Print"
 {
     procedure PrintQCRegistration(RegistrationHeader: Record "WDC-QA Registration Header")
     var
-        ReportSelections: Record "Report Selections";
+    //ReportSelections: Record "Report Selections";
     begin
         RegistrationHeader.SETRANGE(Status, RegistrationHeader.Status);
         RegistrationHeader.SETRANGE("No.", RegistrationHeader."No.");
         RegistrationHeader.SETRANGE("Document Type", RegistrationHeader."Document Type");
 
-        //ReportSelections.Print(ReportSelections.Usage::"QC.Reg", RegistrationHeader, '');
         IF RegistrationHeader.FINDFIRST THEN
             REPORT.RUN(50505, TRUE, FALSE, RegistrationHeader);
     end;

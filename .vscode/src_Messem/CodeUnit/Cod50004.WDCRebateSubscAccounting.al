@@ -13,12 +13,35 @@ using Microsoft.Inventory.Journal;
 
 codeunit 50004 "WDC Rebate Subsc Accounting"
 {
+
+
+    //********Champs à valider Feuille paiement
+    [EventSubscriber(ObjectType::Page, 256, 'OnBeforeActionEvent', 'Post', false, false)]
+    procedure OnBeforePostPaymentJournal(var Rec: Record 81)
+    var
+        ltext001: Label 'Please select the rows to post';
+    begin
+        Rec.SETRANGE("To Post", TRUE);
+        IF Rec.ISEMPTY THEN
+            ERROR(ltext001);
+    end;
+
+    [EventSubscriber(ObjectType::Page, 256, 'OnBeforeActionEvent', 'Post', false, false)]
+    procedure OnBeforePostAndPrinPaymentJournal(var Rec: Record 81)
+    var
+        ltext001: Label 'Please select the rows to post';
+    begin
+        Rec.SETRANGE("To Post", TRUE);
+        IF Rec.ISEMPTY THEN
+            ERROR(ltext001);
+    end;
+    /////************Feuille Paiement
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Gen. Jnl.-Post line", 'OnAfterInsertGLEntry', '', FALSE, FALSE)]
     local procedure OnAfterInsertGLEntry(GenJnlLine: Record "Gen. Journal Line"; CalcAddCurrResiduals: Boolean)
-
     begin
-        if GenJnlLine."Debit Amount" <> 0 Then
-            InsertRebateEntry(GenJnlLine);
+        // if GenJnlLine."Debit Amount" <> 0 Then
+        //     InsertRebateEntry(GenJnlLine);
     end;
     //Linked by the navigate entries page(Posted purchase invoice)
     [EventSubscriber(ObjectType::Page, Page::Navigate, 'OnAfterFindPostedDocuments', '', FALSE, FALSE)]
@@ -66,8 +89,10 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
     [EventSubscriber(ObjectType::Table, database::"Item Journal Line", 'OnAfterCopyItemJnlLineFromPurchLine', '', FALSE, FALSE)]
     local procedure OnAfterCopyItemJnlLineFromPurchLine(var ItemJnlLine: Record "Item Journal Line"; PurchLine: Record "Purchase Line")
     var
-
+        lPurchHeader: Record 38;
     begin
+        lPurchHeader.GET(PurchLine."Document Type", PurchLine."Document No.");
+        CalcRebatePurchaseLineValue(lPurchHeader, PurchLine, true); //HD11032025
         ItemJnlLine."Rebate Accrual Amount (LCY)" := PurchLine."Accrual Amount (LCY)";
     end;
 
@@ -77,7 +102,6 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
     begin
         PurchaseLine."Accrual Amount (LCY)" := 0;
     end;
-
 
     procedure InsertRebateEntry(var GenJnlLine: Record 81)
     var
@@ -134,7 +158,7 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
                 RebateEntry."Base Amount" := -PurchaseLine."VAT Base Amount";
                 RebateEntry."Base Quantity" := -RebateEntry."Base Quantity";
             END ELSE begin
-                RebateEntry."Accrual Amount (LCY)" := -GenJnlLine.Amount;
+                RebateEntry."Accrual Amount (LCY)" := GenJnlLine.Amount;
                 RebateEntry."Base Amount" := PurchaseLine."VAT Base Amount";
             end;
 
@@ -254,8 +278,6 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
         END;
 
         RebateEntry.INSERT;
-
-
     end;
 
 
@@ -269,7 +291,7 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
         DummyDate: Date;
         RebateLineAmountLCY: Decimal;
     begin
-        if PurchHeader.get(GenJnlLine."Rebate Posted Doc Type", GenJnlLine."Rebate Purchase Doc No.") then //HD10112024
+        if PurchHeader.get(GenJnlLine."Rebate Posted Doc Type", GenJnlLine."Rebate Purchase Doc No.") then
             if PurchaseLine.get(GenJnlLine."Rebate Posted Doc Type", GenJnlLine."Rebate Purchase Doc No.", GenJnlLine."Line No.") then
                 IF PurchaseLine."Receipt No." <> '' THEN BEGIN
                     PurchRcptHeader2.GET(PurchaseLine."Receipt No.");
@@ -294,11 +316,67 @@ codeunit 50004 "WDC Rebate Subsc Accounting"
 
 
     end;
+    //<<HD11032025
+    procedure CalcRebatePurchaseLineValue(PurchHeader: Record 38; var PurchLine: Record 39; PostAccrual: Boolean)
+    var
+        Item2: Record 27;
+        Vendor2: Record 23;
+        PurchaseRebate: Record "WDC Purchase Rebate";
+        LineAmountLCY: Decimal;
+    begin
+        IF (PurchLine.Type <> PurchLine.Type::Item) THEN
+            EXIT;
+
+        Vendor2.GET(PurchHeader."Pay-to Vendor No.");
+        Item2.GET(PurchLine."No.");
+
+        LineAmountLCY += AddRebatePurchaseLineValues(PurchHeader, PurchLine, Vendor2."No.", Item2." Purchases Item Rebate Group", PostAccrual);
+
+        //IF NOT PostAccrual THEN
+        PurchLine."Accrual Amount (LCY)" := LineAmountLCY;
+    end;
+
+    local procedure AddRebatePurchaseLineValues(PurchHeader: Record 38; PurchLine: Record 39; PurchaseCode: Code[20]; "Code": Code[20]; PostAccrual: Boolean) TotalRebateAmountLCY: Decimal
+    var
+        PurchRcptHeader2: Record 120;
+        PurchaseRebate: Record "WDC Purchase Rebate";
+        ItemUOM: Record 5404;
+        RebateCode: Record "WDC Rebate Code";
+        RebateDate: Date;
+        DummyDate: Date;
+        RebateLineAmountLCY: Decimal;
+    begin
+        IF PurchLine."Receipt No." <> '' THEN BEGIN
+            PurchRcptHeader2.GET(PurchLine."Receipt No.");
+            IF PurchSetup."Date Price-and Discount Def." = PurchSetup."Date Price-and Discount Def."::"Order Date" THEN
+                RebateDate := PurchRcptHeader2."Order Date"
+            ELSE
+                RebateDate := PurchRcptHeader2."Expected Receipt Date";
+        END ELSE BEGIN
+            IF PurchSetup."Date Price-and Discount Def." = PurchSetup."Date Price-and Discount Def."::"Order Date" THEN
+                RebateDate := PurchHeader."Order Date"
+            ELSE
+                RebateDate := PurchHeader."Expected Receipt Date";
+        END;
+
+        PurchaseRebate.SETRANGE("Vendor No.", PurchaseCode);
+        PurchaseRebate.SETRANGE(Code, Code);
+        PurchaseRebate.SETFILTER("Starting Date", '<=%1|%2', RebateDate, DummyDate);
+        PurchaseRebate.SETFILTER("Ending Date", '>=%1|%2', RebateDate, DummyDate);
+        IF PurchaseRebate.FINDSET THEN
+            REPEAT
+                RebateLineAmountLCY := 0;
+                RebateCode.GET(PurchaseRebate."Rebate Code");
+                IF PurchHeader."Currency Code" = RebateCode."Currency Code" THEN
+                    RebateLineAmountLCY := PurchLine."Qty. to Invoice (Base)" * PurchaseRebate."Accrual Value (LCY)";
+                TotalRebateAmountLCY := TotalRebateAmountLCY + RebateLineAmountLCY;
+            UNTIL PurchaseRebate.NEXT <= 0;
+    end;
+    //>>HD11032025
 
     var
         PurchHeader: record 38;
         PurchaseLine: Record 39;
         PurchaseRebate: Record "WDC Purchase Rebate";
-
         PurchSetup: record "Purchases & Payables Setup";
 }
