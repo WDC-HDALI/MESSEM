@@ -15,7 +15,7 @@ table 50525 "WDC-QA CoA Template"
         field(2; "Check Point Code"; Code[20])
         {
             CaptionML = ENU = 'Check Point Code', FRA = 'Code point de contrôle';
-            TableRelation = IF (Type = filter("WDC-QA Registration Line Type"::Parameter)) "WDC-QA Check Point";
+            TableRelation = IF (Type = CONST(Parameter)) "WDC-QA Check Point";
         }
         field(3; "Type Value"; enum "WDC-QA CoA Type Value")
         {
@@ -45,8 +45,6 @@ table 50525 "WDC-QA CoA Template"
         {
             CaptionML = ENU = 'Type', FRA = 'Type';
             trigger OnValidate()
-            var
-                myInt: Integer;
             begin
                 "Parameter Code" := '';
                 Description := '';
@@ -57,8 +55,6 @@ table 50525 "WDC-QA CoA Template"
             CaptionML = ENU = 'Parameter Code', FRA = 'Code paramètre';
             TableRelation = IF (Type = CONST(Parameter)) "WDC-QA Parameter".Code WHERE(Type = filter('QC-specification'));
             trigger OnValidate()
-            var
-                myInt: Integer;
             begin
                 IF Parameter.GET(Parameter.Type::"QC-specification", "Parameter Code") THEN;
                 Description := Parameter.Description;

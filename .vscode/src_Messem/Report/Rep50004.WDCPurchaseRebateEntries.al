@@ -12,16 +12,7 @@ report 50004 "WDC Purchase Rebate Entries"
         {
             DataItemTableView = SORTING("Buy-from No.", "Rebate Code", "Rebate Document Type", "Posting Date");
             RequestFilterFields = "Buy-from No.", "Rebate Code";
-            column(TODAY; TODAY)
-            {
-            }
-            column(COMPANYNAME; COMPANYNAME)
-            {
-            }
-            column(CurrReport_PAGENO; CurrReport.PAGENO)
-            {
-            }
-            column(USERID; USERID)
+            column(companyInfo_Picture; companyInfo.Picture)
             {
             }
             column(Rebate_Entry__Sell_to_Buy_from_No__; "Buy-from No.")
@@ -76,9 +67,6 @@ report 50004 "WDC Purchase Rebate Entries"
             {
             }
             column(Rebate_Entry_Accrual_and_PaymentsCaption; Rebate_Entry_Accrual_and_PaymentsCaptionLbl)
-            {
-            }
-            column(CurrReport_PAGENOCaption; CurrReport_PAGENOCaptionLbl)
             {
             }
             column(Rebate_CodeCaption; Rebate_CodeCaptionLbl)
@@ -205,10 +193,13 @@ report 50004 "WDC Purchase Rebate Entries"
 
             trigger OnPreDataItem()
             begin
+                companyInfo.get;
+                companyInfo.CalcFields(Picture);
                 LastFieldNo := FIELDNO("Rebate Code");
 
-                CurrReport.CREATETOTALS(AccrualAmount, PaymentAmount, CorrectionAmount, RebatePayment);
+                //CurrReport.CREATETOTALS(AccrualAmount, PaymentAmount, CorrectionAmount, RebatePayment);
                 PostingType := '';
+
             end;
         }
     }
@@ -219,6 +210,7 @@ report 50004 "WDC Purchase Rebate Entries"
     end;
 
     var
+        companyInfo: Record "Company Information";
         RebateCode: Record "WDC Rebate Code";
         RebateScale: Record "WDC Rebate Scale";
         Currency: Record 4;
@@ -237,19 +229,18 @@ report 50004 "WDC Purchase Rebate Entries"
         PostingType: Text[30];
         LastFieldNo: Integer;
         RebateEntry: Record "WDC Rebate Entry";
-        Text002: Label 'Buy-from No.';
+        Text002: Textconst ENU = 'Buy-from No.', FRA = 'N° fourbisseur';
         "Sell-To/Buy-FromNoTxt": Text[30];
-        Rebate_Entry_Accrual_and_PaymentsCaptionLbl: Label 'Rebate Entry Accrual and Payments';
-        CurrReport_PAGENOCaptionLbl: Label 'Page';
-        Rebate_CodeCaptionLbl: Label 'Rebate Code';
-        Accrual_Amount__LCY_CaptionLbl: Label 'Accrual Amount (LCY)';
-        Correction_Amount__LCY_CaptionLbl: Label 'Correction Amount (LCY)';
-        Starting_DateCaptionLbl: Label 'Starting Date';
-        Ending_DateCaptionLbl: Label 'Ending Date';
-        DescriptionCaptionLbl: Label 'Description';
-        Rebate_Amount__LCY_CaptionLbl: Label 'Rebate Amount (LCY)';
-        Payment__Rebate_scale___LCY_CaptionLbl: Label 'Payment (Rebate scale) (LCY)';
-        Rebate_Difference__LCY_CaptionLbl: Label 'Rebate Difference (LCY)';
+        Rebate_Entry_Accrual_and_PaymentsCaptionLbl: Textconst ENU = 'Rebate Entry Accrual and Payments', FRA = 'Ecritures bonus d''exercice et paiements';
+        Rebate_CodeCaptionLbl: Textconst ENU = 'Rebate Code', FRA = 'Code bonus';
+        Accrual_Amount__LCY_CaptionLbl: Textconst ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
+        Correction_Amount__LCY_CaptionLbl: Textconst ENU = 'Correction Amount (LCY)', FRA = 'Montant correction (DS)';
+        Starting_DateCaptionLbl: Textconst ENU = 'Starting Date', FRA = 'Date début';
+        Ending_DateCaptionLbl: Textconst ENU = 'Ending Date', FRA = 'Date fin';
+        DescriptionCaptionLbl: Textconst ENU = 'Description', FRA = 'Description';
+        Rebate_Amount__LCY_CaptionLbl: Textconst ENU = 'Rebate Amount (LCY)', FRA = 'Montant bonus DS';
+        Payment__Rebate_scale___LCY_CaptionLbl: Textconst ENU = 'Payment (Rebate scale) (LCY)', FRA = 'Paiement (règle de bonus) (DS)';
+        Rebate_Difference__LCY_CaptionLbl: Textconst ENU = 'Rebate Difference (LCY)', FRA = 'Différence bonus DS';
         "Sell-To/Buy-FromNo": Code[20];
         RebCode: Code[20];
 }

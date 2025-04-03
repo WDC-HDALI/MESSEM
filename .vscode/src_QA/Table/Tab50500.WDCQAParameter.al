@@ -46,8 +46,6 @@ table 50500 "WDC-QA Parameter"
         }
     }
     trigger OnDelete()
-    var
-        myInt: Integer;
     begin
         CheckCoupledToRegistration(TRUE);
         CheckCoupledToSpecification(TRUE);
@@ -91,9 +89,13 @@ table 50500 "WDC-QA Parameter"
     end;
 
     var
-        TextSI000: TextConst ENU = 'You can not remove %1 %2, because there is at least one %3 for this %1.', FRA = 'Vous ne pouvez pas enlever %1 %2, car il existe au moins un %3 pour ce %1.';
-        TextSI001: TextConst ENU = 'QC-Parameter', FRA = 'Paramètre CQ';
-        TextSI002: TextConst ENU = 'QC-Registration', FRA = 'Enregistrement CQ';
-        TextSI003: TextConst ENU = 'QC-Specification', FRA = 'Spécification CQ';
+        TextSI000: TextConst ENU = 'You can not remove %1 %2, because there is at least one %3 for this %1.',
+                             FRA = 'Vous ne pouvez pas enlever %1 %2, car il existe au moins un %3 pour ce %1.';
+        TextSI001: TextConst ENU = 'QC-Parameter',
+                             FRA = 'Paramètre CQ';
+        TextSI002: TextConst ENU = 'QC-Registration',
+                             FRA = 'Enregistrement CQ';
+        TextSI003: TextConst ENU = 'QC-Specification',
+                             FRA = 'Spécification CQ';
 
 }

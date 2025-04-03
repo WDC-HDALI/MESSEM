@@ -38,8 +38,6 @@ table 50526 "WDC-QA Certificate of Analysis"
             CaptionML = ENU = 'Report ID', FRA = 'ID état';
             //TableRelation = Object.ID WHERE(Type = filter(Report));
             trigger OnValidate()
-            var
-                myInt: Integer;
             begin
                 CalcFields("Report Name");
             end;
@@ -54,7 +52,6 @@ table 50526 "WDC-QA Certificate of Analysis"
         field(7; "Automatically Printed"; Enum "WDC-QA Automatically Printed")
         {
             CaptionML = ENU = 'Automatically Printed', FRA = 'Imprimé automatiquement';
-
         }
         field(8; "Contact No."; Code[20])
         {
@@ -108,5 +105,6 @@ table 50526 "WDC-QA Certificate of Analysis"
     }
     var
         Customer: Record Customer;
-        Text001: TextConst ENU = 'Contact %1 %2 is not related to customer %3 %4.', FRA = 'Le contact %1 %2 n''est pas associé au client %3 %4.';
+        Text001: TextConst ENU = 'Contact %1 %2 is not related to customer %3 %4.',
+                           FRA = 'Le contact %1 %2 n''est pas associé au client %3 %4.';
 }

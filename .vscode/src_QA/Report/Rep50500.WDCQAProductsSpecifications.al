@@ -1,16 +1,19 @@
 report 50500 "WDC-QA Products Specifications"
 {
-    ApplicationArea = All;
     CaptionML = ENU = 'Product Specification', FRA = 'Production spécifique';
+    RDLCLayout = './.vscode/src_QA/Report/RDLC/ProductsSpecifications.rdlc';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = './.vscode/src_QA/Report/RDLC/ProductsSpecifications.rdlc';
+    ApplicationArea = All;
     dataset
     {
         dataitem("Specification Header"; "WDC-QA Specification Header")
         {
             RequestFilterFields = "No.";
             column(Picture; Gcompany.Picture)
+            {
+            }
+            column(Background; Gcompany.Background)
             {
             }
             column(Type; "Specification Header"."Document Type")
@@ -107,7 +110,7 @@ report 50500 "WDC-QA Products Specifications"
                     Uniteoption := "Result UOM";
 
                     IF UnitOfMesure.GET(Uniteoption) THEN;
-                    IF ("Specification Line"."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(1)) THEN BEGIN
+                    IF ("Specification Line"."Type of Result" = Enum::"WDC-QA Type Of Result".FromInteger(2)) THEN BEGIN
                         ResulLimit := "Specification Line"."Texte specification option";
 
                     END ELSE BEGIN
@@ -236,7 +239,7 @@ report 50500 "WDC-QA Products Specifications"
     begin
         Gcompany.GET;
         Gcompany.CALCFIELDS(Picture);
-        //Gcompany.CALCFIELDS(Image);
+        Gcompany.CALCFIELDS(Background);
     end;
 
     procedure SetValues(pPhysiclDesc: Text[250]; pChimicalDescrp: Text[250])

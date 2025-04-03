@@ -108,60 +108,66 @@ page 50502 "WDC-QA QC Specification"
         {
             systempart(links; Links)
             {
+                ApplicationArea = RecordLinks;
                 Visible = true;
             }
             systempart(Notes; Notes)
             {
+                ApplicationArea = Notes;
                 Visible = true;
             }
         }
     }
     actions
     {
-        area(Navigation)
+        area(Processing)
         {
-            group(Function)
+            action("Create New Version")
             {
-                CaptionML = ENU = 'Function', FRA = 'Fonctions';
-                action("Create New Version")
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Create New Version', FRA = 'Créer nouvelle version';
-                    Image = Versions;
-                    Ellipsis = true;
-                    RunPageOnRec = true;
-                    trigger OnAction()
-                    var
-                        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
-                    begin
-                        QualityControlMgt.CopySpecification(Rec);
-                    end;
-                }
-                action("Production Specification")
-                {
-                    Image = Item;
-                    trigger OnAction()
-                    var
-                        SpecificationHeader: Record "WDC-QA Specification Header";
-                        ProductSpecification: Report "WDC-QA Products Specifications";
-                    begin
-                        CLEAR(ProductSpecification);
-                        SpecificationHeader.SETRANGE("No.", Rec."No.");
-                        SpecificationHeader.SETRANGE("Version No.", Rec."Version No.");
-                        ProductSpecification.SETTABLEVIEW(SpecificationHeader);
-                        ProductSpecification.SetValues(Rec."Process Description", Rec."Chemical Standard");
-                        ProductSpecification.RUNMODAL
-                    end;
-                }
-                action("Formulaire Specification CQ")
-                {
-                    Image = Print;
-                    trigger OnAction()
-                    begin
-                        CurrPage.SETSELECTIONFILTER(Rec);
-                        REPORT.RUN(50502, TRUE, TRUE, Rec);
-                    end;
-                }
+                ApplicationArea = all;
+                CaptionML = ENU = 'Create New Version', FRA = 'Créer nouvelle version';
+                Image = Versions;
+                Ellipsis = true;
+                PromotedCategory = New;
+                Promoted = true;
+                RunPageOnRec = true;
+                trigger OnAction()
+                var
+                    QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
+                begin
+                    QualityControlMgt.CopySpecification(Rec);
+                end;
+            }
+
+        }
+        area(Reporting)
+        {
+            action("Production Specification")
+            {
+                ApplicationArea = all;
+                Image = Item;
+                trigger OnAction()
+                var
+                    SpecificationHeader: Record "WDC-QA Specification Header";
+                    ProductSpecification: Report "WDC-QA Products Specifications";
+                begin
+                    CLEAR(ProductSpecification);
+                    SpecificationHeader.SETRANGE("No.", Rec."No.");
+                    SpecificationHeader.SETRANGE("Version No.", Rec."Version No.");
+                    ProductSpecification.SETTABLEVIEW(SpecificationHeader);
+                    ProductSpecification.SetValues(Rec."Process Description", Rec."Chemical Standard");
+                    ProductSpecification.RUNMODAL
+                end;
+            }
+            action("Formulaire Specification CQ")
+            {
+                ApplicationArea = all;
+                Image = Print;
+                trigger OnAction()
+                begin
+                    CurrPage.SETSELECTIONFILTER(Rec);
+                    REPORT.RUN(50502, TRUE, TRUE, Rec);
+                end;
             }
         }
     }

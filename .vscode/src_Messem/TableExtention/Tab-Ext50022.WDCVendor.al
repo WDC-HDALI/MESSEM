@@ -1,6 +1,7 @@
 namespace MESSEM.MESSEM;
 
 using Microsoft.Purchases.Vendor;
+using Microsoft.Inventory.Item;
 using Microsoft.Foundation.PaymentTerms;
 using Microsoft.Inventory.Ledger;
 
@@ -14,28 +15,24 @@ tableextension 50022 "WDC Vendor " extends Vendor
             DataClassification = ToBeClassified;
         }
 
-        field(50001; "Transport Tariff Code"; code[20])
-        {
-            CaptionML = ENU = 'Transport Tariff Code', FRA = 'Code tarif transport';
-            DataClassification = ToBeClassified;
-            TableRelation = "WDC Transport Tariff Code";
-        }
         field(50002; "Packaging Price"; Boolean)
         {
             CaptionML = ENU = 'Packaging Price', FRA = 'Facturer emballage';
             DataClassification = ToBeClassified;
         }
-        // field(50003; "Purchases (Qty.)"; Decimal)
-        // {
-        //     CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Entry Type" = filter(Purchase),
-        //                                                           "Posting Date" = FIELD("Date Filter"),
-        //                                                           "Source No." = FIELD("No."),
-        //                                                           "Source Type" = filter(Vendor)));
-        //     CaptionML = ENU = 'Purchases (Qty.)', FRA = 'Qty achat';
-        //     DecimalPlaces = 0 : 5;
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
+        field(50003; "Purchases (Qty.)"; Decimal)
+        {
+            CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Entry Type" = filter(Purchase),
+                                                                  "Posting Date" = FIELD("Date Filter"),
+                                                                  "Source No." = FIELD("No."),
+                                                                  "Item No." = field("Item Filter"),
+                                                                  "Item Category Code" = field("Item Category Filter"),
+                                                                  "Source Type" = filter(Vendor)));
+            CaptionML = ENU = 'Purchases (Qty.)', FRA = 'Qty achat';
+            DecimalPlaces = 0 : 5;
+            Editable = false;
+            FieldClass = FlowField;
+        }
 
 
         field(50004; RIB; Code[24])
@@ -96,6 +93,18 @@ tableextension 50022 "WDC Vendor " extends Vendor
                 END;
             end;
 
+        }
+        field(50011; "Item Filter"; Code[20])
+        {
+            CaptionML = ENU = 'Item Filter', FRA = 'Filtre article';
+            FieldClass = FlowFilter;
+            TableRelation = Item;
+        }
+        field(50012; "Item Category Filter"; Code[20])
+        {
+            CaptionML = ENU = 'Item Category Filter', FRA = 'Filtre Categorie article';
+            FieldClass = FlowFilter;
+            TableRelation = "Item Category";
         }
 
     }

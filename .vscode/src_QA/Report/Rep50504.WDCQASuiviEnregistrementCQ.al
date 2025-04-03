@@ -1,7 +1,6 @@
 report 50504 "WDC-QA Suivi Enregistrement CQ"
 {
-
-    CaptionML = ENU = 'Quality Control Report', FRA = 'Etat contrôle qualité';
+    CaptionML = ENU = 'QC Registration Follow Up', FRA = 'Suivi Enregistrement CQ';
     RDLCLayout = './.vscode/src_QA/Report/RDLC/SuiviEnregistrementCQ.rdlc';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;

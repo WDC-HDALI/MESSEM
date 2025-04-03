@@ -21,6 +21,10 @@ pageextension 50037 "WDC Item Journal" extends "Item Journal"
             }
 
         }
+        modify("reason code")
+        {
+            Visible = TRUE;
+        }
         moveafter("Source No."; "reason code")
 
     }
@@ -48,18 +52,47 @@ pageextension 50037 "WDC Item Journal" extends "Item Journal"
                     REPORT.RUNMODAL(REPORT::"WDC Packaging Movement", TRUE, TRUE, ItemJnlLine);
                 end;
             }
+            action("Print Mouvement MD/EMB")
+            {
+                CaptionML = ENU = 'Print Packaging Mouvement MD/EMB', FRA = 'Imprimer mouvement MD/EMB';
+                Image = PrintCheck;
+                ApplicationArea = all;
+                Promoted = true;
+                PromotedCategory = Process;
+                trigger OnAction()
+                var
+                    ItemJnlLine: Record "Item Journal Line";
+                    lText001: Label 'Les catégories des articles doit être de type MD ou EMB';
+                begin
+                    //<<WDC02
+                    ItemJnlLine.COPY(Rec);
+                    ItemJnlLine.SETRANGE("Journal Template Name", rec."Journal Template Name");
+                    ItemJnlLine.SETRANGE("Journal Batch Name", rec."Journal Batch Name");
+                    ItemJnlLine.SETFILTER("Item Category Code", 'MD|EMB');
+                    IF ItemJnlLine.FINDSET THEN
+                        REPORT.RUNMODAL(REPORT::"WDC Packaging Movement MD/EMB", TRUE, TRUE, ItemJnlLine)
+                    ELSE
+                        MESSAGE(lText001);
+                    //>>WDC02
+                end;
+            }
         }
-
     }
-    trigger OnNewRecord(BelowxRec: Boolean)
-    begin
-        IF ItemJournalBatch.GET(Rec."Journal Template Name", rec."Journal Batch Name") THEN
-            rec."Source Type" := ItemJournalBatch."Source Type by Default";
 
-    end;
 
-    var
-        ItemJournalBatch: record "Item Journal Batch";
+
+    // trigger OnNewRecord(BelowxRec: Boolean)
+    // begin
+    //     IF ItemJournalBatch.GET(Rec."Journal Template Name", rec."Journal Batch Name") THEN begin
+    //         rec."Source Type" := ItemJournalBatch."Source Type by Default";
+    //         rec."Entry Type" := ItemJournalBatch."Entry Type"; //WDC.HG
+    //     end;
+
+
+    // end;
+
+    // var
+    //     ItemJournalBatch: record "Item Journal Batch";
 
 
 }

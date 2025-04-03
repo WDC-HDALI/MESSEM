@@ -191,28 +191,6 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
             END;
     end;
 
-    procedure GetCurrentRecord(var CalibrationRegistrationLine: Record "WDC-QA Registration Line")
-    begin
-        CalibrationRegistrationLine := Rec;
-    end;
-
-    procedure CreateSecondSample()
-    begin
-        QualityControlMgt.CreateSecondSampling(Rec);
-    end;
-
-    procedure LineUp()
-    begin
-        IF Rec.NEXT(-1) >= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
-    procedure LineDown()
-    begin
-        IF Rec.NEXT <= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
     procedure UpdateFieldsVisible()
     begin
         "Conclusion ResultVisible" := TRUE;
@@ -221,7 +199,6 @@ page 50536 "WDC-QA Closed CoA Regist Subf"
 
     var
         RegistrationHeader: Record "WDC-QA Registration Header";
-        QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
         "Specification RemarkEditable": Boolean;
         "Lower LimitEditable": Boolean;
         "Lower Warning LimitEditable": Boolean;

@@ -24,6 +24,12 @@ pageextension 50030 "WDCPostedSalesCrMemoSubform" extends "Posted Sales Cr. Memo
             {
                 ApplicationArea = all;
             }
+            field("Harmonised Tariff Code"; Rec."Harmonised Tariff Code")
+            {
+                ApplicationArea = all;
+
+            }
         }
+
     }
 }

@@ -41,7 +41,7 @@ table 50502 "WDC-QA Specification Header"
         {
             CaptionML = ENU = 'Revised By', FRA = 'Révisé par';
             TableRelation = User."User Name";
-            Editable = false;
+            //Editable = false;
         }
         field(7; "Date Closed"; Date)
         {
@@ -81,6 +81,7 @@ table 50502 "WDC-QA Specification Header"
                     IF Item.GET("Item No.") THEN;
                     "Item Description" := Item.Description;
                     "Item Category Code" := Item."Item Category Code";
+                    "Revised By" := UserId;
                 end;
             end;
 
@@ -134,8 +135,6 @@ table 50502 "WDC-QA Specification Header"
             CaptionML = ENU = 'Source No.', FRA = 'N° origine';
             TableRelation = IF (Specific = CONST(Customer)) Customer
             ELSE IF (Specific = CONST(Vendor)) Vendor;
-            //ELSE IF (Specific = CONST("Customer Attribute")) "Customer Attribute 1" 
-            //ELSE IF (Specific=CONST("Vendor Attribute")) "Vendor Attribute 1";
             trigger OnValidate()
             begin
                 TESTFIELD(Status, Status::Open);
@@ -172,7 +171,6 @@ table 50502 "WDC-QA Specification Header"
             TableRelation = "Item Category";
             trigger OnValidate()
             begin
-                //CheckBasicSpecification;
                 IF xRec."Item Category Code" <> "Item Category Code" THEN
                     "Item No." := '';
             end;
@@ -184,15 +182,17 @@ table 50502 "WDC-QA Specification Header"
         field(28; "Chemical Standard"; Text[250])
         {
             Caption = 'Chemical Standard';
-            //CaptionML = ENU = 'Chemical Standard', FRA = 'Normes chimiques';
         }
         field(19; "Sampling Frequency PSF"; Decimal)
         {
             CaptionML = ENU = 'Sampling Frequency PSF', FRA = 'Fréquence d''échantillonnage PSF';
+            DecimalPlaces = 2 : 5;
         }
         field(20; "Sampling Frequency PF"; Decimal)
         {
             CaptionML = ENU = 'Sampling Frequency PF', FRA = 'Fréquence d''échantillonnage PF';
+            DecimalPlaces = 2 : 5;
+
         }
         field(21; "Item Description2"; Text[100])
         {
@@ -214,7 +214,7 @@ table 50502 "WDC-QA Specification Header"
         field(23; "Reason for Modification"; Text[100])
         {
             CaptionML = ENU = 'Reason for Modification', FRA = 'Raison pour modification';
-            Editable = false;
+            //Editable = false;
         }
     }
     keys
@@ -309,8 +309,6 @@ table 50502 "WDC-QA Specification Header"
             "Document Type"::Calibration:
                 BEGIN
                     IF (Status = Status::Certified) THEN BEGIN
-                        // SpecificationHeader.SETCURRENTKEY("Equipment No.", Status);
-                        // SpecificationHeader.SETRANGE("Equipment No.", "Equipment No.");
                         SpecificationHeader.SETRANGE(Status, SpecificationHeader.Status::Certified);
                         SpecificationHeader.SETFILTER("No.", '<>%1', "No.");
                         SpecificationHeader.SETRANGE("Document Type", "Document Type");
@@ -362,19 +360,6 @@ table 50502 "WDC-QA Specification Header"
         END;
     end;
 
-    procedure CheckBasicSpecification()
-    begin
-        //IF NOT "Basic Specification" THEN
-        //EXIT;
-
-        //IF ("Item No." <> '') //OR ("Item Category Code" <> '') OR ("Item Attribute 1" <> '') OR
-        //("Item Attribute 2" <> '') OR ("Item Attribute 3" <> '') OR ("Item Attribute 4" <> '') OR
-        //("Item Attribute 5" <> '') OR ("Item Attribute 6" <> '') OR ("Item Attribute 7" <> '') OR
-        //("Item Attribute 8" <> '') OR ("Item Attribute 9" <> '') OR ("Item Attribute 10" <> '')
-        //THEN
-        //ERROR(Text007);
-    end;
-
     local procedure CheckOnbeforeChangeStatus()
     var
         SpecificationLine: Record "WDC-QA Specification Line";
@@ -399,13 +384,16 @@ table 50502 "WDC-QA Specification Header"
         Customer: Record Customer;
         Vendor: Record Vendor;
         NoSeriesMgt: Codeunit "No. Series";
-        //NO: Codeunit NoSeriesManagement;
-        Text001: TextConst ENU = 'It is not possible to change the status to Certified,\', FRA = 'Il n''est pas possible de changer le statut en Certifié,\';
-        Text002: TextConst ENU = 'because %3 Specification %1 has status Certified', FRA = 'parce que %3 spécification %1 a statut Certifié';
-        Text004: TextConst ENU = 'Do you want to close this %1 Specification?', FRA = 'Voulez-vous fermer cette %1 spécification?';
-        Text005: TextConst ENU = '%1 Specification %2 is not unique.\\', FRA = '%1 Spécification %2 n''est pas unique.\\';
-        Text006: TextConst ENU = '%1 Specification No. %3 has the same fieldvalues,\ %4 "%5", %6 "%7", %8 "%9".', FRA = '%1 N° Spécification %3 a les mêmes valeurs de champ,\ %4 "%5", %6 "%7", %8 "%9".';
-        Text007: TextConst ENU = 'Item filters are not allowed for Basic QC Specifications.', FRA = 'Les filtres article ne sont pas autorisés pour les spécifications de base.';
-        Text008: TextConst ENU = 'No line exists. It is not possible to change the status to %1.', FRA = 'Aucune ligne n''existe. Il n''est pas possible de changer le statut à %1.';
-        CheckPointCodeNotPeriodicalErr: TextConst ENU = 'Check Point Code %1 is not setup as periodical in a production line.', FRA = 'Le code de point de contrôle %1 n''est pas configuré comme périodique dans une ligne de production.';
+        Text001: TextConst ENU = 'It is not possible to change the status to Certified,\',
+                           FRA = 'Il n''est pas possible de changer le statut en Certifié,\';
+        Text002: TextConst ENU = 'because %3 Specification %1 has status Certified',
+                           FRA = 'parce que %3 spécification %1 a statut Certifié';
+        Text004: TextConst ENU = 'Do you want to close this %1 Specification?',
+                           FRA = 'Voulez-vous fermer cette %1 spécification?';
+        Text005: TextConst ENU = '%1 Specification %2 is not unique.\\',
+                           FRA = '%1 Spécification %2 n''est pas unique.\\';
+        Text006: TextConst ENU = '%1 Specification No. %3 has the same fieldvalues,\ %4 "%5", %6 "%7", %8 "%9".',
+                           FRA = '%1 N° Spécification %3 a les mêmes valeurs de champ,\ %4 "%5", %6 "%7", %8 "%9".';
+        Text008: TextConst ENU = 'No line exists. It is not possible to change the status to %1.',
+                           FRA = 'Aucune ligne n''existe. Il n''est pas possible de changer le statut à %1.';
 }

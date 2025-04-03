@@ -434,7 +434,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Registration_Header___Item_Category_Code_Caption.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -465,7 +465,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Registration_Header___Item_Category_Code_.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1214,7 +1214,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!QCControllerRec_Name.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -1985,174 +1985,6 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox35</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <RightBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.43067cm</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Registration_Header___Return_Order_No__Caption">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Registration_Header___Return_Order_No__Caption.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Registration_Header___Return_Order_No__Caption</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                              <Style>Solid</Style>
-                              <Width>1pt</Width>
-                            </LeftBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Registration_Header___Return_Order_No__">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!Registration_Header___Return_Order_No__.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Registration_Header___Return_Order_No__</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox206">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox206</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox207">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox207</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox209">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox209</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -3801,7 +3633,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Controller_RL.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -4202,7 +4034,6 @@
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
-                    <TablixMember />
                     <TablixMember>
                       <TablixMembers>
                         <TablixMember>
@@ -4223,7 +4054,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>0.78737cm</Top>
             <Left>0.51012cm</Left>
-            <Height>8.33085cm</Height>
+            <Height>7.90018cm</Height>
             <Width>18.75285cm</Width>
             <Style>
               <Border>
@@ -4501,6 +4332,12 @@ End Function
         <Field Name="Specific_RH">
           <DataField>Specific_RH</DataField>
         </Field>
+        <Field Name="Variety_RH">
+          <DataField>Variety_RH</DataField>
+        </Field>
+        <Field Name="Size_RH">
+          <DataField>Size_RH</DataField>
+        </Field>
         <Field Name="FORMAT_TODAY_FORMAT_TIME_">
           <DataField>FORMAT_TODAY_FORMAT_TIME_</DataField>
         </Field>
@@ -4540,6 +4377,9 @@ End Function
         <Field Name="Registration_Header___Check_Point_Code_">
           <DataField>Registration_Header___Check_Point_Code_</DataField>
         </Field>
+        <Field Name="QCControllerRec_Name">
+          <DataField>QCControllerRec_Name</DataField>
+        </Field>
         <Field Name="Registration_Header___Sample_Temperature_">
           <DataField>Registration_Header___Sample_Temperature_</DataField>
         </Field>
@@ -4554,9 +4394,6 @@ End Function
         </Field>
         <Field Name="Registration_Header___Production_Order_No__">
           <DataField>Registration_Header___Production_Order_No__</DataField>
-        </Field>
-        <Field Name="Registration_Header___Return_Order_No__">
-          <DataField>Registration_Header___Return_Order_No__</DataField>
         </Field>
         <Field Name="Registration_Header___Source_No__">
           <DataField>Registration_Header___Source_No__</DataField>

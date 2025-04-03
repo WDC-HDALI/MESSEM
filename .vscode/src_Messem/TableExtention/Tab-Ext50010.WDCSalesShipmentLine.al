@@ -51,8 +51,9 @@ tableextension 50010 "WDC Sales Shipment Line " extends "Sales Shipment Line"
         {
             CaptionML = ENU = 'Harmonised Tariff Code', FRA = 'Code tarifaire harmonisé';
             DataClassification = ToBeClassified;
-
         }
+
+
 
 
     }

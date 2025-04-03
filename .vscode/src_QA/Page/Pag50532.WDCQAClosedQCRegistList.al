@@ -7,7 +7,6 @@ page 50532 "WDC-QA Closed QC Regist List"
     SourceTable = "WDC-QA Registration Header";
     UsageCategory = Lists;
     Editable = false;
-    DataCaptionFields = "Document Type";
     CardPageId = "WDC-QA Closed QC Registration";
 
     layout
@@ -58,8 +57,6 @@ page 50532 "WDC-QA Closed QC Regist List"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            // Rec."Document Type"::Calibration:
-                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Registration", Rec);
                             Rec."Document Type"::CoA:
@@ -67,8 +64,6 @@ page 50532 "WDC-QA Closed QC Regist List"
                         END
                     ELSE
                         CASE Rec."Document Type" OF
-                            // Rec."Document Type"::Calibration:
-                            //     PAGE.RUN(PAGE::"WDC-QA Calibration Registratio", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA QC Registration", Rec);
                             Rec."Document Type"::CoA:
@@ -76,6 +71,9 @@ page 50532 "WDC-QA Closed QC Regist List"
                         END;
                 end;
             }
+        }
+        area(Reporting)
+        {
             action(ImpressionSuiviCQ)
             {
                 Image = Bank;

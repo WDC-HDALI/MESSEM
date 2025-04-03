@@ -4,7 +4,7 @@ page 50505 "WDC-QA Specification Steps"
     CaptionML = ENU = 'Specification Steps', FRA = 'Etapes de spécification';
     PageType = List;
     SourceTable = "WDC-QA Specification Step";
-    UsageCategory = Lists;
+    //UsageCategory = Lists;
     InsertAllowed = true;
     ModifyAllowed = true;
     DelayedInsert = true;

@@ -1,10 +1,10 @@
 report 50503 "WDC-QA LignesEnregistrementsCQ"
 {
-    ApplicationArea = All;
-    CaptionML = ENU = 'Formlulaire Spécification CQ', FRA = 'Formlulaire Spécification CQ';
+    CaptionML = ENU = 'QC registration line', FRA = 'Lignes enregistrements CQ';
+    RDLCLayout = './.vscode/src_QA/Report/RDLC/LignesenregistrementsCQ.rdlc';
     UsageCategory = ReportsAndAnalysis;
     DefaultLayout = RDLC;
-    RDLCLayout = './.vscode/src_QA/Report/RDLC/LignesenregistrementsCQ.rdlc';
+    ApplicationArea = All;
 
     dataset
     {
@@ -117,9 +117,9 @@ report 50503 "WDC-QA LignesEnregistrementsCQ"
                 ELSE IF lParameter."Decimal Point" = lParameter."Decimal Point"::"1" THEN BEGIN
                     OptionChifApreVirgu := OptionChifApreVirgu::"1"
                 END;
-                // QCController.RESET;
-                // IF QCController.GET("Registration Line".Controller) THEN
-                //     NomControlleur := QCController.Name;
+                QCController.RESET;
+                IF QCController.GET("Registration Line".Controller) THEN
+                    NomControlleur := QCController.Name;
 
                 RegistrationHeader.RESET;
                 RegistrationHeader.GET("Registration Line"."Document Type", "Registration Line"."Document No.");
@@ -141,7 +141,7 @@ report 50503 "WDC-QA LignesEnregistrementsCQ"
     end;
 
     var
-        //QCController: Record "11018316";
+        QCController: Record "WDC-QA QC Controller";
         CompanyInformation: Record "Company Information";
         RegistrationHeader: Record "WDC-QA Registration Header";
         NomControlleur: Code[50];

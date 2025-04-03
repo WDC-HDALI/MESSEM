@@ -82,10 +82,6 @@ page 50531 "WDC-QA Closed QC Registration"
                         StatusOnAfterValidate;
                     end;
                 }
-                field("Production Line Code"; Rec."Production Line Code")
-                {
-                    ApplicationArea = all;
-                }
                 field("Control Reason"; Rec."Control Reason")
                 {
                     ApplicationArea = all;
@@ -129,10 +125,6 @@ page 50531 "WDC-QA Closed QC Registration"
                 {
                     ApplicationArea = all;
                 }
-                field("Warranty Date"; Rec."Warranty Date")
-                {
-                    ApplicationArea = all;
-                }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                     ApplicationArea = all;
@@ -144,50 +136,18 @@ page 50531 "WDC-QA Closed QC Registration"
         {
             systempart(links; Links)
             {
+                ApplicationArea = RecordLinks;
                 Visible = true;
             }
             systempart(Notes; Notes)
             {
+                ApplicationArea = Notes;
                 Visible = true;
             }
         }
     }
     actions
     {
-        area(Processing)
-        {
-            group("&Registration")
-            {
-
-                CaptionML = ENU = '&Registration', FRA = '&Enregistrement';
-                action("Co&mments")
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
-                    Image = ViewComments;
-                    RunObject = Page "WDC-QARegistrationCommentSheet";
-                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
-                }
-                action(Receipts)
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Receipts', FRA = 'Réceptions';
-                    Image = PostedReceipt;
-                    RunObject = Page "Posted Purchase Receipts";
-                    RunPageView = sorting("Order No.");
-                    RunPageLink = "Order No." = field("Reference Source No.");
-                }
-                action(Shipments)
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Shipments', FRA = 'Expéditions';
-                    Image = PostedShipment;
-                    RunObject = page "Posted Sales Shipment";
-                    RunPageView = sorting("Order No.");
-                    RunPageLink = "Order No." = field("Reference Source No.");
-                }
-            }
-        }
         area(Navigation)
         {
             group("F&unctions")
@@ -208,6 +168,9 @@ page 50531 "WDC-QA Closed QC Registration"
                     end;
                 }
             }
+        }
+        area(Reporting)
+        {
             action("&Print")
             {
                 CaptionML = ENU = '&Print', FRA = '&Imprimer';
@@ -241,28 +204,6 @@ page 50531 "WDC-QA Closed QC Registration"
         CurrPage.UPDATE(TRUE);
     end;
 
-    LOCAL procedure OnTimer()
-    begin
-        CurrPage.CalibraionLines.PAGE.GetCurrentRecord(RegistrationLine);
-        NewPosition := RegistrationLine.GETPOSITION;
-        NewMethod := RegistrationLine."Method No.";
-        IF (OldPosition <> NewPosition) OR (OldMethod <> NewMethod) THEN BEGIN
-            RegistrationStep.SETRANGE("Document Type", RegistrationLine."Document Type");
-            RegistrationStep.SETFILTER("Document No.", RegistrationLine."Document No.");
-            RegistrationStep.SETRANGE("Line No.", RegistrationLine."Line No.");
-            CurrPage.CalibrationSteps.PAGE.SETTABLEVIEW(RegistrationStep);
-            CurrPage.CalibrationSteps.PAGE.Update;
-            OldPosition := NewPosition;
-            OldMethod := NewMethod;
-        END;
-    end;
-
     var
-        RegistrationLine: Record "WDC-QA Registration Line";
-        RegistrationStep: Record "WDC-QA Registration Step";
         DocPrint: Codeunit "WDC-QA Document-Print";
-        NewPosition: Text[250];
-        OldPosition: Text[250];
-        NewMethod: Text[30];
-        OldMethod: Text[30];
 }

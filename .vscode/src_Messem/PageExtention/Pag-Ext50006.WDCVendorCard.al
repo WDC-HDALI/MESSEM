@@ -17,6 +17,7 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
             {
                 ApplicationArea = all;
             }
+
             field("Packaging Price"; Rec."Packaging Price")
             {
                 ApplicationArea = all;
@@ -28,10 +29,7 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
             {
                 ApplicationArea = all;
             }
-            field("Transport Tariff Code"; Rec."Transport Tariff Code")
-            {
-                ApplicationArea = all;
-            }
+
         }
         addfirst(Payments)
         {
@@ -47,6 +45,18 @@ pageextension 50006 "WDC Vendor Card " extends "Vendor Card"
         addafter("Balance (LCY)")
         {
             field("Solde Bonus"; Rec."Solde Bonus")
+            {
+                ApplicationArea = all;
+            }
+            field("Purchases (Qty.)"; Rec."Purchases (Qty.)")
+            {
+                ApplicationArea = all;
+            }
+
+        }
+        addafter("Payment Method Code")
+        {
+            field("Payment Terms Convention"; Rec."Payment Terms Convention")
             {
                 ApplicationArea = all;
             }

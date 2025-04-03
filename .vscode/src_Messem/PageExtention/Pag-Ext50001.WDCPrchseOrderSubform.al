@@ -29,12 +29,6 @@ pageextension 50001 "WDC Prchse Order Subform" extends "Purchase Order Subform"
                 ApplicationArea = all;
 
             }
-            field("Scale Weight"; Rec."Scale Weight")
-            {
-                ApplicationArea = all;
-
-            }
-
 
         }
         addafter("Qty. to Receive")
@@ -65,6 +59,9 @@ pageextension 50001 "WDC Prchse Order Subform" extends "Purchase Order Subform"
 
             }
         }
+
+        moveafter("Location Code"; "Bin Code")
+
     }
 
 }

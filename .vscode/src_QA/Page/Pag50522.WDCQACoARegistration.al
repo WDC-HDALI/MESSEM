@@ -56,10 +56,6 @@ page 50522 "WDC-QA CoA Registration"
                         StatusOnAfterValidate;
                     end;
                 }
-                field("Expiration Date"; Rec."Expiration Date")
-                {
-                    ApplicationArea = all;
-                }
             }
             part(CalibrationLines; "WDC-QA CoA RegistrationSubform")
             {
@@ -76,106 +72,98 @@ page 50522 "WDC-QA CoA Registration"
     }
     actions
     {
-        area(Processing)
-        {
-            group("%Registration")
-            {
-                CaptionML = ENU = '&Registration', FRA = '&Enregistrement';
-                action("Co&mments")
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
-                    Image = ViewComments;
-                    RunObject = page "Wdc-QARegistrationCommentSheet";
-                    RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
-                }
-                action("Page Commentaire COA")
-                {
-                    ApplicationArea = all;
-                    CaptionML = ENU = '', FRA = 'Insertion Commentaire COA';
-                    Image = CalculateCalendar;
-                    trigger OnAction()
-                    begin
-                        CLEAR(GRegistCommentLine);
-                        GRegistCommentLine.SETRANGE("No.", Rec."No.");
-                        IF GRegistCommentLine.FINDFIRST THEN
-                            GRegistCommentLine.DELETEALL;
-
-                        Gline := 10000;
-                        CLEAR(GCommentCOA);
-                        IF GCommentCOA.FINDFIRST THEN
-                            REPEAT
-                                Gline := Gline + 1000;
-                                GRegistCommentLine.INIT;
-                                GRegistCommentLine."Document Type" := Rec."Document Type";
-                                GRegistCommentLine."No." := Rec."No.";
-                                GRegistCommentLine."Line No." := Gline;
-                                GRegistCommentLine.Date := Rec."QC Date";
-                                GRegistCommentLine.Code := '';
-                                GRegistCommentLine.Comment := GCommentCOA."Commentaire COA";
-                                GRegistCommentLine.Display := FALSE;
-                                GRegistCommentLine.INSERT(TRUE);
-                            UNTIL GCommentCOA.NEXT = 0;
-
-                        PAGE.RUN(50543);
-                    end;
-                }
-            }
-        }
         area(Navigation)
         {
-            group(Function)
+            action("Co&mments")
             {
-                action("Get Registration Lines")
-                {
-                    CaptionML = ENU = 'Get Registration Lines', FRA = 'Extraire lignes enregistrements';
-                    Image = GetLines;
-                    Ellipsis = true;
-                    trigger OnAction()
-                    begin
-                        QualityControlMgt.GetRegistrationLines(Rec);
-                        RegistrationLine.RESET;
-                        RegistrationLine.SETRANGE("Document Type", Rec."Document Type");
-                        RegistrationLine.SETRANGE("Document No.", Rec."No.");
-                        RegistrationLine.SETRANGE("Type of Result", RegistrationLine."Type of Result"::Option);
-                        IF RegistrationLine.FINDSET THEN BEGIN
-                            REPEAT
-                                RegistrationLine.Imprimable := false;
-                                RegistrationLine.MODIFY
-                            UNTIL RegistrationLine.NEXT = 0;
-                        END
-                    end;
-                }
-                action("%Print")
-                {
-                    CaptionML = ENU = '&Print', FRA = '&Imprimer';
-                    Image = Print;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    Ellipsis = true;
-                    trigger OnAction()
-                    var
-                        ManufacturingSetup: Record "Manufacturing Setup";
-                    begin
-                        ManufacturingSetup.GET;
-                        ManufacturingSetup.RESET;
-                        ManufacturingSetup."Expiration Date" := Rec."Expiration Date";
-                        ManufacturingSetup."Production Date" := Rec."Production Date";
-                        ManufacturingSetup.MODIFY;
-                        COMMIT;
-                        DocPrint.PrintCoAHeader(Rec);
-                        PrintCoAHeader(Rec);
-                    end;
-                }
-                action("Imprimer Old")
-                {
-                    // Visible=false;
-                    // Image=Print;
-                    // RunObject=report "CoA Registration avant";
-                }
+                ApplicationArea = all;
+                CaptionML = ENU = 'Co&mments', FRA = 'Co&mmentaires';
+                Image = ViewComments;
+                RunObject = page "Wdc-QARegistrationCommentSheet";
+                RunPageLink = "Document Type" = FIELD("Document Type"), "No." = FIELD("No.");
+            }
+            action("Page Commentaire COA")
+            {
+                ApplicationArea = all;
+                CaptionML = ENU = 'Insert Comment CoA', FRA = 'Insertion Commentaire COA';
+                Image = CalculateCalendar;
+                trigger OnAction()
+                begin
+                    CLEAR(GRegistCommentLine);
+                    GRegistCommentLine.SETRANGE("No.", Rec."No.");
+                    IF GRegistCommentLine.FINDFIRST THEN
+                        GRegistCommentLine.DELETEALL;
+
+                    Gline := 10000;
+                    CLEAR(GCommentCOA);
+                    IF GCommentCOA.FINDFIRST THEN
+                        REPEAT
+                            Gline := Gline + 1000;
+                            GRegistCommentLine.INIT;
+                            GRegistCommentLine."Document Type" := Rec."Document Type";
+                            GRegistCommentLine."No." := Rec."No.";
+                            GRegistCommentLine."Line No." := Gline;
+                            GRegistCommentLine.Date := Rec."QC Date";
+                            GRegistCommentLine.Code := '';
+                            GRegistCommentLine.Comment := GCommentCOA."Commentaire COA";
+                            GRegistCommentLine.Display := FALSE;
+                            GRegistCommentLine.INSERT(TRUE);
+                        UNTIL GCommentCOA.NEXT = 0;
+
+                    PAGE.RUN(50543);
+                end;
+            }
+
+        }
+        area(Processing)
+        {
+            action("Get Registration Lines")
+            {
+                CaptionML = ENU = 'Get Registration Lines', FRA = 'Extraire lignes enregistrements';
+                Image = GetLines;
+                Ellipsis = true;
+                trigger OnAction()
+                begin
+                    QualityControlMgt.GetRegistrationLines(Rec);
+                    RegistrationLine.RESET;
+                    RegistrationLine.SETRANGE("Document Type", Rec."Document Type");
+                    RegistrationLine.SETRANGE("Document No.", Rec."No.");
+                    RegistrationLine.SETRANGE("Type of Result", RegistrationLine."Type of Result"::Option);
+                    IF RegistrationLine.FINDSET THEN BEGIN
+                        REPEAT
+                            RegistrationLine.Imprimable := RegistrationLine.Imprimable::Non;
+                            RegistrationLine.MODIFY;
+                        UNTIL RegistrationLine.NEXT = 0;
+                    END
+                end;
+            }
+        }
+        area(Reporting)
+        {
+            action("%Print")
+            {
+                CaptionML = ENU = '&Print', FRA = '&Imprimer';
+                Image = Print;
+                Promoted = true;
+                PromotedCategory = Process;
+                Ellipsis = true;
+                trigger OnAction()
+                var
+                    ManufacturingSetup: Record "Manufacturing Setup";
+                begin
+                    ManufacturingSetup.GET;
+                    ManufacturingSetup.RESET;
+                    ManufacturingSetup."Expiration Date" := Rec."Expiration Date";
+                    ManufacturingSetup."Production Date" := Rec."Production Date";
+                    ManufacturingSetup.MODIFY;
+                    COMMIT;
+                    DocPrint.PrintCoAHeader(Rec);
+                    PrintCoAHeader(Rec);
+                end;
             }
         }
     }
+
     LOCAL procedure StatusOnAfterValidate()
     begin
         CurrPage.UPDATE(TRUE);

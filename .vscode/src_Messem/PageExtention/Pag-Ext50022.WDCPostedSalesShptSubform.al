@@ -24,7 +24,19 @@ pageextension 50022 "WDC PostedSalesShptSubform" extends "Posted Sales Shpt. Sub
             {
                 ApplicationArea = all;
             }
+            field("Harmonised Tariff Code"; Rec."Harmonised Tariff Code")
+            {
+                ApplicationArea = all;
+
+            }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
+
+
     }
 
 }

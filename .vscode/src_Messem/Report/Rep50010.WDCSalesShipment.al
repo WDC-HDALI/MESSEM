@@ -1,14 +1,11 @@
 report 50010 "WDC Sales Shipment"
 {
-    // WDC01   24.08.2023  WDC.IM  Add Field
-    // WDC02   30.08.2023  WDC.IM  Add Variable
-    // WDC03   31.08.2023  WDC.IM  Update
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MESSEMSalesShipment.rdlc';
 
     Caption = 'Sales - Shipment';
     PreviewMode = PrintLayout;
-
+    //Permissions = tabledata= RIMD=table=50001;
     dataset
     {
         dataitem("Sales Shipment Header"; "Sales Shipment Header")
@@ -75,9 +72,6 @@ report 50010 "WDC Sales Shipment"
                     {
                     }
                     column(ShipToAddr6; ShipToAddr[6])
-                    {
-                    }
-                    column(CompanyInfoHomePage; CompanyInfo."Home Page")
                     {
                     }
                     column(CompanyInfoEmail; CompanyInfo."E-Mail")
@@ -150,6 +144,12 @@ report 50010 "WDC Sales Shipment"
                     {
                     }
                     column(DestPort_SalesShipHeader; Harbor.Description)
+                    {
+                    }
+                    column(NotifyParty1value; "Sales Shipment Header"."Notify Party 1")
+                    {
+                    }
+                    column(NotifyParty2value; "Sales Shipment Header"."Notify Party 2")
                     {
                     }
                     column(NotifyPartyAdress; NotifyPartyAdress)
@@ -299,9 +299,6 @@ report 50010 "WDC Sales Shipment"
                     column(ShipmentDateCaption; ShipmentDateCaptionLbl)
                     {
                     }
-                    column(HomePageCaption; HomePageCaptionLbl)
-                    {
-                    }
                     column(EmailCaption; EmailCaptionLbl)
                     {
                     }
@@ -339,7 +336,7 @@ report 50010 "WDC Sales Shipment"
                                     CurrReport.BREAK;
 
                             CLEAR(DimText);
-                            Continue := FALSE;
+                            //Continue := FALSE;
                             REPEAT
                                 OldDimText := DimText;
                                 IF DimText = '' THEN
@@ -351,7 +348,7 @@ report 50010 "WDC Sales Shipment"
                                         DimSetEntry1."Dimension Code", DimSetEntry1."Dimension Value Code");
                                 IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
                                     DimText := OldDimText;
-                                    Continue := TRUE;
+                                    //Continue := TRUE;
                                     EXIT;
                                 END;
                             UNTIL DimSetEntry1.NEXT = 0;
@@ -431,9 +428,9 @@ report 50010 "WDC Sales Shipment"
                         column(BoxType_SalesLine; "Sales Shipment Line"."Shipment Unit")
                         {
                         }
-                        // column(HarmTariff;"Sales Shipment Line"."Harmonised Tariff Code")
-                        // {
-                        // }
+                        column(HarmTariff; "Sales Shipment Line"."Harmonised Tariff Code")
+                        {
+                        }
                         column(TotalQty2_SalesLine; TotalQty2)
                         {
                         }
@@ -515,7 +512,7 @@ report 50010 "WDC Sales Shipment"
                                         CurrReport.BREAK;
 
                                 CLEAR(DimText);
-                                Continue := FALSE;
+                                //Continue := FALSE;
                                 REPEAT
                                     OldDimText := DimText;
                                     IF DimText = '' THEN
@@ -527,7 +524,7 @@ report 50010 "WDC Sales Shipment"
                                             DimSetEntry2."Dimension Code", DimSetEntry2."Dimension Value Code");
                                     IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
                                         DimText := OldDimText;
-                                        Continue := TRUE;
+                                        //Continue := TRUE;
                                         EXIT;
                                     END;
                                 UNTIL DimSetEntry2.NEXT = 0;
@@ -798,7 +795,6 @@ report 50010 "WDC Sales Shipment"
                         begin
                             IF TrackingSpecCount = 0 THEN
                                 CurrReport.BREAK;
-                            CurrReport.NEWPAGE;
                             SETRANGE(Number, 1, TrackingSpecCount);
                             TrackingSpecBuffer.SETCURRENTKEY("Source ID", "Source Type", "Source Subtype", "Source Batch Name",
                               "Source Prod. Order Line", "Source Ref. No.");
@@ -1052,7 +1048,7 @@ report 50010 "WDC Sales Shipment"
     var
         Text000: TextConst ENU = 'Salesperson', FRA = 'Vendeur';
         Text001: TextConst ENU = 'COPY', FRA = 'COPIE';
-        Text002: TextConst ENU = 'Shipping Instructions %1 \  Packing List', FRA = 'Ventes : Expédition%1 \  Liste de colisage';
+        Text002: TextConst ENU = 'Packing List', FRA = 'Liste de colisage';
         SalesPurchPerson: Record "Salesperson/Purchaser";
         CompanyInfo: Record "Company Information";
         CompanyInfo1: Record "Company Information";
@@ -1109,7 +1105,6 @@ report 50010 "WDC Sales Shipment"
         BankAccNoCaptionLbl: TextConst ENU = 'Account No.', FRA = 'N° compte';
         ShipmentNoCaptionLbl: TextConst ENU = 'Shipment No.', FRA = 'N° expédition';
         ShipmentDateCaptionLbl: TextConst ENU = 'Shipment Date', FRA = 'Date d''expédition';
-        HomePageCaptionLbl: TextConst ENU = 'Home Page', FRA = 'Page d''accueil';
         EmailCaptionLbl: TextConst ENU = 'E-Mail', FRA = 'E-Mail';
         DocumentDateCaptionLbl: TextConst ENU = 'Document Date', FRA = 'Date document';
         HeaderDimensionsCaptionLbl: TextConst ENU = 'Header Dimensions', FRA = 'Analytique en-tête';
@@ -1130,7 +1125,7 @@ report 50010 "WDC Sales Shipment"
         "--------------------------": Text;
         ShippingAgent: Record "Shipping Agent";
         DestHarborCaption: TextConst ENU = 'Destination Harbor', FRA = 'Port de destination';
-        NotifyParty1Caption: TextConst ENU = 'Notify Party 1', FRA = 'Partie à informer 1';
+        NotifyParty1Caption: TextConst ENU = 'Notify Party 1', FRA = 'à inforPartie mer 1';
         NotifyParty2Caption: TextConst ENU = 'Notify Party 2', FRA = 'Partie à informer 2';
         Harbor: Record "WDC Harbor";
         NotifyParty: Record "WDC Notify Party";
@@ -1179,7 +1174,7 @@ report 50010 "WDC Sales Shipment"
 
     procedure InitLogInteraction()
     begin
-        LogInteraction := SegManagement.FindInteractionTemplateCode(5) <> '';
+        LogInteraction := SegManagement.FindInteractionTemplateCode("Interaction Log Entry Document Type".FromInteger(5)) <> '';
     end;
 
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean; NewShowCorrectionLines: Boolean; NewShowLotSN: Boolean; DisplayAsmInfo: Boolean)

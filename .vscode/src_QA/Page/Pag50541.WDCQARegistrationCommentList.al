@@ -8,7 +8,6 @@ page 50541 "WDC-QA RegistrationCommentList"
     PageType = List;
     SourceTable = "WDC-QA RegistrationCommentLine";
     CardPageId = "WDC-QARegistrationCommentSheet";
-    DataCaptionFields = "Document Type";
     LinksAllowed = false;
     layout
     {
@@ -24,7 +23,7 @@ page 50541 "WDC-QA RegistrationCommentList"
                 {
                     ApplicationArea = All;
                 }
-                field(Comments; Rec.Comment)
+                field(Comment; Rec.Comment)
                 {
                     ApplicationArea = All;
                 }

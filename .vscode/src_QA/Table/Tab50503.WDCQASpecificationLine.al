@@ -14,7 +14,7 @@ table 50503 "WDC-QA Specification Line"
         {
             CaptionML = ENU = 'Document No.', FRA = 'N° document';
             TableRelation = if ("Version No." = filter(<> '')) "WDC-QA Specification Header"."No." where("Document Type" = field("Document Type"),
-                                                            "Version No." = field("Version No."))
+                                                                                                         "Version No." = field("Version No."))
             else
             "WDC-QA Specification Header"."No." where("Document Type" = field("Document Type"));
         }
@@ -67,8 +67,6 @@ table 50503 "WDC-QA Specification Line"
             CaptionML = ENU = 'Type Of Result', FRA = 'Type de résultat';
             Editable = false;
             trigger OnValidate()
-            var
-                myInt: Integer;
             begin
                 IF "Type of Result" = "Type of Result"::Option THEN BEGIN
                     "Lower Limit" := 0;
@@ -208,7 +206,6 @@ table 50503 "WDC-QA Specification Line"
             CaptionML = ENU = 'Print', FRA = 'Imprimable';
             OptionMembers = Oui,Non;
             OptionCaptionML = ENU = 'Yes,No', FRA = 'Oui,Non';
-
         }
         field(26; Type; Enum "WDC-QA Spec Line Type")
         {
@@ -223,8 +220,6 @@ table 50503 "WDC-QA Specification Line"
         }
     }
     trigger OnInsert()
-    var
-        myInt: Integer;
     begin
         TestStatusOpen;
         InsertSpecificationStaps;
@@ -305,7 +300,6 @@ table 50503 "WDC-QA Specification Line"
 
     var
         StatusCheckSuspended: Boolean;
-        MethodLine: Record "WDC-QA Method Line";
         SpecificationStep: Record "WDC-QA Specification Step";
         SpecificationHeader: Record "WDC-QA Specification Header";
 }

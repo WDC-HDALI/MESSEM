@@ -24,6 +24,16 @@ pageextension 50027 "WDC SalesInvoiceSubform" extends "Sales Invoice Subform"
             {
                 ApplicationArea = all;
             }
+            field("Harmonised Tariff Code"; Rec."Harmonised Tariff Code")
+            {
+                ApplicationArea = all;
+
+            }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 }

@@ -19,6 +19,10 @@ page 50526 "WDC-QA QC Registration Subform"
                     Editable = false;
                     CaptionML = ENU = 'Steps Filled In', FRA = 'Étapes remplies';
                 }
+                field("Measure No."; Rec."Measure No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Parameter Code"; Rec."Parameter Code")
                 {
                     ApplicationArea = all;
@@ -95,11 +99,10 @@ page 50526 "WDC-QA QC Registration Subform"
                 field("Result Value"; Rec."Result Value")
                 {
                     ApplicationArea = all;
-                    Editable = false;
+                    //Editable = false;
                 }
                 field("Result Value UOM"; Rec."Result Value UOM")
                 {
-
                     ApplicationArea = all;
                 }
                 field("Average Result Value"; Rec."Average Result Value")
@@ -110,26 +113,26 @@ page 50526 "WDC-QA QC Registration Subform"
                 field("Result Option"; Rec."Result Option")
                 {
                     ApplicationArea = all;
-                    Editable = FALSE;
+                    //Editable = FALSE;
                 }
                 field("Average Result Option"; Rec."Average Result Option")
                 {
-
                     ApplicationArea = all;
                 }
                 field("Conclusion Result"; Rec."Conclusion Result")
                 {
                     ApplicationArea = all;
                     Visible = "Conclusion ResultVisible";
+                    StyleExpr = conclusioncolor;
                 }
                 field("Conclusion Average Result"; Rec."Conclusion Average Result")
                 {
                     ApplicationArea = all;
                     Visible = ConclusionAverageResultVisible;
+                    StyleExpr = AvgConclusionColor;
                 }
                 field("QC Date"; Rec."QC Date")
                 {
-
                     ApplicationArea = all;
                 }
                 field("QC Time"; Rec."QC Time")
@@ -140,70 +143,18 @@ page 50526 "WDC-QA QC Registration Subform"
                 {
                     ApplicationArea = all;
                 }
-                field(Controller; Rec.Controller)
-                {
-                    ApplicationArea = all;
-                }
+                // field(Controller; Rec.Controller)
+                // {
+                //     ApplicationArea = all;
+                // }
                 field("Pallet No."; Rec."Pallet No.")
                 {
                     ApplicationArea = all;
+                    CaptionML = ENU = 'Pallet No.', FRA = 'N° Contrôle';
                 }
                 field("Control Date Average result"; Rec."Control Date Average result")
                 {
                     ApplicationArea = all;
-                }
-            }
-        }
-    }
-    actions
-    {
-        area(Processing)
-        {
-            group(Function)
-            {
-                CaptionML = ENU = 'Function', FRA = 'Fonction';
-                action("Create &Second Sampling")
-                {
-                    ApplicationArea = all;
-                    //Image =;
-                    CaptionML = ENU = 'Create &Second Sampling', FRA = 'Créer &deuxième analyse';
-                    Ellipsis = true;
-                    trigger OnAction()
-                    begin
-                        CreateSecondSample;
-                    end;
-                }
-                action("Export Ligne")
-                {
-                    ApplicationArea = all;
-                    trigger OnAction()
-                    var
-                        RecLLineCQ: Record "WDC-QA Registration Line";
-                    begin
-                        RecLLineCQ.RESET;
-                        RecLLineCQ.SETRANGE("Document No.", Rec."Document No.");
-                        IF RecLLineCQ.FINDSET THEN BEGIN
-                            XMLPORT.RUN(50501, TRUE, FALSE, RecLLineCQ);
-                        END;
-                    end;
-                }
-                action("Update Second Sampling")
-                {
-                    ApplicationArea = all;
-                    Image = UpdateShipment;
-                    trigger OnAction()
-                    var
-                        RegistrationLine: Record "WDC-QA Registration Line";
-                    begin
-                        RegistrationLine.RESET;
-                        RegistrationLine.SETRANGE("Document Type", Rec."Document Type");
-                        RegistrationLine.SETRANGE("Document No.", Rec."Document No.");
-                        IF RegistrationLine.FINDSET THEN
-                            REPEAT
-                                RegistrationLine."Is Second Sampling" := FALSE;
-                                RegistrationLine.MODIFY
-                            UNTIL RegistrationLine.NEXT = 0;
-                    end;
                 }
             }
         }
@@ -230,6 +181,8 @@ page 50526 "WDC-QA QC Registration Subform"
             CurrPage.EDITABLE(RegistrationHeader.Status <> RegistrationHeader.Status::Closed)
         ELSE
             CurrPage.EDITABLE(FALSE);
+        ConclusionColor := DetermineColor(Rec."Conclusion Result".AsInteger());
+        AvgConclusionColor := DetermineColor(Rec."Conclusion Average Result".AsInteger());
         GetCounts;
     end;
 
@@ -257,28 +210,6 @@ page 50526 "WDC-QA QC Registration Subform"
         "Target Result OptionEditable" := MakeOptionEditable;
     end;
 
-    procedure GetCurrentRecord(VAR CalibrationRegistrationLine: Record "WDC-QA Registration Line")
-    begin
-        CalibrationRegistrationLine := Rec;
-    end;
-
-    procedure CreateSecondSample()
-    begin
-        QualityControlMgt.CreateSecondSampling(Rec);
-    end;
-
-    procedure LineUp()
-    begin
-        IF Rec.NEXT(-1) >= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
-    procedure LineDown()
-    begin
-        IF Rec.NEXT <= 0 THEN;
-        CurrPage.UPDATE(FALSE);
-    end;
-
     procedure UpdateFieldsVisible()
     begin
         "Conclusion ResultVisible" := TRUE;
@@ -296,9 +227,30 @@ page 50526 "WDC-QA QC Registration Subform"
         StepCountText := STRSUBSTNO(txtXoutofY, ModifiedCount, MaxCount);
     end;
 
+    procedure CreateSecondSamplingOld()
+    begin
+        QualityControlMgt.CreateSecondSamplingOKH1(Rec);
+    end;
+
+    local procedure DetermineColor(ResultValue: Integer): Text
+    begin
+        CASE ResultValue OF
+            1:
+                EXIT('Favorable');
+            2:
+                EXIT('Ambiguous');
+            3:
+                EXIT('Unfavorable');
+            ELSE
+                EXIT('Standard');
+        END;
+    end;
+
     var
         RegistrationHeader: Record "WDC-QA Registration Header";
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
+        ConclusionColor: Text;
+        AvgConclusionColor: Text;
         "Specification RemarkEditable": Boolean;
         "Lower LimitEditable": Boolean;
         "Lower Warning LimitEditable": Boolean;

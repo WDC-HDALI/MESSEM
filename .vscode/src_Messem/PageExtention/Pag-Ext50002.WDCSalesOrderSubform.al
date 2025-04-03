@@ -39,6 +39,11 @@ pageextension 50002 "WDC Sales Order Subform " extends "Sales Order Subform"
                 ApplicationArea = all;
 
             }
+            field("Harmonised Tariff Code"; Rec."Harmonised Tariff Code")
+            {
+                ApplicationArea = all;
+
+            }
         }
 
         addafter("Shipment Date")
@@ -57,6 +62,11 @@ pageextension 50002 "WDC Sales Order Subform " extends "Sales Order Subform"
             }
 
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 
 

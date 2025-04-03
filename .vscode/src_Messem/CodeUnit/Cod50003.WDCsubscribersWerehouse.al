@@ -3,6 +3,7 @@ using Microsoft.Inventory.Posting;
 using Microsoft.Inventory.Ledger;
 using Microsoft.Finance.GeneralLedger.Setup;
 using Microsoft.Inventory.Item;
+using Microsoft.Foundation.Enums;
 using Microsoft.Inventory.Costing;
 using Microsoft.Warehouse.Journal;
 using Microsoft.Inventory.Tracking;
@@ -10,7 +11,6 @@ using Microsoft.Inventory.Journal;
 
 codeunit 50003 "WDC subscribers Werehouse"
 {
-
 
     //<<*********************Lot Attribut Fileds******************************************
 
@@ -122,6 +122,18 @@ codeunit 50003 "WDC subscribers Werehouse"
         ItemJournalLine.Place := OldItemLedgerEntry.Place;
     end;
 
-
     //>>**************************Lot Attribut Fileds************************
+
+    [EventSubscriber(ObjectType::Table, DATABASE::"Item Journal Line", 'OnAfterSetupNewLine', '', false, false)]
+    local procedure OnAfterSetupNewLine(var ItemJournalLine: Record "Item Journal Line"; var LastItemJournalLine: Record "Item Journal Line"; ItemJournalTemplate: Record "Item Journal Template"; ItemJnlBatch: Record "Item Journal Batch")
+    var
+    begin
+        if ItemJnlBatch."Source Type by Default" <> ItemJnlBatch."Source Type by Default"::" " Then
+            ItemJournalLine."Source Type" := ItemJnlBatch."Source Type by Default";
+        if ItemJnlBatch."Entry Type" <> ItemJnlBatch."Entry Type"::" " then
+            ItemJournalLine."Entry Type" := ItemJnlBatch."Entry Type";
+    end;
+
+
+
 }

@@ -2,7 +2,7 @@ table 50511 "WDC-QA Method Header"
 {
     CaptionML = ENU = 'Method Header', FRA = 'En-tête méthode';
     DataClassification = ToBeClassified;
-    LookupPageId = "WDC-QA Methods";
+    LookupPageId = "WDC-QA Methods List";
 
     fields
     {
@@ -261,17 +261,26 @@ table 50511 "WDC-QA Method Header"
     var
         QualityControlSetup: Record "WDC-QA Quality Control Setup";
         MethodHeader: Record "WDC-QA Method Header";
-        //NoSeriesMgt: Codeunit NoSeriesManagement;
         NoSeriesMgt: Codeunit "No. Series";
-        Text001: TextConst ENU = 'The parenthesis at position %1 is misplaced.', FRA = 'Position %1. La parenthèse est mal placée.';
-        Text002: TextConst ENU = 'You cannot have two consecutive operators. The error occurred at position %1.', FRA = 'Position %1. Vous ne pouvez pas avoir deux opérateurs consécutifs.';
-        Text003: TextConst ENU = 'There is an operand missing after position %1.', FRA = 'Il manque un opérateur après la position %1.';
-        Text004: TextConst ENU = 'There are more left parentheses than right parentheses.', FRA = 'Il y a plus de parenthèses ouvrantes que de parenthèses fermantes.';
-        Text005: TextConst ENU = 'There are more right parentheses than left parentheses.', FRA = 'Il y a plus de parenthèses fermantes que de parenthèses ouvrantes.';
-        Text007: TextConst ENU = 'You have entered an illegal value or a nonexistent column number (%1).', FRA = 'Vous avez enregistré une valeur non-permis ou un numéro de colonne non-existante (%1).';
-        Text008: TextConst ENU = 'Because of circular references, Navision cannot calculate a formula.', FRA = 'A cause de références circulaires, Navision ne peut pas calculé une formule.';
-        TextSI000: TextConst ENU = 'You can not delete %1 %2, because there is at least one %3 for this %1.', FRA = 'Vous ne pouvez pas supprimer %1 %2, car il existe au moins une %3 pour ce %1.';
-        TextSI001: TextConst ENU = 'QC-Method', FRA = 'Méthode CQ';
-        TextSI002: TextConst ENU = 'QC-Parameter', FRA = 'Paramètre CQ';
+        Text001: TextConst ENU = 'The parenthesis at position %1 is misplaced.',
+                           FRA = 'Position %1. La parenthèse est mal placée.';
+        Text002: TextConst ENU = 'You cannot have two consecutive operators. The error occurred at position %1.',
+                           FRA = 'Position %1. Vous ne pouvez pas avoir deux opérateurs consécutifs.';
+        Text003: TextConst ENU = 'There is an operand missing after position %1.',
+                           FRA = 'Il manque un opérateur après la position %1.';
+        Text004: TextConst ENU = 'There are more left parentheses than right parentheses.',
+                           FRA = 'Il y a plus de parenthèses ouvrantes que de parenthèses fermantes.';
+        Text005: TextConst ENU = 'There are more right parentheses than left parentheses.',
+                           FRA = 'Il y a plus de parenthèses fermantes que de parenthèses ouvrantes.';
+        Text007: TextConst ENU = 'You have entered an illegal value or a nonexistent column number (%1).',
+                           FRA = 'Vous avez enregistré une valeur non-permis ou un numéro de colonne non-existante (%1).';
+        Text008: TextConst ENU = 'Because of circular references, Navision cannot calculate a formula.',
+                           FRA = 'A cause de références circulaires, Navision ne peut pas calculé une formule.';
+        TextSI000: TextConst ENU = 'You can not delete %1 %2, because there is at least one %3 for this %1.',
+                             FRA = 'Vous ne pouvez pas supprimer %1 %2, car il existe au moins une %3 pour ce %1.';
+        TextSI001: TextConst ENU = 'QC-Method',
+                             FRA = 'Méthode CQ';
+        TextSI002: TextConst ENU = 'QC-Parameter',
+                             FRA = 'Paramètre CQ';
 
 }

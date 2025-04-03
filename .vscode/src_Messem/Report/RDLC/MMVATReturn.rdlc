@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource">
@@ -77,7 +77,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!PurchInvHeader_VendorInvoiceNo.Value</Value>
+                                  <Value>=Fields!PurchInvHeader_VendorInvoiceNo.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -108,7 +108,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!VendorLedgerEntry1_Description.Value</Value>
+                                  <Value>=Fields!VendorLedgerEntry1_Description.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -139,7 +139,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!PurchInvHeader_Amount.Value</Value>
+                                  <Value>=Fields!PurchInvHeader_Amount.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>n2</Format>
@@ -172,7 +172,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!PurchInvHeader_AmountTTC.Value - Fields!PurchInvHeader_Amount.Value</Value>
+                                  <Value>=Fields!PurchInvHeader_AmountTTC.Value - Fields!PurchInvHeader_Amount.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>n2</Format>
@@ -209,7 +209,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!PurchInvHeader_AmountTTC.Value</Value>
+                                  <Value>=Fields!PurchInvHeader_AmountTTC.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>n2</Format>
@@ -242,7 +242,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!VendorLedgerEntry_DebitAmount.Value - Fields!VendorLedgerEntry_CreditAmount.Value</Value>
+                                  <Value>=Fields!VendorLedgerEntry_DebitAmount.Value - Fields!VendorLedgerEntry_CreditAmount.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>n2</Format>
@@ -275,7 +275,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Vendor_IF.Value</Value>
+                                  <Value>=Fields!Vendor_IF.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -307,7 +307,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Vendor_Name.Value</Value>
+                                  <Value>=Fields!Vendor_Name.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -339,7 +339,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Vendor_ICE.Value</Value>
+                                  <Value>=Fields!Vendor_ICE.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -371,7 +371,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">= IIf(Fields!PurchInvHeader_Amount.Value = 0 , 0, ((Fields!PurchInvHeader_AmountTTC.Value /Fields!PurchInvHeader_Amount.Value) - 1))</Value>
+                                  <Value>= IIf(Fields!PurchInvHeader_Amount.Value = 0 , 0, ((Fields!PurchInvHeader_AmountTTC.Value /Fields!PurchInvHeader_Amount.Value) - 1))</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>#,0%</Format>
@@ -393,7 +393,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -405,7 +404,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!VendorLedgerEntry_PostingDate.Value</Value>
+                                  <Value>=Fields!VendorLedgerEntry_PostingDate.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>d</Format>
@@ -438,7 +437,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!VendorLedgerEntry1_PostingDate.Value</Value>
+                                  <Value>=Fields!VendorLedgerEntry1_PostingDate.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>d</Format>
@@ -470,7 +469,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Vendor_PaymentMethodCode.Value</Value>
+                                  <Value>=Fields!Vendor_PaymentMethodCode.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -502,7 +501,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Vendor_PaymentMethodCode.Value</Value>
+                                  <Value>=Fields!Vendor_PaymentMethodCode.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -534,7 +533,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!VendorLedgerEntry1_DocumentNo.Value</Value>
+                                  <Value>=Fields!VendorLedgerEntry1_DocumentNo.Value</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -635,7 +634,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Parameters!Titre.Value</Value>
+                      <Value>=Fields!titretxt.Value</Value>
                       <Style>
                         <FontFamily>Segoe UI</FontFamily>
                         <FontSize>14pt</FontSize>
@@ -671,7 +670,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">Filtre date</Value>
+                      <Value>Filtre date</Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -704,7 +703,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=First(Fields!DateDebut.Value, "DataSet_Result") + " .. " +First(Fields!Datefin.Value, "DataSet_Result")</Value>
+                      <Value>=First(Fields!DateDebut.Value, "DataSet_Result") + " .. " +First(Fields!Datefin.Value, "DataSet_Result")</Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -737,7 +736,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">ICE</Value>
+                      <Value>ICE</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -777,7 +776,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">TAUX TVA</Value>
+                      <Value>TAUX TVA</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -817,7 +816,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">MODALITE DE PAIEMENT</Value>
+                      <Value>MODALITE DE PAIEMENT</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -857,7 +856,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">DATE PAIEMENT</Value>
+                      <Value>DATE PAIEMENT</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -897,7 +896,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">IF</Value>
+                      <Value>IF</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -937,7 +936,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">MONTANT HT</Value>
+                      <Value>MONTANT HT</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -977,7 +976,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">NOM FOURNISSEURS</Value>
+                      <Value>NOM FOURNISSEURS</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1017,7 +1016,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">DESIGNATION</Value>
+                      <Value>DESIGNATION</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1057,7 +1056,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">N°</Value>
+                      <Value>N°</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1097,7 +1096,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">N° FACTURE</Value>
+                      <Value>N° FACTURE</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1137,7 +1136,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">N° DOC NAVISION</Value>
+                      <Value>N° DOC NAVISION</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1177,7 +1176,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">MONTANT TTC</Value>
+                      <Value>MONTANT TTC</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1217,7 +1216,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">MONTANT TVA</Value>
+                      <Value>MONTANT TVA</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1257,7 +1256,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">DATE FACTURE</Value>
+                      <Value>DATE FACTURE</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1297,7 +1296,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">MONTANT PAIEMENT</Value>
+                      <Value>MONTANT PAIEMENT</Value>
                       <Style>
                         <FontSize>7pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1420,6 +1419,54 @@
       <Prompt>Fournisseu</Prompt>
     </ReportParameter>
   </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>1</NumberOfColumns>
+      <NumberOfRows>8</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>Titre</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>Date</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>Document</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>Eché</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>MtDebit</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>MtCredit</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>Solde</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>7</RowIndex>
+          <ParameterName>Fournisseu</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1465,14 +1512,14 @@ End Function
         <Field Name="COMPANYNAME">
           <DataField>COMPANYNAME</DataField>
         </Field>
+        <Field Name="titretxt">
+          <DataField>titretxt</DataField>
+        </Field>
         <Field Name="RecGCompanyinformation_Address">
           <DataField>RecGCompanyinformation_Address</DataField>
         </Field>
         <Field Name="FORMATTODAY04">
           <DataField>FORMATTODAY04</DataField>
-        </Field>
-        <Field Name="PAGENo">
-          <DataField>PAGENo</DataField>
         </Field>
         <Field Name="USERID">
           <DataField>USERID</DataField>

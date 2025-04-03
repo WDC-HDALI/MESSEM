@@ -17,6 +17,8 @@ tableextension 50039 "WDC Item Journal Batch" extends "Item Journal Batch"
         {
             Captionml = ENU = 'Entry Type', FRA = 'Type écriture';
             DataClassification = ToBeClassified;
+            ValuesAllowed = 7, 0, 1, 2, 3;
+            InitValue = 7;
         }
     }
 }

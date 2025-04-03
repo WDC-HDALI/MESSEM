@@ -8,7 +8,6 @@ page 50529 "WDC-QAClosedCoARegistList"
     UsageCategory = Lists;
     Editable = false;
     CardPageId = "WDC-QA Closed CoA Registration";
-    DataCaptionFields = "Document Type";
 
     layout
     {
@@ -58,8 +57,6 @@ page 50529 "WDC-QAClosedCoARegistList"
                 begin
                     IF Rec.Status = Rec.Status::Closed THEN
                         CASE Rec."Document Type" OF
-                            // Rec."Document Type"::Calibration:
-                            //     PAGE.RUN(PAGE::"WDC-QA Closed Calibration Reg.", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA Closed QC Registration", Rec);
                             Rec."Document Type"::CoA:
@@ -67,8 +64,6 @@ page 50529 "WDC-QAClosedCoARegistList"
                         END
                     ELSE
                         CASE Rec."Document Type" OF
-                            // Rec."Document Type"::Calibration:
-                            //     PAGE.RUN(PAGE::"WDC-QA Calibration Registratio", Rec);
                             Rec."Document Type"::QC:
                                 PAGE.RUN(PAGE::"WDC-QA QC Registration", Rec);
                             Rec."Document Type"::CoA:

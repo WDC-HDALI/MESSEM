@@ -8,7 +8,7 @@ page 50506 "WDC-QA QC Specification List"
     Editable = false;
     CardPageId = "WDC-QA QC Specification";
     SourceTableView = SORTING("Document Type", "No.", "Version No.") WHERE("Document Type" = FILTER(QC), Status = FILTER(<> Closed));
-    DataCaptionFields = "Document Type";
+    //DataCaptionFields = "Document Type";
     layout
     {
         area(Content)

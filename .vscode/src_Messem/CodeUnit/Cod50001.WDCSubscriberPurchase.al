@@ -46,6 +46,19 @@ codeunit 50001 "WDC Subscriber Purchase"
             END;
         end;
     end;
+    //correction flux : reception partielle 
+    [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnValidateQtyToReceiveOnAfterCheckQty', '', FALSE, FALSE)]
+    local procedure OnValidateQtyToReceiveOnAfterCheckQty(var PurchaseLine: Record "Purchase Line"; CurrFieldNo: Integer)
+    begin
+        PurchaseLine.CalcPackagingQuantityToReceive();
+    end;
+
+    [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnValidateReturnQtyToShipOnAfterInitQty', '', FALSE, FALSE)]
+    local procedure OnValidateReturnQtyToShipOnAfterInitQty(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; CurrentFieldNo: Integer; var IsHandled: Boolean)
+    begin
+        PurchaseLine.CalcPackagingQuantityToReceive();
+    end;
+    //
 
     [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnAfterInitQtyToShip', '', FALSE, FALSE)]
     local procedure OnAfterInitQtyToShip(var PurchLine: Record "Purchase Line"; CurrFieldNo: Integer)
@@ -78,7 +91,6 @@ codeunit 50001 "WDC Subscriber Purchase"
         IF PurchHeader."Document Type" IN [PurchHeader."Document Type"::Order, PurchHeader."Document Type"::"Credit Memo"] THEN
             AddVendorPackaging(PurchHeader);
     end;
-
 
     [EventSubscriber(ObjectType::Table, database::"item journal line", 'OnValidateItemNoOnAfterCalcUnitCost', '', FALSE, FALSE)]
     local procedure OnValidateItemNoOnAfterCalcUnitCost(var ItemJournalLine: Record "Item Journal Line"; Item: Record Item)
@@ -118,6 +130,7 @@ codeunit 50001 "WDC Subscriber Purchase"
         ItemJnlLine."Quantity Shipment Containers" := PurchLine."Reserv Qty. to Post Ship.Cont.";
         ItemJnlLine."Qty Shipm.Units per Shipm.Cont" := PurchLine."Qty Shipm.Units per Shipm.Cont";
         ItemJnlLine."Balance Reg. Customer/Vend.No." := PurchLine.GetBalanceRegVendorNo();
+        ItemJnlLine."Purchase Order No." := PurchLine."Document No.";
     end;
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnPostItemJnlLineOnBeforeInitAmount', '', FALSE, FALSE)]
@@ -138,7 +151,7 @@ codeunit 50001 "WDC Subscriber Purchase"
         NewItemLedgEntry."Qty Shipm.Units per Shipm.Cont" := ItemJournalLine."Qty Shipm.Units per Shipm.Cont";
         NewItemLedgEntry."Balance Reg. Customer/Vend.No." := ItemJournalLine."Balance Reg. Customer/Vend.No.";
         NewItemLedgEntry."Balance Registration Direction" := ItemJournalLine."Balance Registration Direction";
-
+        NewItemLedgEntry."Purchase Order No." := ItemJournalLine."Purchase Order No.";
         IF ItemJournalLine."Entry Type" IN
             [ItemJournalLine."Entry Type"::Sale,
              ItemJournalLine."Entry Type"::"Negative Adjmt.",
@@ -208,6 +221,39 @@ codeunit 50001 "WDC Subscriber Purchase"
             PurchaseLine."Reserv Qty. to Post Ship.Cont." := 0;
         end;
     end;
+    //corection facture 
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnBeforeUpdateQtyToInvoiceForOrder', '', FALSE, FALSE)]
+    local procedure OnBeforeUpdateQtyToInvoiceForOrder(var PurchHeader: Record "Purchase Header"; TempPurchLine: Record "Purchase Line" temporary; var IsHandled: Boolean)
+    begin
+        if Abs(TempPurchLine."Quantity Invoiced" + TempPurchLine."Qty. to Invoice") > Abs(TempPurchLine."Quantity Received") then begin
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Units to invoice",
+                   TempPurchLine."Qty. Received Shipment Units" - TempPurchLine."Qty. S.Units Invoiced");
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Cont. to invoice",
+              TempPurchLine."Qty. Received Shipm.Containers" - TempPurchLine."Qty. S.Cont. Invoiced");
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnPostUpdateOrderLineOnSetDefaultQtyBlank', '', FALSE, FALSE)]
+    local procedure OnPostUpdateOrderLineOnSetDefaultQtyBlank(var PurchaseHeader: Record "Purchase Header"; var TempPurchaseLine: Record "Purchase Line" temporary; PurchPost: Record "Purchases & Payables Setup"; var SetDefaultQtyBlank: Boolean)
+    begin
+        TempPurchaseLine."Reserv Qty. to Post Ship.Unit" := 0;
+        TempPurchaseLine."Reserv Qty. to Post Ship.Cont." := 0;
+
+    end;
+
+    local procedure OnBeforeUpdateQtyToInvoiceForReturnOrder(var PurchHeader: Record "Purchase Header"; TempPurchLine: Record "Purchase Line" temporary; var IsHandled: Boolean)
+    begin
+        if Abs(TempPurchLine."Quantity Invoiced" + TempPurchLine."Qty. to Invoice") > Abs(TempPurchLine."Return Qty. Shipped") then begin
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Units to invoice",
+                TempPurchLine."Return Qty. Shipped S.Units" - TempPurchLine."Qty. S.Units Invoiced");
+            TempPurchLine.VALIDATE(TempPurchLine."Qty. S.Cont. to invoice",
+              TempPurchLine."Return Qty. Shipped S.Cont." - TempPurchLine."Qty. S.Cont. Invoiced");
+        end;
+        TempPurchLine."Qty. S.Units Invoiced" := TempPurchLine."Qty. S.Units Invoiced" + TempPurchLine."Qty. S.Units to invoice";
+        TempPurchLine."Qty. S.Cont. Invoiced" := TempPurchLine."Qty. S.Cont. Invoiced" + TempPurchLine."Qty. S.Cont. to invoice";
+
+    end;
+    //
     //avoir
     [EventSubscriber(ObjectType::Table, database::"Purch. Cr. Memo Line", 'OnAfterInitFromPurchLine', '', FALSE, FALSE)]
     local procedure OnAfterInitFromPurchLineavoir(PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr."; PurchLine: Record "Purchase Line"; var PurchCrMemoLine: Record "Purch. Cr. Memo Line")
@@ -217,13 +263,39 @@ codeunit 50001 "WDC Subscriber Purchase"
         PurchCrMemoLine."Return Shipment No." := PurchLine."Return Shipment No.";
         PurchCrMemoLine."Return Shipment Line No." := PurchLine."Return Shipment Line No.";
     end;
+    //filtrage de liste retour
+    [EventSubscriber(ObjectType::page, page::"Get Post.Doc - P.RcptLn Sbfrm", 'OnBeforeIsShowRec', '', FALSE, FALSE)]
+    local procedure OnBeforeIsShowRec(PurchRcptLine: Record "Purch. Rcpt. Line"; var RevQtyFilter: Boolean; var Result: Boolean; var IsHandled: Boolean; var RemainingQty: Decimal; var RevUnitCostLCY: Decimal; FillExactCostReverse: Boolean)
+    begin
+        if PurchRcptLine."Packaging Item" = true then
+            IsHandled := true;
+        //Result := false;
+    end;
+
+    // Enleve l'option de validation et laisser que la réception
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPost', '', FALSE, FALSE)]
+    local procedure OnBeforeConfirmPost(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    Var
+
+        lText001: TextConst ENU = 'Do you want to post this order',
+                            FRA = 'Voulez-vous valider la commande?';
+        lText002: TextConst ENU = 'Operation is cancelled',
+                            FRA = 'Opération annulée';
+    begin
+        if PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order then begin
+            if Not Confirm(StrSubstNo(lText001)) then
+                Error(lText002);
+            DefaultOption := 1;
+            HideDialog := true;
+            PurchaseHeader.Receive := true;
+        end;
+    end;
 
     procedure AddOrderPackaging(PurchHeader: Record "Purchase Header")
     var
         purchLine: Record "Purchase Line";
         PurchLine2: Record "Purchase Line";
         LineNo: Integer;
-        t: page "Posted Purchase Document Lines";
     begin
 
         PurchLine.RESET;
@@ -457,19 +529,5 @@ codeunit 50001 "WDC Subscriber Purchase"
     var
         Item: Record 27;
         PurchSetup: Record "Purchases & Payables Setup";
-        purchaseheader: record "Purchase Header";
-        PurchInvheader: record 122;
-        PurchCredMemHeader: record 124;
-        GenJnlPostLine: Codeunit 12;
-        WDCAccountingSubscribers: Codeunit "WDC Rebate Subsc Accounting";
-        Currency: Record 4;
-
-        GenJnlLineDocNo: Code[20];
-        GenJnlLineExtDocNo: Code[35];
-        GenJnlLineDocType: Integer;
-        TextSI009: TextConst ENU = 'Vendor', FRA = 'Fournisseur';
-        TextSI010: TextConst ENU = 'Invoice', FRA = 'Facture';
-        PurchCrMemoHeader: Record 124;
-        RemRebateAmountLCY: Decimal;
 
 }

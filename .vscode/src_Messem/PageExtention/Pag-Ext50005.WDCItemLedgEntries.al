@@ -33,6 +33,22 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
             {
                 ApplicationArea = all;
             }
+            field("Purchase Amount (Actual)"; Rec."Purchase Amount (Actual)")
+            {
+                ApplicationArea = all;
+            }
+            field("Purchase Amount (Expected)"; Rec."Purchase Amount (Expected)")
+            {
+                ApplicationArea = all;
+            }
+            field("Rebate Accrual Amount (LCY)"; Rec."Rebate Accrual Amount (LCY)")
+            {
+                ApplicationArea = all;
+            }
+            field("Purchase Order No."; Rec."Purchase Order No.")
+            {
+                ApplicationArea = all;
+            }
 
         }
     }

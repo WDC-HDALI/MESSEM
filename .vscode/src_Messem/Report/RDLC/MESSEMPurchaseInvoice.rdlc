@@ -65,7 +65,7 @@ Cstr(Fields!CompanyAddr4.Value) + Chr(177) +
 Cstr(Fields!CompanyAddr5.Value) + Chr(177) + 
 Cstr(Fields!CompanyAddr6.Value) + Chr(177) + 
 Cstr(Fields!CompanyInfoPhoneNo.Value) + Chr(177) + 
-Cstr(Fields!CompanyInfoHomePage.Value) + Chr(177) + 
+Cstr("") + Chr(177) + 
 Cstr(Fields!CompanyInfoVATRegNo.Value) + Chr(177) + 
 Cstr(Fields!CompanyInfoGiroNo.Value) + Chr(177) + 
 Cstr(Fields!CompanyInfoBankName.Value) + Chr(177) + 
@@ -97,7 +97,7 @@ Cstr(Fields!BankAccNoCaption.Value) + Chr(177) +
 Cstr(Fields!BankNameCaption.Value) + Chr(177) + 
 Cstr(Fields!GiroNoCaption.Value) + Chr(177) + 
 Cstr(Fields!VATRegNoCaption.Value) + Chr(177) + 
-Cstr(Fields!HomePageCaption.Value) + Chr(177) + 
+Cstr("") + Chr(177) + 
 Cstr(Fields!PhoneNoCaption.Value) + Chr(177) + 
 Cstr(Fields!PageCaption.Value) + Chr(177) + 
 Cstr(Fields!DocDateCaption.Value) + Chr(177) + 
@@ -4932,9 +4932,6 @@ End Function
         </Field>
         <Field Name="VendAddr6">
           <DataField>VendAddr6</DataField>
-        </Field>
-        <Field Name="CompanyInfoHomePage">
-          <DataField>CompanyInfoHomePage</DataField>
         </Field>
         <Field Name="CompanyInfoEMail">
           <DataField>CompanyInfoEMail</DataField>

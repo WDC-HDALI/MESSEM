@@ -29,5 +29,10 @@ pageextension 50007 "WDC Pstd Pur Rcpt Subform " extends "Posted Purchase Rcpt. 
                 ApplicationArea = all;
             }
         }
+        modify("Bin Code")
+        {
+            Visible = TRUE;
+        }
+        moveafter("Location Code"; "Bin Code")
     }
 }
