@@ -319,5 +319,8 @@ permissionset 50000 GeneratedPermission
         page "WDC-ED Payment Step Ledger" = X,
         page "WDC-ED Payment Steps" = X,
         page "WDC-ED Payment Steps List" = X,
-        page "WDC-ED View/Edit Payment Line" = X;
+        page "WDC-ED View/Edit Payment Line" = X,
+        report "WDC MAJ Fourn BO" = X,
+        report "WDC MAJ Fourn donneur d'ordre" = X,
+        report "WDC Production Order Statistic" = X;
 }
