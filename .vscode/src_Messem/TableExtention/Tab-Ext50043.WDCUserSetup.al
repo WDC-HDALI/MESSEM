@@ -3,7 +3,7 @@ namespace Messem.Messem;
 using System.Security.User;
 //**********************Documentation****************************
 //WDC01  02/04/2025  HG  Add new field "Mise à jour fournisseur"
-
+//WDC02  13/03/2026  IM  Add new field "Bloc Qty Lot"
 tableextension 50043 "WDC User Setup" extends "User Setup"
 {
     fields
@@ -42,5 +42,11 @@ tableextension 50043 "WDC User Setup" extends "User Setup"
             CaptionML = ENU = 'Update Vendor', FRA = 'Mise à jour fournisseur';
         }
         //>>WDC01
+        //<<WDC02
+        field(50006; "Bloc Qty Lot"; Boolean)
+        {
+            CaptionML = ENU = 'Block Lot Qty', FRA = 'Bloquer une quantité dans un lot';
+        }
+        //>>WDC02
     }
 }

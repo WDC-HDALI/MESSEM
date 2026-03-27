@@ -290,12 +290,16 @@ table 50503 "WDC-QA Specification Line"
 
     procedure DeletSpecificationSteps()
     begin
+        SpecificationStep.Reset();
         SpecificationStep.SETRANGE("Document Type", "Document Type");
         SpecificationStep.SETFILTER("Document No.", "Document No.");
         SpecificationStep.SETFILTER("Version No.", "Version No.");
         SpecificationStep.SETRANGE("Line No.", "Line No.");
-        IF NOT SpecificationStep.ISEMPTY THEN
-            SpecificationStep.DELETEALL;
+        IF SpecificationStep.FindSet() THEN begin
+            repeat
+                SpecificationStep.DELETE();
+            until (SpecificationStep.Next() = 0)
+        end;
     end;
 
     var

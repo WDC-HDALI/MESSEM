@@ -42,7 +42,7 @@ table 50518 "WDC-QA Registration Line"
                     "Specification Line No." := TmpRegistrationLine."Specification Line No.";
                 END;
 
-                IF Parameter.GET("Document Type", "Parameter Code") THEN;
+                IF Parameter.GET(Parameter."Type"::"QC-specification", "Parameter Code") THEN;
                 "Parameter Description" := Parameter.Description;
                 "Parameter Group Code" := Parameter."Parameter Group Code";
 
@@ -50,8 +50,13 @@ table 50518 "WDC-QA Registration Line"
                     "Check Point Code" := RegistrationHeader."Check Point Code"
                 ELSE
                     "Check Point Code" := '';
-
+                "Item No. EP" := RegistrationHeader."Item No.";
+                "Lot No. EP" := RegistrationHeader."Lot No.";
+                "Item No. HF" := RegistrationHeader."Item No.";
+                "Lot No. HF" := RegistrationHeader."Lot No.";
+                "CoA Type Value" := "CoA Type Value"::Average;
                 VALIDATE("Method No.", Parameter."Method No.");
+                Type := Type::Parameter;
             end;
         }
         field(5; "Parameter Description"; Text[50])
@@ -108,10 +113,11 @@ table 50518 "WDC-QA Registration Line"
                 RegistrationStep: Record "WDC-QA Registration Step";
             begin
                 IF CurrFieldNo = FIELDNO("Measure No.") THEN BEGIN
+                    RegistrationStep.Reset();
                     RegistrationStep.SETRANGE("Document Type", "Document Type");
                     RegistrationStep.SETRANGE("Document No.", "Document No.");
                     RegistrationStep.SETRANGE("Line No.", "Line No.");
-                    IF NOT RegistrationStep.ISEMPTY THEN
+                    IF RegistrationStep.FindSet() THEN
                         RegistrationStep.MODIFYALL("Measure No.", "Measure No.");
                 END;
             end;
@@ -405,7 +411,20 @@ table 50518 "WDC-QA Registration Line"
     end;
 
     trigger OnDelete()
+    var
+        QCRegistration: Record "WDC-QA Registration Header";
+        CoARegistratioHeader: Record "WDC-QA Registration Header";
+        Text001: TextConst FRA = 'Vous ne pouvez pas supprimer cette ligne car une certificat d''analyse est associé.';
     begin
+        if "Document Type" = "Document Type"::QC then begin
+            QCRegistration.Get("Document Type", "Document No.");
+            CoARegistratioHeader.Reset();
+            CoARegistratioHeader.SetRange("Document Type", CoARegistratioHeader."Document Type"::CoA);
+            CoARegistratioHeader.SetRange("Lot No.", QCRegistration."Lot No.");
+            CoARegistratioHeader.SetRange("Item No.", QCRegistration."Item No.");
+            if CoARegistratioHeader.FindSet() then
+                Error(Text001);
+        end;
         DeleteRegistrationSteps;
     end;
 
@@ -484,8 +503,10 @@ table 50518 "WDC-QA Registration Line"
         RegistrationStep.SETRANGE("Document Type", "Document Type");
         RegistrationStep.SETFILTER("Document No.", "Document No.");
         RegistrationStep.SETRANGE("Line No.", "Line No.");
-        IF NOT RegistrationStep.ISEMPTY THEN
-            RegistrationStep.DELETEALL;
+        IF RegistrationStep.FindSet() THEN
+            repeat
+                RegistrationStep.DELETE();
+            until (RegistrationStep.Next() = 0)
     end;
 
     procedure GetNextMeasureNo(): Integer

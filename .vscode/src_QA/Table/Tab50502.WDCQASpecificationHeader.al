@@ -245,11 +245,15 @@ table 50502 "WDC-QA Specification Header"
     var
         SpecificationLine: Record "WDC-QA Specification Line";
     begin
+        SpecificationLine.Reset();
         SpecificationLine.SETRANGE("Document Type", "Document Type");
         SpecificationLine.SETFILTER("Document No.", "No.");
         SpecificationLine.SETFILTER("Version No.", "Version No.");
-        IF NOT SpecificationLine.ISEMPTY THEN
-            SpecificationLine.DELETEALL(TRUE);
+        IF SpecificationLine.FindSet() THEN begin
+            repeat
+                SpecificationLine.DELETE(TRUE);
+            until (SpecificationLine.Next() = 0)
+        end;
     end;
 
     procedure AssistEdit(OldSpecificationHeader: Record "WDC-QA Specification Header"): Boolean
@@ -369,10 +373,11 @@ table 50502 "WDC-QA Specification Header"
 
         TESTFIELD("Check Point Code");
 
+        SpecificationLine.Reset();
         SpecificationLine.SETRANGE("Document Type", "Document Type");
         SpecificationLine.SETRANGE("Document No.", "No.");
         SpecificationLine.SETRANGE("Version No.", "Version No.");
-        IF SpecificationLine.ISEMPTY THEN
+        IF Not SpecificationLine.FindSet() THEN
             ERROR(Text008, Status);
     end;
 

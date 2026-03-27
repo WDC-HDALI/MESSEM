@@ -3,7 +3,6 @@ namespace PermissionMessem;
 using MessemMA.MessemMA;
 using MESSEM.MESSEM;
 using Projet.Projet;
-using Sogrega.Sogrega;
 
 permissionset 50000 GeneratedPermission
 {
@@ -238,7 +237,6 @@ permissionset 50000 GeneratedPermission
         table "WDC-ED Payment Step" = X,
         table "WDC-ED Payment Step Ledger" = X,
         report "WDC Bank Transfer Order" = X,
-        report "WDC Update Rebate Value Entry" = X,
         report "WDC-ED Archive Payment Slips" = X,
         report "WDC-ED Bank Acc Det Trial Bal." = X,
         report "WDC-ED Bank Acc. Trial Balance" = X,
@@ -322,5 +320,12 @@ permissionset 50000 GeneratedPermission
         page "WDC-ED View/Edit Payment Line" = X,
         report "WDC MAJ Fourn BO" = X,
         report "WDC MAJ Fourn donneur d'ordre" = X,
-        report "WDC Production Order Statistic" = X;
+        report "WDC Production Order Statistic" = X,
+        report "WDC Insert Registration Line" = X,
+        tabledata "Prod. Order Cost Detail Line" = RIMD,
+        table "Prod. Order Cost Detail Line" = X,
+        page "Prod. Order Cost Detail Lines" = X,
+        report "WDC Production Order Stat BI" = X,
+        page "WDC Update Data" = X,
+        report "Update Item Fifo" = X;
 }

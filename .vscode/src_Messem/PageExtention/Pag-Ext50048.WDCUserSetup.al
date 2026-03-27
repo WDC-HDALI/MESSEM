@@ -3,7 +3,7 @@ namespace Messem.Messem;
 using System.Security.User;
 //***************Documentation****************************************
 //WDC01  02/04/2025  HG  Add new field "Mise à jour fournisseur"
-
+//WDC02  13/03/2026  IM  Add new field "Bloc Qty Lot"
 pageextension 50048 "WDC User Setup" extends "User Setup"
 {
     layout
@@ -36,7 +36,12 @@ pageextension 50048 "WDC User Setup" extends "User Setup"
                 ApplicationArea = All;
             }
             //>>WDC01
-
+            //<<WDC02
+            field("Bloc Qty Lot"; Rec."Bloc Qty Lot")
+            {
+                ApplicationArea = All;
+            }
+            //>>WDC02
         }
     }
 

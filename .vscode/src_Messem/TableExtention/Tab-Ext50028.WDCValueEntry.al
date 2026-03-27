@@ -1,7 +1,8 @@
 namespace MESSEM.MESSEM;
 
 using Microsoft.Inventory.Ledger;
-
+//******************Documentation*******************
+//WDC01  WDC.HG  13/11/2025 Add "Lot No." field 
 tableextension 50028 "WDC Value Entry" extends "Value Entry"
 {
     fields
@@ -15,6 +16,12 @@ tableextension 50028 "WDC Value Entry" extends "Value Entry"
         {
             CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
         }
+        //<<WDC01
+        field(50003; "Lot No."; Code[20])
+        {
+            CaptionML = ENU = 'Lot No.', FRA = 'N° Lot';
+        }
+        //>>WDC01
     }
 }
 

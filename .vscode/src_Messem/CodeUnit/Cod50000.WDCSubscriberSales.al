@@ -1,6 +1,9 @@
 codeunit 50000 "WDC Subscriber Sales"
 {
-
+    //******************Documentation*******************
+    //WDC01  WDC.HG  13/11/2025 Add "Lot No." field in values entries 
+    //WDC02  WDC.IM  13/03/2026 Add control for blocked Quantity
+    //**************************************************
     [EventSubscriber(ObjectType::Table, database::"sales Line", 'OnAfterAssignFieldsForNo', '', FALSE, FALSE)]
     local procedure OnAfterAssignFieldsForNosales(var SalesLine: Record "Sales Line"; var xSalesLine: Record "Sales Line"; SalesHeader: Record "Sales Header")
 
@@ -322,9 +325,56 @@ codeunit 50000 "WDC Subscriber Sales"
         end;
     end;
 
+    //<<WDC01
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnInitValueEntryOnBeforeSetDocumentLineNo', '', FALSE, FALSE)]
+    local procedure OnInitValueEntryOnBeforeSetDocumentLineNo(ItemJournalLine: Record "Item Journal Line"; var ItemLedgerEntry: Record "Item Ledger Entry"; var ValueEntry: Record "Value Entry")
+    begin
+        ValueEntry."Lot No." := ItemLedgerEntry."Lot No.";
 
+    end;
+    //>>WDC01
+    //<<WDC02
+    [EventSubscriber(ObjectType::Table, Database::"Tracking Specification", 'OnValidateQuantityBaseOnBeforeCheckItemTrackingChange', '', false, false)]
+    local procedure OnValidateQuantityBaseOnBeforeCheckItemTrackingChange(var TrackingSpecification: Record "Tracking Specification"; CallingFieldNo: Integer; var IsHandled: Boolean)
+    var
+        SalesHeader: Record "Sales Header";
+        LotInfo: Record "Lot No. Information";
+        AvailableQty: Decimal;
+        text001: TextConst ENU = 'The available quantity in lot %1 is insufficient. Available: %2',
+                            FRA = 'La quantité disponible dans le lot %1 est insuffisante. Disponible: %2';
+    begin
+        if SalesHeader.get(SalesHeader."Document Type"::Order, TrackingSpecification."Source ID") then
+            if LotInfo.Get(TrackingSpecification."Item No.", '', TrackingSpecification."Lot No.") then begin
+                LotInfo.CalcFields(Inventory);
+                AvailableQty := LotInfo.Inventory - LotInfo."Blocked Quantity";
+                //AvailableQty := GetAvailableQty(Rec."Item No.", Rec."Lot No.", Rec."Variant Code");
+                if TrackingSpecification."Quantity (Base)" > AvailableQty then
+                    Error(text001, TrackingSpecification."Lot No.", AvailableQty);
+            end;
+    end;
 
-    //
+    procedure GetAvailableQty(ItemNo: Code[20]; LotNo: Code[50]; VariantCode: Code[10]): Decimal
+    var
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        LotInfo: Record "Lot No. Information";
+        Stock: Decimal;
+    begin
+        ItemLedgerEntry.RESET;
+        ItemLedgerEntry.SETCURRENTKEY("Item No.", "Lot No.", "Location Code");
+        ItemLedgerEntry.SetRange("Item No.", ItemNo);
+        ItemLedgerEntry.SetRange("Lot No.", LotNo);
+        ItemLedgerEntry.SetRange("Variant Code", VariantCode);
+        if ItemLedgerEntry.FindSet() then
+            repeat
+                Stock += ItemLedgerEntry.Quantity;
+            until ItemLedgerEntry.Next() = 0;
+
+        if LotInfo.Get(ItemNo, '', LotNo) then
+            exit(Stock - LotInfo."Blocked Quantity")
+        else
+            exit(Stock);
+    end;
+    //>>WDC02
     procedure IsPackagingItem(): Boolean
     var
         Packaging: Record "WDC Packaging";
@@ -352,71 +402,7 @@ codeunit 50000 "WDC Subscriber Sales"
             EXIT(psalesline."Qty. Shipped Shipm. Containers" + psalesline."Qty. to Ship Shipm. Containers" - psalesline."Qty. S.Cont. Invoiced");
     end;
 
-    // procedure CalcPackagingQuantityToShip(psalesline: Record "Sales Line")
-    // begin
-    //     IF (psalesline."Shipment Unit" <> '') THEN BEGIN
-    //         IF psalesline."Document Type" IN [psalesline."Document Type"::"Return Order", psalesline."Document Type"::"Credit Memo"] THEN BEGIN
-    //             // IF (CurrFieldNo <> FIELDNO( psalesline."Return Qty. to Receive")) AND
-    //             //    (NOT OverruleCalcPackagingCheck) THEN
-    //             //IF (NOT OverruleCalcPackagingCheck) THEN 
-    //             //EXIT;
-    //             psalesline."Return Qty. to Receive S.Units" := round(psalesline."Return Qty. to Receive" / psalesline."Qty. per Shipment Unit", 1, '>') -
-    //                                                 psalesline."Reserv Qty. to Post Ship.Unit";
 
-    //             IF (psalesline."Return Qty. to Receive S.Units" * psalesline."Quantity Shipment Units" < 0) OR
-    //               (ABS(psalesline."Return Qty. to Receive S.Units") > ABS(psalesline."Quantity Shipment Units" - psalesline."Return Qty. Received S.Units")) OR
-    //               (psalesline."Quantity Shipment Units" * (psalesline."Quantity Shipment Units" - psalesline."Return Qty. Received S.Units") < 0)
-    //             THEN
-    //                 psalesline."Return Qty. to Receive S.Units" := psalesline."Quantity Shipment Units" -
-    //                   (psalesline."Return Qty. Received S.Units" + psalesline."Reserv Qty. to Post Ship.Unit");
-    //         END ELSE BEGIN
-    //             // IF (CurrFieldNo <> FIELDNO( psalesline."Qty. to Ship")) AND
-    //             //    (NOT OverruleCalcPackagingCheck) THEN
-    //             // IF (NOT OverruleCalcPackagingCheck) THEN 
-    //             //   EXIT;
-    //             psalesline."Qty. to Ship Shipment Units" := round(psalesline."Qty. to Ship" / psalesline."Qty. per Shipment Unit", 1, '>') -
-    //                                              psalesline."Reserv Qty. to Post Ship.Unit";
-    //             IF (psalesline."Qty. to Ship Shipment Units" * psalesline."Quantity Shipment Units" < 0) OR
-    //               (ABS(psalesline."Qty. to Ship Shipment Units") > ABS(psalesline."Quantity Shipment Units" - psalesline."Qty. Shipped Shipment Units")) OR
-    //               (psalesline."Quantity Shipment Units" * (psalesline."Quantity Shipment Units" - psalesline."Qty. Shipped Shipment Units") < 0)
-    //             THEN
-    //                 psalesline."Qty. to Ship Shipment Units" := psalesline."Quantity Shipment Units" -
-    //                   (psalesline."Qty. Shipped Shipment Units" + psalesline."Reserv Qty. to Post Ship.Unit");
-    //         END;
-    //     END;
-
-    //     IF (psalesline."Shipment Container" <> '') THEN BEGIN
-    //         IF psalesline."Document Type" IN [psalesline."Document Type"::"Return Order", psalesline."Document Type"::"Credit Memo"] THEN BEGIN
-    //             // IF (CurrFieldNo <> FIELDNO(psalesline."Return Qty. to Receive")) AND
-    //             //    (NOT OverruleCalcPackagingCheck) THEN
-    //             // IF (NOT OverruleCalcPackagingCheck) THEN 
-    //             //   EXIT;
-    //             psalesline."Return Qty. to Receive S.Cont." := round(psalesline."Return Qty. to Receive" / psalesline."Qty. per Shipment Container", 1, '>') -
-    //                                                 psalesline."Reserv Qty. to Post Ship.Cont.";
-
-    //             IF (psalesline."Return Qty. to Receive S.Cont." * psalesline."Quantity Shipment Containers" < 0) OR
-    //               (ABS(psalesline."Return Qty. to Receive S.Cont.") > ABS(psalesline."Quantity Shipment Containers" - psalesline."Return Qty. Received S.Cont.")) OR
-    //               (psalesline."Quantity Shipment Containers" * (psalesline."Quantity Shipment Containers" - psalesline."Return Qty. Received S.Cont.") < 0)
-    //             THEN
-    //                 psalesline."Return Qty. to Receive S.Cont." := psalesline."Quantity Shipment Containers" -
-    //                   (psalesline."Return Qty. Received S.Cont." + psalesline."Reserv Qty. to Post Ship.Cont.");
-    //         END ELSE BEGIN
-    //             // IF (CurrFieldNo <> FIELDNO( psalesline."Qty. to Ship")) AND
-    //             //    (NOT OverruleCalcPackagingCheck) THEN
-    //             // IF (NOT OverruleCalcPackagingCheck) THEN 
-    //             //   EXIT;
-    //             psalesline."Qty. to Ship Shipm. Containers" := Round(psalesline."Qty. to Ship" / psalesline."Qty. per Shipment Container", 1, '>') -
-    //                                                 psalesline."Reserv Qty. to Post Ship.Cont.";
-    //             IF (psalesline."Qty. to Ship Shipm. Containers" * psalesline."Quantity Shipment Containers" < 0) OR
-    //               (ABS(psalesline."Qty. to Ship Shipm. Containers") > ABS(psalesline."Quantity Shipment Containers" - psalesline."Qty. Shipped Shipm. Containers")) OR
-    //               (psalesline."Quantity Shipment Containers" * (psalesline."Quantity Shipment Containers" - psalesline."Qty. Shipped Shipm. Containers") < 0)
-    //             THEN
-    //                 psalesline."Qty. to Ship Shipm. Containers" := psalesline."Quantity Shipment Containers" -
-    //                   (psalesline."Qty. Shipped Shipm. Containers" + psalesline."Reserv Qty. to Post Ship.Cont.");
-    //         END;
-    //     END;
-
-    // end;
     //validation
     procedure AddOrderPackaging(SalesHeader: Record 36)
     var

@@ -16,6 +16,18 @@ report 50508 "WDC-QA CoA Registration"
             column(AfficherMicrobio; AfficherMicrobio)
             {
             }
+            column(AfficherResidus; AfficherResidus)
+            {
+            }
+            column(AfficherHeavy; AfficherHeavy)
+            {
+            }
+            column(AfficherRadioactivity; AfficherRadioactivity)
+            {
+            }
+            column(ShowResidusComment; ShowResidusComment)
+            {
+            }
             column(ExpirationDate; ExpirDate)
             {
             }
@@ -307,6 +319,7 @@ report 50508 "WDC-QA CoA Registration"
                 var
                     lParameter: Record "WDC-QA Parameter";
                     int: Text;
+                    lRegistrationLine: Record "WDC-QA Registration Line";
                 begin
                     IF UnitofMeasure.GET("Registration Line"."Result Value UOM") THEN;
                     IF lParameter.GET("Registration Line".Type, "Registration Line"."Parameter Code") THEN;
@@ -318,7 +331,8 @@ report 50508 "WDC-QA CoA Registration"
                     END;
                     IF AfficherMicrobio THEN BEGIN
                         IF "Parameter Group Code" <> 'MICRO' THEN
-                            CurrReport.SKIP
+                            //CurrReport.SKIP
+                            "Registration Line".MicroBio := ''
                     END
                     ELSE BEGIN
                         "Registration Line".MicroBio := '';
@@ -326,6 +340,32 @@ report 50508 "WDC-QA CoA Registration"
                         IF "Parameter Group Code" = 'MICRO' THEN
                             CurrReport.SKIP;
                     END;
+                    if AfficherResidus then begin
+                        ShowResidusComment := false;
+                        lRegistrationLine.Reset();
+                        lRegistrationLine.SetRange("Document No.", "Registration Line"."Document No.");
+                        lRegistrationLine.SetRange("Parameter Group Code", 'RESIDUES');
+                        if not lRegistrationLine.FindFirst() then
+                            ShowResidusComment := true;
+                    end
+                    else begin
+                        IF "Parameter Group Code" = 'RESIDUES' THEN
+                            CurrReport.SKIP;
+                    end;
+                    if AfficherHeavy then begin
+
+                    end
+                    else begin
+                        IF "Parameter Group Code" = 'HEAVY' THEN
+                            CurrReport.SKIP;
+                    end;
+                    if AfficherRadioactivity then begin
+
+                    end
+                    else begin
+                        IF "Parameter Group Code" = 'RADIOACTIVITY' THEN
+                            CurrReport.SKIP;
+                    end;
                     IF Parameter.GET("Parameter Group Code") THEN BEGIN
                         DescriptionGroupe := Parameter.Description;
                         ParamGroupOrder := Parameter.Order;
@@ -340,7 +380,7 @@ report 50508 "WDC-QA CoA Registration"
                         TempRegistrationLine.SETRANGE("Specification Version No.", "Specification Version No.");
                         TempRegistrationLine.SETRANGE("Parameter Code", "Parameter Code");
 
-                        IF NOT TempRegistrationLine.ISEMPTY THEN
+                        IF TempRegistrationLine.FindSet() THEN
                             CurrReport.SKIP;
                         TempRegistrationLine.INIT;
                         TempRegistrationLine.TRANSFERFIELDS("Registration Line");
@@ -439,8 +479,11 @@ report 50508 "WDC-QA CoA Registration"
                     Contact.INIT;
 
                 TempRegistrationLine.RESET;
-                IF NOT TempRegistrationLine.ISEMPTY THEN
-                    TempRegistrationLine.DELETEALL;
+                IF TempRegistrationLine.FindSet() THEN begin
+                    repeat
+                        TempRegistrationLine.DELETE;
+                    until (TempRegistrationLine.Next() = 0)
+                end;
 
                 Item.RESET;
                 Item.SETCURRENTKEY("No.");
@@ -496,7 +539,22 @@ report 50508 "WDC-QA CoA Registration"
                     field("Afficher Microbio"; AfficherMicrobio)
                     {
                         ApplicationArea = all;
-                        CaptionML = ENU = '', FRA = 'Afficher Microbio';
+                        CaptionML = ENU = 'Show Microbiology', FRA = 'Afficher Microbio';
+                    }
+                    field("AfficherResidus"; AfficherResidus)
+                    {
+                        ApplicationArea = all;
+                        CaptionML = ENU = 'Show Residues', FRA = 'Afficher Résidus';
+                    }
+                    field("AfficherHeavyMetals"; AfficherHeavy)
+                    {
+                        ApplicationArea = all;
+                        CaptionML = ENU = 'Show Heavy Metals', FRA = 'Afficher Heavy Metals';
+                    }
+                    field("Afficher Radioactivity"; AfficherRadioactivity)
+                    {
+                        ApplicationArea = all;
+                        CaptionML = ENU = 'Show Radioactivity', FRA = 'Afficher Radioactivity';
                     }
                     field(ProdDateDebut; ProdDateDebut)
                     {
@@ -763,6 +821,10 @@ report 50508 "WDC-QA CoA Registration"
         LogInteraction: Boolean;
         OptionParamValue: Boolean;
         AfficherMicrobio: Boolean;
+        AfficherResidus: Boolean;
+        AfficherHeavy: Boolean;
+        AfficherRadioactivity: Boolean;
+        ShowResidusComment: Boolean;
         CustItemParametersFound: Boolean;
         ExpirDate: Date;
         ProdDateFin: Date;
@@ -800,7 +862,7 @@ report 50508 "WDC-QA CoA Registration"
         ShipContainer: Text[100];
         DateProdDebut: Text[20];
         DateExpireMicro: Text;
-        DescriptionGroupe: Text[30];
+        DescriptionGroupe: Text[50];
         QtyPerShipmentUnit: Text[100];
         ShipmUnitsPerShipContainer: Text[100];
         Err001: TextConst ENU = 'End date must be greater than the current day date',

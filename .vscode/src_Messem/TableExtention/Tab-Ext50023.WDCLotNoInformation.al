@@ -50,5 +50,15 @@ tableextension 50023 "WDC Lot No. Information" extends "Lot No. Information"
                                                                   "Location Code" = FIELD("Location Filter"),
                                                                   "Document Type" = FILTER(5 | 7 | 8)));
         }
+        //<<WDC.IM
+        field(50006; "Blocked Quantity"; Decimal)
+        {
+            CaptionML = ENU = 'Blocked Quantity', FRA = 'Quantité bloquée';
+        }
+        field(50007; "Block Reason"; Code[20])
+        {
+            CaptionML = ENU = 'Block Reason', FRA = 'Motif de blocage';
+        }
+        //>>WDC.IM
     }
 }

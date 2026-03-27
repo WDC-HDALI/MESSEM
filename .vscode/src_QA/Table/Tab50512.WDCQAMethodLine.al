@@ -23,7 +23,7 @@ table 50512 "WDC-QA Method Line"
                 MethodLine.RESET;
                 MethodLine.SETRANGE("Document No.", "Document No.");
                 MethodLine.SETRANGE("Column No.", "Column No.");
-                IF NOT MethodLine.ISEMPTY THEN
+                IF MethodLine.FindSet() THEN
                     FIELDERROR("Column No.");
             end;
         }

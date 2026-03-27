@@ -32,12 +32,13 @@ codeunit 50500 "WDC-QC Quality Control Mgt."
 
         RegistrationLine.SETRANGE("Document No.", RegistrationHeader."No.");
 
-        IF NOT RegistrationLine.ISEMPTY THEN
-            IF NOT CONFIRM(Text002, FALSE) THEN
-                ERROR(Text003);
-
-        RegistrationLine.DELETEALL(TRUE);
-
+        IF RegistrationLine.FindSet() THEN begin
+            IF CONFIRM(Text002, FALSE) THEN begin
+                repeat
+                    RegistrationLine.DELETE(TRUE);
+                until (RegistrationLine.Next() = 0)
+            end;
+        end;
         LineNumber := 10000;
         MeasureNo := 1;
 

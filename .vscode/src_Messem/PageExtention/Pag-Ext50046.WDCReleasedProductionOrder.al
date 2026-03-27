@@ -98,5 +98,23 @@ pageextension 50046 "WDC Released ProductionOrder" extends "Released Production 
                 end;
             }
         }
+        addafter(Statistics)
+        {
+            action("Actual Cost")
+            {
+                Caption = 'Actual Cost';
+                Ellipsis = true;
+                Image = CalculateCost;
+                Promoted = true;
+                PromotedCategory = Process;
+                ApplicationArea = all;
+
+                trigger OnAction()
+                begin
+                    CurrPage.ProdOrderLines.PAGE.ShowActualCosts;
+                end;
+            }
+        }
     }
+
 }

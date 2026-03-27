@@ -49,6 +49,11 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
             {
                 ApplicationArea = all;
             }
+            field("Sales Order No."; Rec."Sales Order No.")
+            {
+                ApplicationArea = all;
+            }
+
 
         }
     }

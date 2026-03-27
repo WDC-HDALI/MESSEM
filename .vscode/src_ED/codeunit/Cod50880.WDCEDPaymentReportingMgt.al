@@ -283,16 +283,16 @@ codeunit 50880 "WDC-ED Payment Reporting Mgt."
             until Vendor.Next = 0;
     end;
 
-    [EventSubscriber(ObjectType::Report, 595, 'OnAfterInitDtldCustLedgerEntry', '', false, false)]
-    local procedure UpdateDtldCustLedgerEntry(var DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry")
-    begin
-        DetailedCustLedgEntry."Curr. Adjmt. G/L Account No." := GetCustomerReceivablesAccount(DetailedCustLedgEntry."Customer No.");
-    end;
+    // [EventSubscriber(ObjectType::Report,595 , , '', false, false)]
+    // local procedure UpdateDtldCustLedgerEntry(var DetailedCustLedgEntry: Record "Detailed Cust. Ledg. Entry")
+    // begin
+    //     DetailedCustLedgEntry."Curr. Adjmt. G/L Account No." := GetCustomerReceivablesAccount(DetailedCustLedgEntry."Customer No.");
+    // end;
 
-    [EventSubscriber(ObjectType::Report, 595, 'OnAfterInitDtldVendLedgerEntry', '', false, false)]
-    local procedure UpdateDtldVendLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry")
-    begin
-        DetailedVendorLedgEntry."Curr. Adjmt. G/L Account No." := GetVendorPayablesAccount(DetailedVendorLedgEntry."Vendor No.");
-    end;
+    // [EventSubscriber(ObjectType::Report, 595, 'OnAfterInitDtldVendLedgerEntry', '', false, false)]
+    // local procedure UpdateDtldVendLedgerEntry(var DetailedVendorLedgEntry: Record "Detailed Vendor Ledg. Entry")
+    // begin
+    //     DetailedVendorLedgEntry."Curr. Adjmt. G/L Account No." := GetVendorPayablesAccount(DetailedVendorLedgEntry."Vendor No.");
+    // end;
 }
 

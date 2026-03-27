@@ -161,7 +161,7 @@ table 50517 "WDC-QA Registration Header"
                         LotNoInformation.RESET;
                         LotNoInformation.SETFILTER("Lot No.", "Lot No.");
                         LotNoInformation.SETFILTER("Item No.", "Item No.");
-                        IF LotNoInformation.ISEMPTY THEN BEGIN
+                        IF not LotNoInformation.FindSet() THEN BEGIN
                             VALIDATE("Lot No.", '');
                             VALIDATE("Variant Code", '');
                         END;
@@ -173,7 +173,7 @@ table 50517 "WDC-QA Registration Header"
                         ProductionOrder.SETRANGE(Status, ProductionOrder.Status::Released);
                         ProductionOrder.SETRANGE("Source No.", "Item No.");
                         ProductionOrder.SETRANGE("Source Type", ProductionOrder."Source Type"::Item);
-                        IF ProductionOrder.ISEMPTY THEN
+                        IF not ProductionOrder.FindSet() THEN
                             "Production Order No." := '';
                     END ELSE BEGIN
                         "Production Order No." := '';
@@ -425,18 +425,34 @@ table 50517 "WDC-QA Registration Header"
     var
         QualityControlMgt: Codeunit "WDC-QC Quality Control Mgt.";
         KindOfQCRegistrationAction: Option Release,Delete,Close;
+        CoARegistratioHeader: Record "WDC-QA Registration Header";
+        Text001: TextConst FRA = 'Vous ne pouvez pas supprimer cette enregistrement car une certificat d''analyse est associé.';
     begin
+        if "Document Type" = "Document Type"::QC then begin
+            CoARegistratioHeader.Reset();
+            CoARegistratioHeader.SetRange("Document Type", CoARegistratioHeader."Document Type"::CoA);
+            CoARegistratioHeader.SetRange("Lot No.", "Lot No.");
+            CoARegistratioHeader.SetRange("Item No.", "Item No.");
+            if CoARegistratioHeader.FindSet() then
+                Error(Text001);
+        end;
+        RegistrationLine.Reset();
         RegistrationLine.SETRANGE("Document Type", "Document Type");
         RegistrationLine.SETFILTER("Document No.", "No.");
-        IF NOT RegistrationLine.ISEMPTY THEN
-            RegistrationLine.DELETEALL(TRUE);
+        IF RegistrationLine.FindSet() THEN begin
+            repeat
+                RegistrationLine.DELETE(TRUE);
+            until (RegistrationLine.Next() = 0)
+        end;
 
         //QualityControlMgt.DeletefromQCRegistration(Rec, KindOfQCRegistrationAction::Delete);
         CLEAR(GRegistCommentLine);
         GRegistCommentLine.SETRANGE("Document Type", "Document Type");
         GRegistCommentLine.SETRANGE("No.", "No.");
         IF GRegistCommentLine.FINDFIRST THEN
-            GRegistCommentLine.DELETEALL;
+            repeat
+                GRegistCommentLine.DELETE;
+            until (GRegistCommentLine.Next() = 0)
     end;
 
     procedure AssistEdit(OldRegistrationHeader: Record "WDC-QA Registration Header"): Boolean
@@ -484,26 +500,29 @@ table 50517 "WDC-QA Registration Header"
         IF Status = Status::Closed THEN BEGIN
             RegistrationLine.SETRANGE("Document Type", "Document Type");
             RegistrationLine.SETRANGE("Document No.", "No.");
-            IF RegistrationLine.ISEMPTY THEN
+            IF Not RegistrationLine.FindSet() THEN
                 ERROR(Text001, "Document Type");
 
-            IF NOT CONFIRM(STRSUBSTNO(Text002, "Document Type"), TRUE) THEN
-                ERROR('');
-
-            CopyDuplicataRegistrationCQ(Rec);
+            IF CONFIRM(STRSUBSTNO(Text002, "Document Type"), TRUE) THEN
+                CopyDuplicataRegistrationCQ(Rec);
         END;
     end;
 
     procedure ConfirmDeleteLines(ChangedFieldName: Text[100])
     begin
+        RegistrationLine.Reset();
         RegistrationLine.SETRANGE("Document Type", "Document Type");
         RegistrationLine.SETFILTER("Document No.", "No.");
-        IF RegistrationLine.ISEMPTY THEN EXIT;
-
-        IF CONFIRM(Text006 + Text007, TRUE, ChangedFieldName, "Document Type") THEN
-            RegistrationLine.DELETEALL(TRUE)
-        ELSE
-            Rec := xRec;
+        IF Not RegistrationLine.FindSet() THEN
+            EXIT
+        else begin
+            IF CONFIRM(Text006 + Text007, TRUE, ChangedFieldName, "Document Type") THEN
+                repeat
+                    RegistrationLine.DELETE(TRUE);
+                until (RegistrationLine.Next() = 0)
+            ELSE
+                Rec := xRec;
+        end;
     end;
 
     procedure GetBuyfromVendorName(Vendor: Record Vendor): Text[50]
@@ -524,17 +543,28 @@ table 50517 "WDC-QA Registration Header"
         RegistrationHeadeCopy.RESET;
         RegistrationHeadeCopy.SETRANGE("No.", RegHeader."No.");
         RegistrationHeadeCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        RegistrationHeadeCopy.DELETEALL;
-
+        if RegistrationHeadeCopy.FindSet() then begin
+            repeat
+                RegistrationHeadeCopy.DELETE;
+            until (RegistrationHeadeCopy.Next() = 0)
+        end;
         RegistrationLineCopy.RESET;
         RegistrationLineCopy.SETRANGE("Document No.", RegHeader."No.");
         RegistrationLineCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        RegistrationLineCopy.DELETEALL;
+        if RegistrationLineCopy.FindSet() then begin
+            repeat
+                RegistrationLineCopy.DELETE;
+            until (RegistrationLineCopy.Next() = 0)
+        end;
 
         RegistrationStepCopy.RESET;
         RegistrationStepCopy.SETRANGE("Document No.", RegHeader."No.");
         RegistrationStepCopy.SETRANGE("Document Type", RegHeader."Document Type");
-        RegistrationStepCopy.DELETEALL;
+        if RegistrationStepCopy.FindSet() then begin
+            repeat
+                RegistrationStepCopy.DELETE;
+            until (RegistrationStepCopy.Next() = 0)
+        end;
 
         RegistrationHeadeCopy.INIT;
         RegistrationHeadeCopy.TRANSFERFIELDS(RegHeader);

@@ -105,7 +105,7 @@ report 50504 "WDC-QA Suivi Enregistrement CQ"
                 LRegistrationLine.RESET;
                 LRegistrationLine.SETRANGE("Document No.", "No.");
                 LRegistrationLine.SETRANGE("Document Type", "Document Type");
-                IF LRegistrationLine.ISEMPTY THEN
+                IF Not LRegistrationLine.FindSet() THEN
                     CurrReport.SKIP;
             end;
 

@@ -140,7 +140,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>Q</Value>
+                                          <Value EvaluationMode="Constant">X</Value>
                                           <Style>
                                             <FontSize>20pt</FontSize>
                                             <FontWeight>Bold</FontWeight>

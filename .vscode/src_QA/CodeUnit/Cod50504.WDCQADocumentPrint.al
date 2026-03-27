@@ -36,19 +36,20 @@ codeunit 50504 "WDC-QA Document-Print"
                 REPORT.RUN(CertificateOfAnalysis."Report ID", TRUE, FALSE, RegistrationHeader);
             UNTIL CertificateOfAnalysis.NEXT = 0
         ELSE BEGIN
+            Customer.Reset();
             Customer.SETFILTER("No.", CustomerList.GetSelectionFilter);
-            Customer.FINDFIRST;
-            REPEAT
-                CertificateOfAnalysis.RESET;
-                CertificateOfAnalysis.SETFILTER("Customer No.", Customer."No.");
-                CertificateOfAnalysis.SETFILTER("Report ID", '<>0');
-                IF CertificateOfAnalysis.FINDSET THEN
-                    REPEAT
-                        RegistrationHeader.SETRECFILTER;
-                        RegistrationHeader.SETFILTER("Customer No. Filter", Customer."No.");
-                        REPORT.RUN(CertificateOfAnalysis."Report ID", TRUE, FALSE, RegistrationHeader);
-                    UNTIL CertificateOfAnalysis.NEXT = 0;
-            UNTIL Customer.NEXT <= 0;
+            if Customer.FINDFIRST then
+                REPEAT
+                    CertificateOfAnalysis.RESET;
+                    CertificateOfAnalysis.SETFILTER("Customer No.", Customer."No.");
+                    CertificateOfAnalysis.SETFILTER("Report ID", '<>0');
+                    IF CertificateOfAnalysis.FINDSET THEN
+                        REPEAT
+                            RegistrationHeader.SETRECFILTER;
+                            RegistrationHeader.SETFILTER("Customer No. Filter", Customer."No.");
+                            REPORT.RUN(CertificateOfAnalysis."Report ID", TRUE, FALSE, RegistrationHeader);
+                        UNTIL CertificateOfAnalysis.NEXT = 0;
+                UNTIL Customer.NEXT <= 0;
         END;
     end;
 }

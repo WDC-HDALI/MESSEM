@@ -91,7 +91,12 @@ tableextension 50002 "WDC Item Ledger Entry " extends "Item Ledger Entry"
         {
             CaptionML = ENU = 'Source Subtype', FRA = 'Sous-type origine';
         }
+        field(50018; "Sales Order No."; Code[20])
+        {
+            CaptionML = ENU = 'Sales Order No.', FRA = 'N° commande vente';
+            FieldClass = FlowField;
+            CalcFormula = Lookup("Sales Shipment Header"."Order No." WHERE("No." = FIELD("Document No.")));
+            Editable = false;
+        }
     }
-
-
 }
