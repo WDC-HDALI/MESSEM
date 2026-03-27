@@ -91,8 +91,11 @@ page 50522 "WDC-QA CoA Registration"
                 begin
                     CLEAR(GRegistCommentLine);
                     GRegistCommentLine.SETRANGE("No.", Rec."No.");
-                    IF GRegistCommentLine.FINDFIRST THEN
-                        GRegistCommentLine.DELETEALL;
+                    IF GRegistCommentLine.FINDFIRST THEN begin
+                        repeat
+                            GRegistCommentLine.DELETE;
+                        until (GRegistCommentLine.Next() = 0);
+                    end;
 
                     Gline := 10000;
                     CLEAR(GCommentCOA);

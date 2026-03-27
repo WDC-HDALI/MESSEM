@@ -2,7 +2,7 @@ table 50505 "WDC-QA Specification Step"
 {
     CaptionML = ENU = 'Specification Step', FRA = 'Configuration spécification';
     DataClassification = ToBeClassified;
-    LookupPageId = "WDC-QA Specification Steps";
+    //LookupPageId = "WDC-QA Specification Steps";
     DataCaptionFields = "Document No.", "Version No.", "Line No.";
     fields
     {

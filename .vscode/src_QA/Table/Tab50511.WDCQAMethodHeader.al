@@ -37,7 +37,7 @@ table 50511 "WDC-QA Method Header"
                 END ELSE BEGIN
                     MethodLine.SETFILTER("Document No.", "No.");
                     MethodLine.SETRANGE("Type of Measure", MethodLine."Type of Measure"::Option);
-                    IF NOT MethodLine.ISEMPTY THEN
+                    IF MethodLine.FindSet() THEN
                         MethodLine.MODIFYALL(Result, FALSE);
                 END;
             end;
@@ -98,9 +98,13 @@ table 50511 "WDC-QA Method Header"
         MethodLine: Record "WDC-QA Method Line";
     begin
         CheckCoupledToParameter(TRUE);
+        MethodLine.Reset();
         MethodLine.SETFILTER("Document No.", "No.");
-        IF NOT MethodLine.ISEMPTY THEN
-            MethodLine.DELETEALL;
+        IF MethodLine.FindSet() THEN begin
+            repeat
+                MethodLine.DELETE;
+            until (MethodLine.Next() = 0)
+        end;
     end;
 
     procedure AssistEdit(OldMethodHeader: Record "WDC-QA Method Header"): Boolean
@@ -236,7 +240,7 @@ table 50511 "WDC-QA Method Header"
                     ELSE
                         MethodLine.SETFILTER("Document No.", "No.");
                     MethodLine.SETRANGE("Column No.", Expression);
-                    IF MethodLine.ISEMPTY THEN
+                    IF not MethodLine.FindSet() THEN
                         IF IsFilter OR (NOT EVALUATE(Result, Expression)) THEN
                             ERROR(Text007, Expression);
                 END;
@@ -250,8 +254,9 @@ table 50511 "WDC-QA Method Header"
     var
         Parameter: Record "WDC-QA Parameter";
     begin
+        Parameter.Reset();
         Parameter.SETRANGE("Method No.", "No.");
-        IF NOT Parameter.ISEMPTY THEN BEGIN
+        IF Parameter.FindSet() THEN BEGIN
             IF ShowError THEN
                 ERROR(TextSI000, TextSI001, "No.", TextSI002);
             EXIT(TRUE);

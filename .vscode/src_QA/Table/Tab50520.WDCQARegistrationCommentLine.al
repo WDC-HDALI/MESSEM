@@ -47,7 +47,7 @@ table 50520 "WDC-QA RegistrationCommentLine"
     begin
         RegistrationCommentLine.SETRANGE("Document Type", "Document Type");
         RegistrationCommentLine.SETRANGE("No.", "No.");
-        IF RegistrationCommentLine.ISEMPTY THEN
+        IF not RegistrationCommentLine.FindSet() THEN
             Date := WORKDATE;
     end;
 

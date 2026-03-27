@@ -4,6 +4,7 @@ report 50003 "WDC Rebate Correction"
     CaptionML = ENU = 'Rebate Correction', FRA = 'Correction bonus';
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = all;
+    ProcessingOnly = true;
     dataset
     {
         dataitem("Rebate Entry"; "WDC Rebate Entry")
@@ -109,15 +110,15 @@ report 50003 "WDC Rebate Correction"
 
     var
         PostingDate: Date;
-        Text000: Label 'Posting Date not valid.';
-        Text001: Label 'Bal. Account No. not valid.';
+        Text000: TextConst ENU = 'Posting Date not valid.', FRA = 'Date de comptabilisation non valide.';
+        Text001: TextConst ENU = 'Bal. Account No. not valid.', FRA = 'N° compte contrepartie n''est pas valide.';
         GLSetup: Record 98;
         GenJournalTemplate: Record 80;
         GenJournalBatch: Record 232;
         IncludeOpenRebateEntries: Boolean;
-        Text002: Label 'Succesfully added one or more Rebate corrections.';
-        Text003: Label 'No Rebate corrections added.';
-        Text004: Label 'Rebate Correction %1';
+        Text002: TextConst ENU = 'Succesfully added one or more Rebate corrections.', FRA = 'Ajouté avec succès un ou plusieurs corrections de Bonus';
+        Text003: TextConst ENU = 'No Rebate corrections added.', FRA = 'Aucune correction de bonus ajoutée.';
+        Text004: TextConst ENU = 'Rebate Correction %1', FRA = 'Correction bonus %1';
         TempRebateEntry: Record "WDC Rebate Entry" temporary;
         PreviousRebateCode: Code[20];
         PreviousSelltoBuyFromNo: Code[20];
