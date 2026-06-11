@@ -4,14 +4,14 @@ using Microsoft.Manufacturing.Document;
 
 reportextension 50000 "WDC Refresh Production Order" extends "Refresh Production Order"
 {
-    dataset
-    {
-        modify(InitializeRequest)
-        {
+    // dataset
+    // {
+    //     modify(InitializeRequest)
+    //     {
 
-        }
+    //     }
 
-    }
+    // }
     procedure InitializeRequest1(ShowProgress2: Boolean)
     begin
         ShowProgress := ShowProgress2;

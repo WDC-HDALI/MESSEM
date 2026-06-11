@@ -7,6 +7,8 @@ report 50028 "WDC Production Order Statistic"
     //WDC04   04/11/2025 WDC.HG  : Implement The Machine Cneter Cost
     //WDC05   11/11/2025 WDC.HG  : Implement Set the cost to cost per KG 
     //WDC06   19/11/2025 WDC.HG  : Add the material and opérational cost 
+    //WDC07   21/04/2026 WDC.HG  : based the cost calculation on Finished quantity
+    //WDC08   30/04/2026 WDC.HG  : Add routing name 
     //*****************************************************************************
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/ProductionOrderStatistic.rdlc';
@@ -35,6 +37,20 @@ report 50028 "WDC Production Order Statistic"
             column(Description; "Production Order".Description)
             {
             }
+            //<<WDC08
+            column(RoutingNo; "Production Order"."Routing No.")
+            {
+
+            }
+            column(RoutingName; RoutingLbl)
+            {
+
+            }
+            column(RoutingDescription; lRouting.Description)
+            {
+
+            }
+            //>>WDC08
             column(NumeroOFLBL; NumeroOF)
             {
             }
@@ -450,6 +466,7 @@ report 50028 "WDC Production Order Statistic"
             var
                 lProdOrderLine: record "Prod. Order Line";
             begin
+                if lRouting.get("Production Order"."Routing No.") then; //WDC08
                 IF (DateFilter = '') THEN
                     ERROR(Text01);
                 IF ("Production Order".Status <> "Production Order".Status::Finished) AND ("Production Order".Status <> "Production Order".Status::Released) THEN
@@ -687,27 +704,29 @@ report 50028 "WDC Production Order Statistic"
                         if (lRoutingVersionLine."Operation No." = '10') and (lRoutingVersionLine."Previous Operation No." = '') then begin
                             //CoutCentreReceptionSTD := Round(((lProdOrderLine.Quantity * lRoutingVersionLine."Run Time") * lworkCenter."Unit Cost"), 0.01, '<');//CMT BY WDC05
                             CoutCentreReceptionSTD := Round((lRoutingVersionLine."Run Time" * lworkCenter."Unit Cost"), 0.0001, '<');//WDC05
-                            CoutPostReceptionSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);
+                            //CoutPostReceptionSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);//CMT BY WDC07
+                            CoutPostReceptionSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine."Finished Quantity")//WDC07
                         end
                         else if (lRoutingVersionLine."Operation No." = '20') then begin
                             //CoutCentreEqueutageSTD := Round(((lProdOrderLine.Quantity * lRoutingVersionLine."Run Time") * lworkCenter."Unit Cost"), 0.01, '<');//CMT BY WDC05
                             CoutCentreEqueutageSTD := Round((lRoutingVersionLine."Run Time" * lworkCenter."Unit Cost"), 0.0001, '<');//WDC05
-                            CoutPostEqueutageSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);
+                                                                                                                                     //coutPostEqueutageSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);//CMT By WDC07 
+                            CoutPostEqueutageSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine."Finished Quantity"); //WDC07
                         end
                         else if (lRoutingVersionLine."Operation No." = '30') then begin
                             //CoutCentreSurgelationSTD := Round(((lProdOrderLine.Quantity * lRoutingVersionLine."Run Time") * lworkCenter."Unit Cost"), 0.01, '<');//CMT BY WDC05
                             CoutCentreSurgelationSTD := Round((lRoutingVersionLine."Run Time" * lworkCenter."Unit Cost"), 0.0001, '<');//WDC05
-                            CoutPostSurgelationSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);
+                            CoutPostSurgelationSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                         end
                         else if (lRoutingVersionLine."Operation No." = '40') then begin
                             //"CoutCentreExpéditionSTD" := Round(((lProdOrderLine.Quantity * lRoutingVersionLine."Run Time") * lworkCenter."Unit Cost"), 0.01, '<');//CMT BY WDC05
                             "CoutCentreExpéditionSTD" := Round((lRoutingVersionLine."Run Time" * lworkCenter."Unit Cost"), 0.0001, '<');//WDC05
-                            "CoutPostExpéditionSTD" := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity)
+                            "CoutPostExpéditionSTD" := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                         end
                         else if (lRoutingVersionLine."Operation No." = '50') then begin
                             //CoutCentreNettoyageSTD := Round(((lProdOrderLine.Quantity * lRoutingVersionLine."Run Time") * lworkCenter."Unit Cost"), 0.01, '<');//CMT BY WDC05
                             CoutCentreNettoyageSTD := Round((lRoutingVersionLine."Run Time" * lworkCenter."Unit Cost"), 0.0001, '<');
-                            CoutPostNettoyageSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine.Quantity);
+                            CoutPostNettoyageSTD := GetSTDCostPerPost(lRoutingVersionLine."Routing No.", lRoutingVersionLine."Version Code", lRoutingVersionLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                         end;
                     until lRoutingVersionLine.next() = 0;
             end;
@@ -734,37 +753,37 @@ report 50028 "WDC Production Order Statistic"
                     if (lRoutingLine."Operation No." = '10') and (lRoutingLine."Previous Operation No." = '') then begin
                         //CoutCentreReceptionPrévu := Round(((lProdOrderLine.Quantity * lRoutingLine."Run Time") * lRoutingLine."Unit Cost per"), 0.01, '<');//CMT BY WDC05
                         CoutCentreReceptionPrévu := Round((lRoutingLine."Run Time" * lRoutingLine."Unit Cost per"), 0.0001, '<');//WDC05
-                        CoutPostReceptionPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);//WDC04
-                        "CoutCentreReceptionRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine.Quantity);
-                        "CoutPostReceptionRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);
+                        CoutPostReceptionPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutCentreReceptionRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutPostReceptionRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                     end
                     else if (lRoutingLine."Operation No." = '20') then begin
                         //CoutCentreEqueutagePrévu := Round(((lProdOrderLine.Quantity * lRoutingLine."Run Time") * lRoutingLine."Unit Cost per"), 0.01, '<');//CMT BY WDC05
                         CoutCentreEqueutagePrévu := Round((lRoutingLine."Run Time" * lRoutingLine."Unit Cost per"), 0.0001, '<');//WDC05
-                        CoutPostEqueutagePrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);//WDC04
-                        "CoutCentreEqueutageRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine.Quantity);
-                        "CoutPostEqueutageRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);
+                        CoutPostEqueutagePrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutCentreEqueutageRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutPostEqueutageRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                     end
                     else if (lRoutingLine."Operation No." = '30') then begin
                         //CoutCentreSurgelationPrévu := Round(((lProdOrderLine.Quantity * lRoutingLine."Run Time") * lRoutingLine."Unit Cost per"), 0.01, '<');//CMT BY WDC05
                         CoutCentreSurgelationPrévu := Round((lRoutingLine."Run Time" * lRoutingLine."Unit Cost per"), 0.0001, '<');//WDC05
-                        CoutPostSurgelationPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);//WDC04
-                        "CoutCentreSurgelationRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine.Quantity);
-                        "CoutPostSurgelationRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);
+                        CoutPostSurgelationPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC04 WDC07
+                        "CoutCentreSurgelationRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutPostSurgelationRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                     end
                     else if (lRoutingLine."Operation No." = '40') then begin
                         //"CoutCentreExpéditionPrévu" := Round(((lProdOrderLine.Quantity * lRoutingLine."Run Time") * lRoutingLine."Unit Cost per"), 0.01, '<');//CMT BY WDC05
                         "CoutCentreExpéditionPrévu" := Round((lRoutingLine."Run Time" * lRoutingLine."Unit Cost per"), 0.0001, '<');//WDC05
-                        CoutPostExpéditionPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);//WDC04
-                        "CoutCentreExpéditionRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine.Quantity);
-                        "CoutPostExpéditionRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);
+                        CoutPostExpéditionPrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC04 //WDC07
+                        "CoutCentreExpéditionRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine."Finished Quantity"); //WDC07
+                        "CoutPostExpéditionRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC07
                     end
                     else if (lRoutingLine."Operation No." = '50') then begin
                         //CoutCentreNettoyagePrévu := Round(((lProdOrderLine.Quantity * lRoutingLine."Run Time") * lRoutingLine."Unit Cost per"), 0.01, '<');//CMT BY WDC05
                         CoutCentreNettoyagePrévu := Round((lRoutingLine."Run Time" * lRoutingLine."Unit Cost per"), 0.0001, '<');//WDC05
-                        CoutPostNettoyagePrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);//WDC04
-                        "CoutCentreNettoyageRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine.Quantity);
-                        "CoutPostNettoyageRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine.Quantity);
+                        CoutPostNettoyagePrévu := GetExpectedCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Routing No.", lRoutingLine."Routing Reference No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity");//WDC04 //WDC07 
+                        "CoutCentreNettoyageRéel" := GetRealCostPerCentre(lRoutingLine."Prod. Order No.", lRoutingLine."Operation No.", lRoutingLine."Unit Cost per", lProdOrderLine."Finished Quantity");//WDC07
+                        "CoutPostNettoyageRéel" := GetRealCostPerPost(lRoutingLine."Prod. Order No.", lRoutingLine."Next Operation No.", lProdOrderLine."Finished Quantity"); //WDC07
 
                     end;
                 until lRoutingLine.Next() = 0;
@@ -776,6 +795,8 @@ report 50028 "WDC Production Order Statistic"
         CapacityEntry: record "Capacity Ledger Entry";
         lMachineCenter: record "Machine Center";
     begin
+        if pQuantity = 0 then
+            exit(0);
         CapacityEntry.Reset();
         CapacityEntry.SetCurrentKey("Order Type", "Order No.", "Order Line No.", "Routing No.", "Routing Reference No.", "Operation No.", "Last Output Line");
         CapacityEntry.setrange("Order Type", CapacityEntry."Order Type"::Production);
@@ -826,6 +847,8 @@ report 50028 "WDC Production Order Statistic"
         lCapacityEntry: record "Capacity Ledger Entry";
         lMachineCenter: record "Machine Center";
     begin
+        if pQuantity = 0 then
+            exit(0);
         lCapacityEntry.Reset();
         lCapacityEntry.SetCurrentKey("Order Type", "Order No.", "Order Line No.", "Routing No.", "Routing Reference No.", "Operation No.", "Last Output Line");
         lCapacityEntry.setrange("Order Type", lCapacityEntry."Order Type"::Production);
@@ -961,6 +984,8 @@ report 50028 "WDC Production Order Statistic"
         consommationSTD: Decimal;
         Text01: TextConst ENU = 'Please specify a filter date .', FRA = 'Veuillez spécifier une date de filtrage .';
         titre: TextConst ENU = 'Production Order Statistic', FRA = 'Statistique par O.F ';
+        RoutingLbl: TextConst ENU = 'Routing', FRA = 'Gamme';
+
         "QuantitéconsoméSO": Decimal;
         "QuantitéSO": Decimal;
         CoutCentreReceptionSTD: Decimal;
@@ -1005,6 +1030,7 @@ report 50028 "WDC Production Order Statistic"
         OperationalSTDCost: Decimal;//WDC05
         OperationalRealCost: Decimal;//WDC05
         OperationalExpectedCost: decimal; //wdc05
+        lRouting: record "Routing Header"; //WDC08
 
 
 
