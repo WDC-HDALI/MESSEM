@@ -916,7 +916,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.5cm</Height>
+                  <Height>0.1825cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -3821,7 +3821,7 @@
             <DataSetName>DataSet_Result</DataSetName>
             <Top>3.5cm</Top>
             <Left>0.00004cm</Left>
-            <Height>16.53869cm</Height>
+            <Height>16.22119cm</Height>
             <Width>16.22995cm</Width>
             <Style />
           </Tablix>
@@ -3984,7 +3984,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>22.47699cm</Height>
+        <Height>20.27566cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -3999,7 +3999,7 @@
       <Width>16.23006cm</Width>
       <Page>
         <PageFooter>
-          <Height>1.42113cm</Height>
+          <Height>0.97663cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -4032,9 +4032,9 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox12</rd:DefaultName>
-              <Top>0.50144cm</Top>
+              <Top>0.2cm</Top>
               <Left>0.00004cm</Left>
-              <Height>0.6cm</Height>
+              <Height>0.5cm</Height>
               <Width>16.23001cm</Width>
               <Style>
                 <Border>
@@ -4056,8 +4056,7 @@
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
         <LeftMargin>2.1cm</LeftMargin>
-        <TopMargin>1cm</TopMargin>
-        <BottomMargin>0.5cm</BottomMargin>
+        <TopMargin>0.3cm</TopMargin>
         <Style />
       </Page>
     </ReportSection>

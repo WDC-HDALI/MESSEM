@@ -2,6 +2,7 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
 {
     layout
     {
+
         addafter("Entry No.")
         {
             field("Balance Reg. Customer/Vend.No."; Rec."Balance Reg. Customer/Vend.No.")
@@ -30,6 +31,14 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
                 ApplicationArea = all;
             }
             field(Place; Rec.Place)
+            {
+                ApplicationArea = all;
+            }
+            field("Source Type_"; Rec."Source Type")
+            {
+                ApplicationArea = all;
+            }
+            field("Source No._"; Rec."Source No.")
             {
                 ApplicationArea = all;
             }

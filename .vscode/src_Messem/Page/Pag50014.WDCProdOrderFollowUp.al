@@ -1,3 +1,5 @@
+//************Documentation****************
+//WDC01  WDC.HG  07/05/2026  Comment SetSourceLine function 
 page 50014 "WDC Prod. Order Follow Up"
 {
     ApplicationArea = All;
@@ -883,7 +885,7 @@ page 50014 "WDC Prod. Order Follow Up"
         IF NOT OrderTracking THEN
             EXIT;
 
-        lOrderTrackingMgt.SetProdOrderLine(Rec);
+        //lOrderTrackingMgt.SetSourceLine(Rec); //CMT BY WDC01
         IF NOT lOrderTrackingMgt.FindRecordsWithoutMessage THEN
             EXIT;
 
@@ -1026,7 +1028,7 @@ page 50014 "WDC Prod. Order Follow Up"
         TextLotNo: Text[30];
         SourceName: Text[50];
         DueDateFilter: Text[30];
-        SearchDescription: Text[50];
+        SearchDescription: Text[100]; //MODF WDC01
         SourceDueDate: Date;
         LotSize: Decimal;
         TotalNetWeight: Decimal;

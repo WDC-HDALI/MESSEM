@@ -1,5 +1,8 @@
+//****************Documentation**********************
+//WDC01  WDC.HG  17/04/2026  Modification affichage rapport 
 report 50007 "WDC Sales Invoice"
 {
+
     DefaultLayout = RDLC;
     RDLCLayout = './.vscode/src_Messem/Report/RDLC/MESSEMSalesInvoice.rdlc';
 
@@ -529,6 +532,12 @@ report 50007 "WDC Sales Invoice"
                         column(SalesInvLineDiscCaption; SalesInvLineDiscCaptionLbl)
                         {
                         }
+                        //WDC01
+                        column(ItemNoCaption; ItemNoCaption)
+                        {
+
+                        }
+                        //>>WDC01
                         column(AmountCaption; AmountCaptionLbl)
                         {
                         }
@@ -575,6 +584,7 @@ report 50007 "WDC Sales Invoice"
                             column(ShipmentCaption; ShipmentCaptionLbl)
                             {
                             }
+
 
                             trigger OnAfterGetRecord()
                             begin
@@ -1376,6 +1386,7 @@ report 50007 "WDC Sales Invoice"
         TotalBox2: Decimal;
         No2: Code[10];
         textloseboxes: text[20];
+        ItemNoCaption: TextConst ENU = 'Item No.', FRA = 'N° article'; //WDC01
 
 
     procedure InitLogInteraction()
