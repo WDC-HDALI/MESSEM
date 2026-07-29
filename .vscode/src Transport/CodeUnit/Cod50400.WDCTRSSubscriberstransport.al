@@ -4,6 +4,10 @@ using Microsoft.Purchases.Document;
 using Microsoft.Inventory.Tracking;
 using Microsoft.Warehouse.Document;
 using Microsoft.Purchases.History;
+using Microsoft.Inventory.Posting;
+using Microsoft.Inventory.Costing;
+using Microsoft.Inventory.Journal;
+using Microsoft.Inventory.Ledger;
 //WDC01  WDC.HG  03/01/2025  show field in transport order 
 
 codeunit 50400 "WDC-TRS Subscribers transport"
@@ -37,4 +41,5 @@ codeunit 50400 "WDC-TRS Subscribers transport"
     // begin
     //     PurchRcptLine."External Doc No." := PurchRcptHeader."Your Reference";
     // end;
+
 }

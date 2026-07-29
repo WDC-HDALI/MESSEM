@@ -1,5 +1,9 @@
 codeunit 50001 "WDC Subscriber Purchase"
+//************Documentation*************************
+//WDC01  WDC.HG  23/06/2026  insert G/l Entry when posting purchase order GL account lines
 {
+    Permissions =
+        tabledata "Purch. Rcpt. Line" = rimd;
     [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnAfterValidateNopurchaseline', '', FALSE, FALSE)]
     procedure OnAfterValidateNo(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; var TempPurchaseLine: Record "Purchase Line" temporary)
     begin
@@ -524,10 +528,125 @@ codeunit 50001 "WDC Subscriber Purchase"
             END;
         end;
     end;
+    //<<WDC01
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterPostPurchaseDoc', '', FALSE, FALSE)]
+    procedure OnAfterPostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PurchRcpHdrNo: Code[20]; RetShptHdrNo: Code[20]; PurchInvHdrNo: Code[20]; PurchCrMemoHdrNo: Code[20]; CommitIsSupressed: Boolean)
+    var
+        PurchRcptLine: Record "Purch. Rcpt. Line";
+        PurchaseLine: record "Purch. Inv. Line";
+    begin
+        if PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::"Credit Memo" then
+            exit;
+        if (PurchRcpHdrNo = '') and (PurchInvHdrNo = '') then
+            exit;
+        if PurchRcpHdrNo <> '' then begin
+            PurchRcptLine.Reset();
+            PurchRcptLine.SetRange("Document No.", PurchRcpHdrNo);
+            if PurchRcptLine.FindSet() then
+                repeat
+                    InsertGRNIGenJnlLine(PurchaseHeader, PurchRcptLine, PurchInvHdrNo);
+                    purchRcptLine.Modify();
+                until PurchRcptLine.Next() = 0;
+        end
+        else
+            if PurchInvHdrNo <> '' then begin
+                PurchaseLine.Reset();
+                PurchaseLine.SetRange("Document No.", PurchInvHdrNo);
+                if PurchaseLine.FindSet() then
+                    repeat
+                        PurchRcptLine.Reset();
+                        PurchRcptLine.SetRange("Document No.", PurchaseLine."Receipt No.");
+                        PurchRcptLine.SetRange("Line No.", PurchaseLine."Receipt Line No.");
+                        if PurchRcptLine.FindSet() then begin
+                            InsertGRNIGenJnlLine(PurchaseHeader, PurchRcptLine, PurchInvHdrNo);
+                            PurchRcptLine.Modify();
+                        end
+                    until PurchaseLine.Next() = 0;
 
+            end;
+        PostGRNIGenJnl();
+    end;
+    //>>WDC01
+    local procedure InsertGRNIGenJnlLine(PurchHeader: Record "Purchase Header"; var PurchRcptLine2: Record "Purch. Rcpt. Line"; PurchInvHdrNo: Code[20])
+    var
+        GenPostingSetup: Record "General Posting Setup";
+        PostAmount: Decimal;
+        SourceCodeSetup: record 242;
+        PurchaseInvoiceHeader: record "Purch. Inv. Header";
+    begin
+        SourceCodeSetup.Get();
+        IF PurchRcptLine2.Type <> PurchRcptLine2.Type::"G/L Account" THEN
+            EXIT;
+        GenPostingSetup.GET(PurchRcptLine2."Gen. Bus. Posting Group", PurchRcptLine2."Gen. Prod. Posting Group");
+        GenPostingSetup.TESTFIELD("Invt. Accrual Acc. (Interim)");
+        PurchRcptLine2.TESTFIELD("Gen. Bus. Posting Group");
+        PurchRcptLine2.TESTFIELD("Gen. Prod. Posting Group");
+        PostAmount := ROUND((PurchRcptLine2.Quantity - PurchRcptLine2."Quantity Invoiced") * PurchRcptLine2."Unit Cost (LCY)") -
+          PurchRcptLine2."Item Amt. Rcd. Not Invoiced";
+        PurchRcptLine2."Item Amt. Rcd. Not Invoiced" := PurchRcptLine2."Item Amt. Rcd. Not Invoiced" + PostAmount;
+        IF PostAmount <> 0 THEN BEGIN
+            GRNIGenJnlLineNo := GRNIGenJnlLineNo + 1;
+            TempGRNIGenJnlLine.INIT;
+            TempGRNIGenJnlLine."Line No." := GRNIGenJnlLineNo;
+            TempGRNIGenJnlLine."Posting Date" := PurchHeader."Posting Date";
+            TempGRNIGenJnlLine."Document Date" := PurchHeader."Document Date";
+            TempGRNIGenJnlLine.Description := STRSUBSTNO('%1 %2', PurchHeader."Document Type", PurchHeader."No.");
+            TempGRNIGenJnlLine."Reason Code" := PurchHeader."Reason Code";
+            TempGRNIGenJnlLine."Account No." := PurchRcptLine2."No.";
+            TempGRNIGenJnlLine."System-Created Entry" := TRUE;
+            TempGRNIGenJnlLine.Amount := PostAmount;
+            TempGRNIGenJnlLine."Amount (LCY)" := 0;
+            TempGRNIGenJnlLine.Correction := PurchHeader.Correction;
+            TempGRNIGenJnlLine."VAT Calculation Type" := 0;
+            TempGRNIGenJnlLine."Gen. Bus. Posting Group" := '';
+            TempGRNIGenJnlLine."Gen. Prod. Posting Group" := '';
+            TempGRNIGenJnlLine."VAT Calculation Type" := TempGRNIGenJnlLine."VAT Calculation Type"::"Normal VAT";
+            TempGRNIGenJnlLine."VAT Amount" := 0;
+            TempGRNIGenJnlLine."VAT Posting" := TempGRNIGenJnlLine."VAT Posting"::"Automatic VAT Entry";
+            TempGRNIGenJnlLine."Shortcut Dimension 1 Code" := PurchRcptLine2."Shortcut Dimension 1 Code";
+            TempGRNIGenJnlLine."Shortcut Dimension 2 Code" := PurchRcptLine2."Shortcut Dimension 2 Code";
+            TempGRNIGenJnlLine."Dimension Set ID" := PurchRcptLine2."Dimension Set ID";
+            TempGRNIGenJnlLine."Job No." := PurchRcptLine2."Job No.";
+            TempGRNIGenJnlLine."Source Code" := SourceCodeSetup.Purchases;//a verifier
+            TempGRNIGenJnlLine."Bill-to/Pay-to No." := '';
+            TempGRNIGenJnlLine."Source Type" := TempGRNIGenJnlLine."Source Type"::Vendor;
+            TempGRNIGenJnlLine."Source No." := PurchHeader."Pay-to Vendor No.";
+            TempGRNIGenJnlLine."Posting No. Series" := PurchHeader."Posting No. Series";
+            if PurchInvHdrNo <> '' then begin
+                if PurchaseInvoiceHeader.get(PurchInvHdrNo) then begin
+                    TempGRNIGenJnlLine."Document Type" := TempGRNIGenJnlLine."Document Type"::Invoice;
+                    TempGRNIGenJnlLine."Document No." := PurchaseInvoiceHeader."No.";
+                    TempGRNIGenJnlLine."External Document No." := PurchaseInvoiceHeader."Vendor Invoice No.";
+                end;
+            end
+            else begin
+                TempGRNIGenJnlLine."Document Type" := TempGRNIGenJnlLine."Document Type"::" ";
+                TempGRNIGenJnlLine."Document No." := PurchRcptLine2."Document No.";
+                TempGRNIGenJnlLine."External Document No." := PurchHeader."Vendor Shipment No.";
+            end;
+        END;
+        TempGRNIGenJnlLine."Bal. Account No." := GenPostingSetup."Invt. Accrual Acc. (Interim)";
+        TempGRNIGenJnlLine."Bal. Gen. Posting Type" := TempGRNIGenJnlLine."Bal. Gen. Posting Type"::" ";
+        TempGRNIGenJnlLine."Bal. Gen. Bus. Posting Group" := '';
+        TempGRNIGenJnlLine."Bal. Gen. Prod. Posting Group" := '';
+        TempGRNIGenJnlLine."Bal. VAT Calculation Type" := TempGRNIGenJnlLine."Bal. VAT Calculation Type"::"Normal VAT";
+        TempGRNIGenJnlLine."Bal. VAT Amount" := 0;
+        TempGRNIGenJnlLine.INSERT;
+    END;
 
+    local procedure PostGRNIGenJnl()
+    begin
+        TempGRNIGenJnlLine.Reset();
+        if TempGRNIGenJnlLine.FindSet() then
+            repeat
+                GenJnlPostLine.RunWithCheck(TempGRNIGenJnlLine);
+            until TempGRNIGenJnlLine.Next() = 0;
+    end;
     var
         Item: Record 27;
         PurchSetup: Record "Purchases & Payables Setup";
+        GRNIGenJnlLineNo: integer;
+        TempGRNIGenJnlLine: Record "Gen. Journal Line" temporary;
+        GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
 
 }

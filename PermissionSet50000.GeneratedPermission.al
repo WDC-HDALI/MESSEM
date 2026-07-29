@@ -327,5 +327,6 @@ permissionset 50000 GeneratedPermission
         page "Prod. Order Cost Detail Lines" = X,
         report "WDC Production Order Stat BI" = X,
         page "WDC Update Data" = X,
-        report "Update Item Fifo" = X;
+        report "Update Item Fifo" = X,
+        report "WDC Update Rebate Entries" = X;
 }

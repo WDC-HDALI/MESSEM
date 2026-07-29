@@ -1,4 +1,6 @@
 tableextension 50015 "WDC Purch. Rcpt. Line " extends "Purch. Rcpt. Line"
+//************Documentation**********************************************
+//WDC02  WDC.HG  24/06/2026  add "Item Amt. Rcd. Not Invoiced" field
 {
     fields
     {
@@ -43,6 +45,15 @@ tableextension 50015 "WDC Purch. Rcpt. Line " extends "Purch. Rcpt. Line"
             CaptionML = ENU = 'Accrual Amount (LCY)', FRA = 'Montant d''ajustement DS';
             DataClassification = ToBeClassified;
         }
+        //<<WDC01
+        field(50030; "Item Amt. Rcd. Not Invoiced"; Decimal)
+        {
+            CaptionML = ENU = 'Item Amt. Rcd. Not Invoiced', FRA = 'Montant article reçu/non facturé';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        //>>WDC01
+
     }
 
 }
