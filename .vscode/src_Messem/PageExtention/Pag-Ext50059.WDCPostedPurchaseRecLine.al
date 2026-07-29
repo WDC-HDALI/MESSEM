@@ -12,6 +12,14 @@ pageextension 50059 "WDC Posted Purchase Rec Line" extends "Posted Purchase Rece
             {
                 ApplicationArea = All;
             }
+            field("Direct Unit Cost"; Rec."Direct Unit Cost")
+            {
+                ApplicationArea = All;
+            }
+            field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

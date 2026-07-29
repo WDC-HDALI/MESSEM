@@ -32,15 +32,26 @@ pageextension 50401 "WDC-TRS Sales Order" extends "Sales Order"
                 var
                     lText001: TextConst ENU = 'Would you create a transport order?',
                                         FRA = 'Voulez-vous créer un ordre de transport?';
+                    lEnterCarrierCode: Page "WDC Enter Carrier Code";
+                    CarrierCode: Code[20];
+
                 begin
-                    If Confirm(lText001) then
-                        CreateTransportOrder();
+                    //   If Confirm(lText001) then begin
+                    lEnterCarrierCode.SetCarrierCode(Rec."Shipping Agent Code");
+                    if lEnterCarrierCode.RunModal() = Action::OK then begin
+                        CarrierCode := lEnterCarrierCode.GetCode();
+                        CreateTransportOrder(CarrierCode);
+                    end;
+                    // end;
+
                 end;
 
             }
         }
     }
-    procedure CreateTransportOrder()
+
+
+    procedure CreateTransportOrder(pCarrierCode: Code[20])
     var
         lTransportHeader: Record "WDC-TRS Trasport Order Header";
         lTransportLine: record "WDC-TRS Trasport Order Line";
@@ -50,19 +61,23 @@ pageextension 50401 "WDC-TRS Sales Order" extends "Sales Order"
                             FRA = 'Votre commande de transport est créée sous le N° %1';
         ltext002: TextConst ENU = 'Setting tarif is not found for the %1 : %2 ',
                             FRA = 'Tarif transport n''existe pas pour %1 destination %2 ';
+        ltext003: TextConst ENU = 'A transport order already exists for order %1 and carrier %2. Existing number: %3',
+                            FRA = 'Un ordre de transport existe déjà pour la commande %1 et le transporteur %2. N° existant : %3';
         lTransportOrderPage: Page "WDC-TRS Transport order";
         lTransportTarif: Record "WDC-TRS Transport Tarifs";
     begin
+
         Clear(NewTransportOrder);
-        rec.TestField("Shipping Agent Code");
+        // rec.TestField("Shipping Agent Code"); //cmnt by chg
         rec.TestField("Shipment Method Code");
         Rec.TestField("Ship-to Code");
         rec.TestField("External Document No.");
         // rec.TestField("Ship-to Address");
         Rec.TestField(Status, rec.Status::Released);
-        rec.TestField("Transport order created", false);
+        // rec.TestField("Transport order created", false);//cmnt by chg
 
-        if lShippingAgent.Get(rec."Shipping Agent Code") Then begin
+        //  if lShippingAgent.Get(rec."Shipping Agent Code") Then begin //cmnt by chg
+        if lShippingAgent.Get(pCarrierCode) Then begin
             lShippingAgent.TestField("Vendor No.");
         end;
         lTransportTarif.Reset();
@@ -72,6 +87,13 @@ pageextension 50401 "WDC-TRS Sales Order" extends "Sales Order"
         lTransportTarif.SetRange("Shipment Method code", rec."Shipment Method Code");
         if Not lTransportTarif.FindFirst() then
             error(lText002, rec."Sell-to Customer No.", rec."Ship-to Code");
+        //<<chg
+        lTransportHeader.Reset();
+        lTransportHeader.SetRange("Origin Order No.", Rec."No.");
+        lTransportHeader.SetRange("Vendor No.", lShippingAgent."Vendor No.");
+        if lTransportHeader.FindFirst() then
+            Error(ltext003, Rec."No.", lShippingAgent."Vendor No.", lTransportHeader."No.");
+        //>>chg
         lTransportHeader.init;
         lTransportHeader."Transport Type" := lTransportHeader."Transport Type"::Customer;
         lTransportHeader."Transport To" := rec."Sell-to Customer No.";
@@ -118,4 +140,5 @@ pageextension 50401 "WDC-TRS Sales Order" extends "Sales Order"
 
     var
         NewTransportOrder: Code[20];
+    //CarrierCode: Code[20];
 }

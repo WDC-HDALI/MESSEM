@@ -62,8 +62,6 @@ pageextension 50005 "WDC Item Ledg Entries " extends "Item Ledger Entries"
             {
                 ApplicationArea = all;
             }
-
-
         }
     }
 }
