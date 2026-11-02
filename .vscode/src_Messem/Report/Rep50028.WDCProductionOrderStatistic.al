@@ -575,7 +575,7 @@ report 50028 "WDC Production Order Statistic"
                                     QuantitéProduitePF += ItemLedgerEntry.Quantity;
                                 CoutSTDOF := lProdOrderLine."Unit Cost"; //WDC02
                             END;
-                            IF (ItemLedgerEntry."Item No." = '6166') THEN
+                            IF (ItemLedgerEntry."Item No." = '6166') or (ItemLedgerEntry."Item No." = '6167') or (ItemLedgerEntry."Item No." = '6165') or (ItemLedgerEntry."Item No." = '0068') THEN
                                 QuantitéProduiteSO += ItemLedgerEntry.Quantity;
                         END;
                         IF (ItemLedgerEntry."Entry Type" = ItemLedgerEntry."Entry Type"::Consumption) THEN BEGIN
@@ -591,7 +591,7 @@ report 50028 "WDC Production Order Statistic"
                             end;
                             //>>
 
-                            IF (ItemLedgerEntry."Item No." = '6166') THEN begin
+                            IF (ItemLedgerEntry."Item No." = '6166') or (ItemLedgerEntry."Item No." = '6167') or (ItemLedgerEntry."Item No." = '6165') or (ItemLedgerEntry."Item No." = '0068') THEN begin
                                 QuantitéconsoméSO += ItemLedgerEntry.Quantity;
                                 SommeCoutSO += ItemLedgerEntry."Cost Amount (Actual)";
                             end;
@@ -599,7 +599,7 @@ report 50028 "WDC Production Order Statistic"
                                 QuantitéCr += ItemLedgerEntry.Quantity;
                                 SommeCoutCR += ItemLedgerEntry."Cost Amount (Actual)";
                             end;
-                            IF (Item."Specification Class" = Item."Specification Class"::"End Product") AND (NOT (ItemLedgerEntry."Item No." IN ['6167', '6104', '6165', '6166'])) THEN begin
+                            IF (Item."Specification Class" = Item."Specification Class"::"End Product") AND (NOT (ItemLedgerEntry."Item No." IN ['6167', '6104', '6165', '6166', '0068'])) THEN begin
                                 QuantitéPFc += ItemLedgerEntry.Quantity;
                                 SommeCoutPF += ItemLedgerEntry."Cost Amount (Actual)";
                             end;
