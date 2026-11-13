@@ -1,5 +1,6 @@
 //**********Documentation***********
 //WDC01 WDC.HG  03/01/2025  Add Field "sales Order No."
+//WDC02 WDC.HG  12/11/2026  Change caption of "your reference" field
 tableextension 50404 "WDC-TRS Purch. Rcpt. Header" extends "Purch. Rcpt. Header"
 
 {
@@ -38,6 +39,12 @@ tableextension 50404 "WDC-TRS Purch. Rcpt. Header" extends "Purch. Rcpt. Header"
             Editable = false;
         }
         //>>WDC01
+        //<<WDC02
+        modify("Your Reference")
+        {
+            CaptionML = ENU = 'External Doc No.', FRA = 'N° doc externe';
+        }
+        //>>WDC02
 
     }
 }
