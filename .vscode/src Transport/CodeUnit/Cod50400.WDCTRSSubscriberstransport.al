@@ -8,7 +8,8 @@ using Microsoft.Inventory.Posting;
 using Microsoft.Inventory.Costing;
 using Microsoft.Inventory.Journal;
 using Microsoft.Inventory.Ledger;
-//WDC01  WDC.HG  03/01/2025  show field in transport order 
+//WDC01  WDC.HG  03/01/2025  show field in transport order
+//WDC02  WDC.HG  12/11/2026  Show field "Transport Sales Order" and "Transport External Doc No." on item ledger entries 
 
 codeunit 50400 "WDC-TRS Subscribers transport"
 {
@@ -34,12 +35,25 @@ codeunit 50400 "WDC-TRS Subscribers transport"
         end;
 
     end;
+    //     [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterPurchRcptLineInsert', '', FALSE, FALSE)]
+    //     local procedure OnAfterPurchRcptLineInsert(PurchaseLine: Record "Purchase Line"; var PurchRcptLine: Record "Purch. Rcpt. Line"; ItemLedgShptEntryNo: Integer; WhseShip: Boolean; WhseReceive: Boolean; CommitIsSupressed: Boolean; PurchInvHeader: Record "Purch. Inv. Header";
+    //     var TempTrackingSpecification: Record "Tracking Specification" temporary; PurchRcptHeader: Record "Purch. Rcpt. Header"; TempWhseRcptHeader: Record "Warehouse Receipt Header"; xPurchLine: Record "Purchase Line"; var TempPurchLineGlobal: Record "Purchase Line" temporary)
+    //     begin
+    //         PurchRcptLine."External Doc No." := PurchRcptHeader."Your Reference";
+    //     end;
 
-    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Purch.-Post", 'OnAfterPurchRcptLineInsert', '', FALSE, FALSE)]
-    // local procedure OnAfterPurchRcptLineInsert(PurchaseLine: Record "Purchase Line"; var PurchRcptLine: Record "Purch. Rcpt. Line"; ItemLedgShptEntryNo: Integer; WhseShip: Boolean; WhseReceive: Boolean; CommitIsSupressed: Boolean; PurchInvHeader: Record "Purch. Inv. Header";
-    // var TempTrackingSpecification: Record "Tracking Specification" temporary; PurchRcptHeader: Record "Purch. Rcpt. Header"; TempWhseRcptHeader: Record "Warehouse Receipt Header"; xPurchLine: Record "Purchase Line"; var TempPurchLineGlobal: Record "Purchase Line" temporary)
-    // begin
-    //     PurchRcptLine."External Doc No." := PurchRcptHeader."Your Reference";
-    // end;
-
+    //<<WDC02
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Item Jnl.-Post Line", 'OnAfterInitItemLedgEntry', '', FALSE, FALSE)]
+    local procedure OnAfterInitItemLedgEntry(var NewItemLedgEntry: Record "Item Ledger Entry"; var ItemJournalLine: Record "Item Journal Line"; var ItemLedgEntryNo: Integer)
+    var
+        PurchRcptHeader: record "Purch. Rcpt. Header";
+    begin
+        if PurchRcptHeader.get(ItemJournalLine."Document No.") then begin
+            if PurchRcptHeader."Your Reference" <> '' then
+                NewItemLedgEntry."Transport External Doc No." := PurchRcptHeader."Your Reference";
+            if PurchRcptHeader."sales Order No." <> '' then
+                NewItemLedgEntry."Transport Sales Order" := PurchRcptHeader."sales Order No.";
+        end;
+    end;
+    //>>WDC02
 }
